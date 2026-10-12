@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* Card Aspect Ratio & Base Styles */
+.letter-card-container {
+  aspect-ratio: 2 / 3;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Photo letter styling inside card */
+.letter-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* Card Visual States */
+.card-state-inactive {
+  filter: brightness(0.75) contrast(0.95);
+  opacity: 0.85;
+}
+
+.card-state-active {
+  filter: brightness(1.1) contrast(1.05);
+  box-shadow:
+    0 0 10px rgba(0, 240, 255, 0.6),
+    inset 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+.card-state-selected {
+  filter: brightness(1.25) contrast(1.1);
+  box-shadow:
+    0 0 16px rgba(255, 0, 128, 0.9),
+    0 0 30px rgba(255, 0, 128, 0.5);
+  transform: translateY(-4px) scale(1.05);
+  z-index: 20;
+}
+
+.card-state-illuminated {
+  animation: neonPulse 1.4s ease-in-out infinite alternate;
+}
+
+/* Neon Pulse Animation for Completed Words */
+@keyframes neonPulse {
+  0% {
+    filter: brightness(1) contrast(1);
+    box-shadow: 0 0 8px rgba(50, 255, 126, 0.6);
+  }
+  100% {
+    filter: brightness(1.3) contrast(1.1);
+    box-shadow:
+      0 0 22px rgba(50, 255, 126, 1),
+      0 0 35px rgba(50, 255, 126, 0.6);
+  }
+}
