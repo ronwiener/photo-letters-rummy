@@ -523,6 +523,8 @@
   "always": 1,
   "result": 1,
   "audio": 1,
+  "malt": 1,
+  "tram": 1,
   "light": 1,
   "write": 1,
   "war": 1,

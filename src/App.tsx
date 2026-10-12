@@ -569,7 +569,7 @@ export function App() {
           // 4. CHECK GOING OUT CONDITION
           const aiWentOut = compHand.length === 0;
 
-          // 💡 UPDATE AI STATUS TEXT BASED ON PLAY RESULT
+          // 💡 UPDATE AI STATUS TEXT FIRST SO USER CAN READ IT
           if (!aiPlayedWord) {
             setAiStatusText(
               `${gameState.botName} couldn't play a word and passed — your turn!`,
@@ -580,26 +580,31 @@ export function App() {
             );
           }
 
-          setGameState((prev) => ({
-            ...prev,
-            wordBoard: newBoard,
-            roundScores: { ...prev.roundScores, computer: compRoundScore },
-            computerHand: compHand,
-            drawPile: dPile,
-            discardPile: discPile,
-            currentTurn: "human",
-            consecutivePasses: aiPlayedWord ? 0 : prev.consecutivePasses + 1,
-          }));
+          // ⏱️ Step 3: Pause briefly so the player can comfortably read the status message
+          const timer3 = setTimeout(() => {
+            setGameState((prev) => ({
+              ...prev,
+              wordBoard: newBoard,
+              roundScores: { ...prev.roundScores, computer: compRoundScore },
+              computerHand: compHand,
+              drawPile: dPile,
+              discardPile: discPile,
+              currentTurn: "human",
+              consecutivePasses: aiPlayedWord ? 0 : prev.consecutivePasses + 1,
+            }));
 
-          setIsAiThinking(false);
+            setIsAiThinking(false);
 
-          if (aiWentOut) {
-            handleEndRound("went_out");
-          }
-        }, 1800);
+            if (aiWentOut) {
+              handleEndRound("went_out");
+            }
+          }, 2000); // 1.8-second display window
+
+          return () => clearTimeout(timer3);
+        }, 2000);
 
         return () => clearTimeout(timer2);
-      }, 1200);
+      }, 1800);
 
       return () => clearTimeout(timer1);
     }
@@ -608,6 +613,9 @@ export function App() {
   // --- ROUND END HANDLER ---
   const handleEndRound = (reason: "went_out" | "stalemate") => {
     setGameState((prev) => {
+      // 🛡️ CRITICAL GUARD: Prevent running twice if round is already ended
+      if (prev.isRoundOver) return prev;
+
       // 1. Determine penalties (0 penalty if player went out or triggers went_out)
       const humanPenalty =
         prev.humanHand.length === 0 ||
