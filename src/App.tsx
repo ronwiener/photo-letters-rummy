@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { GameBoard } from "./components/GameBoard";
 import { Workspace } from "./components/Workspace";
 import { dealNewGame, drawCards } from "./utils/deckUtils";

@@ -1,4 +1,3 @@
-import React from "react";
 import type { GameState, Card, PlayedWord } from "../types/game";
 import { CardComponent } from "./CardComponent";
 
