@@ -616,16 +616,12 @@ export function App() {
       // 🛡️ CRITICAL GUARD: Prevent running twice if round is already ended
       if (prev.isRoundOver) return prev;
 
-      // 1. Determine penalties (0 penalty if player went out or triggers went_out)
+      // 1. Determine penalties (0 penalty if a player's hand is completely empty)
       const humanPenalty =
-        prev.humanHand.length === 0 ||
-        (reason === "went_out" && prev.currentTurn === "human")
-          ? 0
-          : calculateHandPenalty(prev.humanHand);
+        prev.humanHand.length === 0 ? 0 : calculateHandPenalty(prev.humanHand);
 
       const computerPenalty =
-        prev.computerHand.length === 0 ||
-        (reason === "went_out" && prev.currentTurn === "computer")
+        prev.computerHand.length === 0
           ? 0
           : calculateHandPenalty(prev.computerHand);
 
