@@ -22,7 +22,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               Official Guide
             </span>
             <h2 className="text-xl font-black text-white">
-              How to Play Neon Rummy
+              How to Play Photo Letter Rummy
             </h2>
           </div>
           <button
