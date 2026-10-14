@@ -185,9 +185,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   Wild Card Points
                 </h3>
                 <p className="text-neutral-300">
-                  Wild Cards help form longer words to reach higher score tiers,
-                  but contribute <strong>0 points</strong> toward word scoring
-                  but carry a 30 point penalty when left in hand at round end.
+                  Wild Cards count as <strong>0 points</strong> toward word
+                  scoring but carry a 30 point penalty when left in hand at
+                  round end.
                 </p>
               </div>
             </div>
