@@ -143,7 +143,7 @@ export function App() {
 
     const configuredWildCard: Card = {
       ...pendingWildCard,
-      assignedLetter: selectedLetter,
+      assignedLetter: selectedLetter.toUpperCase(),
     };
 
     // Remove from hand and add configured wild card to workspace
@@ -1274,11 +1274,13 @@ export function App() {
         onNewMatch={handleStartNewMatch}
       />
       <RulesModal isOpen={isRulesOpen} onClose={() => setIsRulesOpen(false)} />
-      <WildCardPickerModal
-        isOpen={!!pendingWildCard}
-        onSelectLetter={handleSelectWildLetter}
-        onCancel={handleCancelWildPicker}
-      />
+      {pendingWildCard && (
+        <WildCardPickerModal
+          isOpen={!!pendingWildCard}
+          onSelectLetter={handleSelectWildLetter}
+          onCancel={handleCancelWildPicker}
+        />
+      )}
     </div>
   );
 }
