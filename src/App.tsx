@@ -1214,6 +1214,7 @@ export function App() {
         <Workspace
           stagedCards={stagedCards}
           onRemoveCard={handleUnstageCard}
+          onStageCard={handleStageCard}
           onClearWorkspace={handleClearWorkspace}
           onSubmitWord={handleSubmitWord}
           isValidWord={wordValid}

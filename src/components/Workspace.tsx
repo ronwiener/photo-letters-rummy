@@ -7,6 +7,7 @@ interface WorkspaceProps {
   stagedCards: Card[];
   onRemoveCard: (card: Card) => void;
   onReorderCards: (newCards: Card[]) => void;
+  onStageCard: (card: Card) => void;
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
   isValidWord: boolean;
@@ -126,7 +127,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
               onDrop={(e) => handleDrop(e, index)}
               onDragEnd={handleDragEnd}
               onClick={() => onRemoveCard(card)}
-              className={`flex-shrink-0 cursor-grab active:cursor-grabbing transition-all ${
+              className={`shrink-0 cursor-grab active:cursor-grabbing transition-all ${
                 draggedIndex === index ? "opacity-30 scale-95" : ""
               } ${
                 dragOverIndex === index
