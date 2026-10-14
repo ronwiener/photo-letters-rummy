@@ -32,6 +32,7 @@ export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
   Z: 8,
   WILD: 2,
 };
+export const LETTER_COUNTS = LETTER_PHOTO_COUNTS;
 
 export const WORD_LENGTH_SCORES: Record<number, number> = {
   3: 30,

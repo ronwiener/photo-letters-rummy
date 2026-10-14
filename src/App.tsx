@@ -574,6 +574,7 @@ export function App() {
         let compHand = [...gameState.computerHand];
         let dPile = [...gameState.drawPile];
         let discPile = [...gameState.discardPile];
+        let newBoard = [...gameState.wordBoard]; // 👈 Declared here in timer1 scope so it's fully available
 
         // 1. Mandatory Draw: Monica draws 1 card
         const drawRes = drawCards(dPile, discPile, 1);
@@ -582,7 +583,8 @@ export function App() {
           dPile = drawRes.remainingDraw;
           discPile = drawRes.remainingDiscard;
         }
-        // 🌟 ADD WILD SWAP CHECK HERE:
+
+        // 🌟 WILD SWAP CHECK:
         // Inspect board for Wild Cards and swap if Monica holds the matching letter in hand
         newBoard.forEach((playedWord) => {
           playedWord.cards.forEach((card) => {
@@ -620,7 +622,7 @@ export function App() {
 
         // Step 2: Word Evaluation & Multi-Play Loop
         const timer2 = setTimeout(() => {
-          let newBoard = [...gameState.wordBoard];
+          // NOTE: newBoard is already defined in the outer scope (timer1) with Wild Swaps applied!
           let compRoundScore = gameState.roundScores.computer;
           let humanRoundScore = gameState.roundScores.human;
           let aiPlayedWord = false;
@@ -652,7 +654,7 @@ export function App() {
             if (gameState.aiDifficulty !== "easy") {
               stealCandidate = findMonicaStealCandidate(
                 { ...gameState, computerHand: compHand, wordBoard: newBoard },
-                checkIsValidWord,
+                isValidWord,
               );
             }
 
