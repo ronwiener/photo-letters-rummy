@@ -7,7 +7,7 @@ interface RulesModalProps {
 
 export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<
-    "overview" | "scoring" | "extensions" | "match"
+    "overview" | "wilds" | "scoring" | "extensions" | "match"
   >("overview");
 
   if (!isOpen) return null;
@@ -34,7 +34,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="grid grid-cols-4 gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-[11px] font-extrabold text-center">
+        <div className="grid grid-cols-5 gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800 text-[10px] font-extrabold text-center">
           <button
             onClick={() => setActiveTab("overview")}
             className={`py-1.5 rounded-lg transition-all cursor-pointer ${
@@ -44,6 +44,16 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             }`}
           >
             Turn Flow
+          </button>
+          <button
+            onClick={() => setActiveTab("wilds")}
+            className={`py-1.5 rounded-lg transition-all cursor-pointer ${
+              activeTab === "wilds"
+                ? "bg-amber-500 text-slate-950 font-black"
+                : "text-amber-400/80 hover:text-amber-300"
+            }`}
+          >
+            ★ Wilds
           </button>
           <button
             onClick={() => setActiveTab("scoring")}
@@ -133,6 +143,51 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 <p>
                   If you played cards onto the board, you automatically draw
                   back up to keep your hand filled for the next turn.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "wilds" && (
+            <div className="flex flex-col gap-3">
+              <div className="bg-amber-950/30 p-3 rounded-xl border border-amber-500/30">
+                <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1 flex items-center gap-1">
+                  ★ Playing a Wild Card
+                </h3>
+                <p className="text-neutral-200">
+                  There are <strong>2 Wild Cards</strong> in the deck. When you
+                  stage a Wild Card onto the workspace, a letter picker will
+                  appear allowing you to assign it any letter from{" "}
+                  <strong>A to Z</strong>.
+                </p>
+              </div>
+
+              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
+                <h3 className="font-extrabold text-cyan-400 uppercase text-[11px] mb-1 flex items-center gap-1">
+                  ↺ The Wild Swap Mechanic
+                </h3>
+                <p className="text-neutral-300 mb-2">
+                  If a Wild Card is sitting on the board assigned to a letter
+                  (e.g. <strong>"E"</strong>), <strong>any player</strong>{" "}
+                  holding a physical card of that exact letter can swap it
+                  during their turn!
+                </p>
+                <p className="text-neutral-400 text-[11px]">
+                  Simply tap the Wild Card on the board while holding the
+                  matching letter card. Your physical card replaces the Wild
+                  Card on the board, and the Wild Card returns to your hand
+                  unassigned, ready to be reused as any letter!
+                </p>
+              </div>
+
+              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
+                <h3 className="font-extrabold text-rose-400 uppercase text-[11px] mb-1">
+                  Wild Card Points
+                </h3>
+                <p className="text-neutral-300">
+                  Wild Cards help form longer words to reach higher score tiers,
+                  but contribute <strong>0 points</strong> toward word scoring
+                  and carry no penalty when left in hand at round end.
                 </p>
               </div>
             </div>
