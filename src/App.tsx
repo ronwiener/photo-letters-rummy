@@ -936,7 +936,7 @@ export function App() {
           ? 0
           : calculateHandPenalty(prev.computerHand);
 
-      // 2. Net round score for THIS current round (Gross minus Penalty)
+      // 2. Net round score (Gross minus Penalty)
       const netHumanRoundScore = prev.roundScores.human - humanPenalty;
       const netCompRoundScore = prev.roundScores.computer - computerPenalty;
 
@@ -961,11 +961,8 @@ export function App() {
 
       return {
         ...prev,
-        roundScores: {
-          human: netHumanRoundScore,
-          computer: netCompRoundScore,
-        },
-        matchScores: newMatchScores,
+        // 💡 KEEP roundScores as gross play points (e.g., +140)
+        matchScores: newMatchScores, // 👈 Adds Net +130 to Match Total
         isRoundOver: true,
         roundEndReason: reason,
         lastRoundPenalties: { human: humanPenalty, computer: computerPenalty },
