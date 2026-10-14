@@ -114,6 +114,8 @@ export function App() {
   // CARD STAGING / UNSTAGING IN WORKSPACE & WILD CARD HANDLING
   // -------------------------------------------------------------
   const handleStageCard = (card: Card) => {
+    console.log("➡️ handleStageCard triggered with card:", card);
+
     if (gameState.currentTurn !== "human") {
       console.warn("Blocked: Not human turn!");
       return;
@@ -123,8 +125,16 @@ export function App() {
       return;
     }
 
-    // If it's a wild card without an assigned letter yet, trigger letter selection
+    // Check card properties
+    console.log(
+      "Is Wild?",
+      card.isWild,
+      "Assigned Letter?",
+      card.assignedLetter,
+    );
+
     if (card.isWild && !card.assignedLetter) {
+      console.log("🌟 Triggering setPendingWildCard!");
       setPendingWildCard(card);
       return;
     }
