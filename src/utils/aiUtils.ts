@@ -53,13 +53,27 @@ function getHandPermutationsUpTo(cards: Card[], maxLen: number): Card[][] {
 }
 
 /**
+ * Safely extracts the letter character for a card (supporting assigned Wild Cards)
+ */
+function getCardLetter(card: Card): string {
+  if (card.isWild) {
+    return (card.assignedLetter || "").toUpperCase();
+  }
+  return (card.letter || "").toUpperCase();
+}
+
+/**
  * Finds the optimal play for Monica based on hand, board, and selected difficulty.
  */
 export function findMonicaPlay(
   handCards: Card[],
   wordBoard: PlayedWord[],
   difficulty: "easy" | "medium" | "pro",
+  // Accept external dictionary checker if passed
+  customIsValidWord?: (word: string) => boolean,
 ): AiPlayResult | null {
+  const checkWord = customIsValidWord || isValidWord;
+
   // Difficulty Rule Configurations
   const maxWordLength =
     difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 8;
@@ -80,8 +94,14 @@ export function findMonicaPlay(
 
     for (const boardItem of wordBoard) {
       for (const combo of extensionCardCombos) {
+        // Skip combo if it contains unassigned wild cards
+        const containsUnassignedWild = combo.some(
+          (c) => c.isWild && !c.assignedLetter,
+        );
+        if (containsUnassignedWild) continue;
+
         const addedLetters = combo
-          .map((c) => c.letter)
+          .map((c) => getCardLetter(c))
           .join("")
           .toUpperCase();
 
@@ -90,7 +110,7 @@ export function findMonicaPlay(
         if (
           suffixWord.length <= maxWordLength &&
           !COMMON_WORD_FILTER.has(suffixWord) &&
-          isValidWord(suffixWord)
+          checkWord(suffixWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
         ) {
           const rawScore = calculateExtensionPoints(
             boardItem.word.length,
@@ -111,7 +131,7 @@ export function findMonicaPlay(
         if (
           prefixWord.length <= maxWordLength &&
           !COMMON_WORD_FILTER.has(prefixWord) &&
-          isValidWord(prefixWord)
+          checkWord(prefixWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
         ) {
           const rawScore = calculateExtensionPoints(
             boardItem.word.length,
@@ -126,6 +146,36 @@ export function findMonicaPlay(
             targetWordId: boardItem.id,
           });
         }
+
+        // C. Sandwich / Both Ends Extension (For 2-card plays, e.g. S + TART + S = STARTS)
+        if (combo.length === 2) {
+          const letter1 = getCardLetter(combo[0]);
+          const letter2 = getCardLetter(combo[1]);
+          const sandwichWord = (
+            letter1 +
+            boardItem.word +
+            letter2
+          ).toUpperCase();
+
+          if (
+            sandwichWord.length <= maxWordLength &&
+            !COMMON_WORD_FILTER.has(sandwichWord) &&
+            checkWord(sandwichWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
+          ) {
+            const rawScore = calculateExtensionPoints(
+              boardItem.word.length,
+              sandwichWord.length,
+            );
+            const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+            validPlays.push({
+              type: "extension",
+              cardsUsed: combo,
+              wordText: sandwichWord,
+              score: cappedScore,
+              targetWordId: boardItem.id,
+            });
+          }
+        }
       }
     }
   }
@@ -137,7 +187,6 @@ export function findMonicaPlay(
   }
 
   // 2. STANDALONE WORD PLAY FROM HAND
-  // Permutation generator to allow rearranging letters (e.g., T-S-I -> S-I-T)
   function searchHandPermutations(
     currentCombination: Card[],
     remainingCards: Card[],
@@ -146,24 +195,31 @@ export function findMonicaPlay(
       currentCombination.length >= 3 &&
       currentCombination.length <= maxWordLength
     ) {
-      const candidateWord = currentCombination
-        .map((c) => c.letter)
-        .join("")
-        .toUpperCase();
+      // Skip if any unassigned wild card is present
+      const hasUnassignedWild = currentCombination.some(
+        (c) => c.isWild && !c.assignedLetter,
+      );
 
-      if (
-        !COMMON_WORD_FILTER.has(candidateWord) &&
-        isValidWord(candidateWord)
-      ) {
-        const rawScore = calculateWordPoints(candidateWord.length);
-        const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+      if (!hasUnassignedWild) {
+        const candidateWord = currentCombination
+          .map((c) => getCardLetter(c))
+          .join("")
+          .toUpperCase();
 
-        validPlays.push({
-          type: "new_word",
-          cardsUsed: [...currentCombination],
-          wordText: candidateWord,
-          score: cappedScore,
-        });
+        if (
+          !COMMON_WORD_FILTER.has(candidateWord) &&
+          checkWord(candidateWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
+        ) {
+          const rawScore = calculateWordPoints(candidateWord.length);
+          const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+
+          validPlays.push({
+            type: "new_word",
+            cardsUsed: [...currentCombination],
+            wordText: candidateWord,
+            score: cappedScore,
+          });
+        }
       }
     }
 
@@ -185,10 +241,9 @@ export function findMonicaPlay(
 
   if (validPlays.length === 0) return null;
 
-  // Sort plays: Pro chooses highest score, Easy/Medium pick balanced plays
   validPlays.sort((a, b) => b.score - a.score);
 
   return difficulty === "easy"
-    ? validPlays[validPlays.length - 1] // Simple short word
-    : validPlays[0]; // Best high score word
+    ? validPlays[validPlays.length - 1]
+    : validPlays[0];
 }

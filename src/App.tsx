@@ -324,8 +324,37 @@ export function App() {
 
   // Updated handleSubmitWord supporting New Words, Extension, Rearranging, and Word Stealing
   const handleSubmitWord = () => {
-    if (!wordValid || gameState.currentTurn !== "human" || turnPhase !== "play")
+    if (gameState.currentTurn !== "human" || turnPhase !== "play") return;
+
+    // 1. 🛡️ BUILD FULL PROPOSED WORD STRING (Resolving Wild Cards Safely)
+    const proposedWordText = stagedCards
+      .map((c) => {
+        if (c.isWild) {
+          return (c.assignedLetter || "").toUpperCase();
+        }
+        return (c.letter || "").toUpperCase();
+      })
+      .join("");
+
+    // 2. 🛡️ MANDATORY DICTIONARY & WILD ASSIGNMENT VALIDATION GATE
+    const containsUnassignedWild = stagedCards.some(
+      (c) => c.isWild && !c.assignedLetter,
+    );
+
+    if (containsUnassignedWild) {
+      alert("Please assign a letter to all Wild Cards before submitting!");
       return;
+    }
+
+    if (proposedWordText.length < 3) {
+      alert("Words must be at least 3 letters long!");
+      return;
+    }
+
+    if (!isValidWord(proposedWordText)) {
+      alert(`"${proposedWordText}" is not a valid dictionary word!`);
+      return;
+    }
 
     if (targetBoardWord) {
       // --- RULES 6 & 7: EXTENSION, REARRANGING & STEALING VALIDATION ---
@@ -375,7 +404,7 @@ export function App() {
       const existingHistory = targetBoardWord.history || [];
       const updatedPlayedWord: PlayedWord = {
         id: targetBoardWord.id,
-        word: stagedWordText,
+        word: proposedWordText, // 👈 Uses sanitized proposed word text
         cards: [...stagedCards],
         playedBy: "human", // 👑 Ownership transferred to Human if stolen
         originalWord: targetBoardWord.word,
@@ -385,13 +414,13 @@ export function App() {
           {
             action: isOpponentWord
               ? "stolen"
-              : stagedWordText.length > targetBoardWord.cards.length
+              : proposedWordText.length > targetBoardWord.cards.length
                 ? "extended"
                 : "rearranged",
             player: "human",
             description: isOpponentWord
-              ? `Stole "${targetBoardWord.word}" and expanded it into "${stagedWordText}" (+${pointsAwarded} pts).`
-              : `Modified "${targetBoardWord.word}" into "${stagedWordText}" (+${pointsAwarded} pts).`,
+              ? `Stole "${targetBoardWord.word}" and expanded it into "${proposedWordText}" (+${pointsAwarded} pts).`
+              : `Modified "${targetBoardWord.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
             timestamp: Date.now(),
           },
         ],
@@ -439,7 +468,7 @@ export function App() {
 
       const newPlayedWord: PlayedWord = {
         id: `word-${Date.now()}`,
-        word: stagedWordText,
+        word: proposedWordText, // 👈 Uses sanitized proposed word text
         cards: [...stagedCards],
         playedBy: "human",
         scoreAwarded: pointsAwarded,
@@ -447,7 +476,7 @@ export function App() {
           {
             action: "created",
             player: "human",
-            description: `Created new word "${stagedWordText}" for ${pointsAwarded} points.`,
+            description: `Created new word "${proposedWordText}" for ${pointsAwarded} points.`,
             timestamp: Date.now(),
           },
         ],
@@ -1146,19 +1175,6 @@ export function App() {
           )}
         </div>
       </div>
-
-      {/* Floating Monica Thinking Toast */}
-      {isAiThinking && (
-        <div className="fixed top-14 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 px-4 py-2 bg-neutral-900/95 border border-pink-500/60 rounded-full shadow-[0_0_15px_rgba(236,72,153,0.35)] backdrop-blur-md animate-fade-in transition-all">
-          {/* Animated Glowing Spinner */}
-          <div className="w-3.5 h-3.5 border-2 border-pink-400 border-t-transparent rounded-full animate-spin shrink-0" />
-
-          {/* Dynamic Status Text */}
-          <span className="text-xs font-bold text-pink-300 tracking-wide whitespace-nowrap">
-            {aiStatusText || `${gameState.botName} is thinking...`}
-          </span>
-        </div>
-      )}
 
       <GameBoard
         gameState={gameState}
