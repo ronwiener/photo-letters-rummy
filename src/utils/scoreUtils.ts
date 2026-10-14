@@ -45,11 +45,19 @@ export function calculateExtensionPoints(
  * Medium (B, C, D, F, G, H, L, M, P, R): -10 pts
  * High/Rare (J, K, Q, V, W, X, Y, Z): -20 pts
  */
-export function calculateHandPenalty(hand: { letter: string }[]): number {
+export function calculateHandPenalty(
+  hand: { letter: string; isWild?: boolean }[],
+): number {
   const standardLetters = new Set(["A", "E", "I", "O", "U", "T", "N", "S"]);
   const highLetters = new Set(["J", "K", "Q", "V", "W", "X", "Y", "Z"]);
 
   return hand.reduce((totalPenalty, card) => {
+    // 🌟 1. Wild Card Penalty (-30 pts)
+    if (card.isWild) {
+      return totalPenalty + 30;
+    }
+
+    // 2. Standard Letter Penalties
     const letter = card.letter.toUpperCase();
     if (standardLetters.has(letter)) return totalPenalty + 5;
     if (highLetters.has(letter)) return totalPenalty + 20;

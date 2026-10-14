@@ -164,7 +164,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-cyan-400 uppercase text-[11px] mb-1 flex items-center gap-1">
-                  ↺ The Wild Swap Mechanic
+                  ↺ Wild Card Swapping
                 </h3>
                 <p className="text-neutral-300 mb-2">
                   If a Wild Card is sitting on the board assigned to a letter
@@ -187,7 +187,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 <p className="text-neutral-300">
                   Wild Cards help form longer words to reach higher score tiers,
                   but contribute <strong>0 points</strong> toward word scoring
-                  and carry no penalty when left in hand at round end.
+                  but carry a 30 point penalty when left in hand at round end.
                 </p>
               </div>
             </div>
