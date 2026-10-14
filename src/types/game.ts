@@ -31,12 +31,14 @@ export interface Card {
   letter: Letter;
   photoUrl: string;
   points?: number;
+  isWild?: boolean; // 👈 Tracks whether card is a Wild Card
+  assignedLetter?: string; // 👈 Stores the assigned letter (A-Z) when played on board
 }
 
 export type PlayerId = "human" | "computer";
 
 export interface HistoryEntry {
-  action: "created" | "extended" | "rearranged";
+  action: "created" | "extended" | "rearranged" | "stolen";
   player: PlayerId;
   description: string;
   timestamp: number;
@@ -72,4 +74,5 @@ export interface GameState {
   lastRoundPenalties?: { human: number; computer: number };
   isGameOver: boolean;
   winner: PlayerId | "tie" | null;
+  pendingWildCard?: Card | null; // 👈 Optional state tracker for Wild Card staging
 }

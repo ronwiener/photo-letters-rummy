@@ -103,6 +103,19 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
+              {/* 🦹‍♂️ WORD STEALING RULE HIGHLIGHT */}
+              <div className="bg-amber-950/40 p-3 rounded-xl border border-amber-800/60">
+                <h3 className="font-extrabold text-amber-300 uppercase text-[11px] mb-1 flex items-center gap-1">
+                  ⚡ Special Action: Word Stealing
+                </h3>
+                <p className="text-amber-100 text-xs leading-relaxed">
+                  You can steal an opponent’s word from the board by adding{" "}
+                  <strong>2 or more cards</strong> from your hand to form a new
+                  valid word. When stolen, full ownership and point value
+                  transfer to you!
+                </p>
+              </div>
+
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-pink-400 uppercase text-[11px] mb-1">
                   3. Discard Phase
