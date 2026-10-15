@@ -19,7 +19,6 @@ export function createDeck(): Card[] {
     }
 
     for (let i = 0; i < count; i++) {
-      // Pick a random photo from whatever files exist in that letter's subfolder
       const randomPhotoUrl =
         availablePhotos.length > 0
           ? availablePhotos[Math.floor(Math.random() * availablePhotos.length)]
@@ -32,6 +31,17 @@ export function createDeck(): Card[] {
       });
     }
   });
+
+  // 🌟 ADD WILD CARDS HERE (e.g., adding 2 wild cards to the deck)
+  const numberOfWildCards = 2;
+  for (let i = 1; i <= numberOfWildCards; i++) {
+    deck.push({
+      id: `WILD-${i}`,
+      letter: "WILD" as Letter,
+      photoUrl: "/photo-letters/wild-card/wild.jpeg", // 👈 Your exact path
+      isWild: true, // 👈 Explicitly true!
+    });
+  }
 
   return deck;
 }

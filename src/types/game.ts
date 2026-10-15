@@ -24,7 +24,8 @@ export type Letter =
   | "W"
   | "X"
   | "Y"
-  | "Z";
+  | "Z"
+  | "WILD";
 
 export interface Card {
   id: string;
