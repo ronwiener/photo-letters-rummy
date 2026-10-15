@@ -3,11 +3,11 @@ import type { Letter } from "../types/game";
 export type AssetKey = Letter | "WILD";
 
 export const LETTER_COUNTS: Record<AssetKey, number> = {
-  A: 9,
+  A: 8,
   B: 2,
   C: 2,
   D: 4,
-  E: 12,
+  E: 11,
   F: 2,
   G: 3,
   H: 2,

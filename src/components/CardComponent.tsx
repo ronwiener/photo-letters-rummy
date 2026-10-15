@@ -1,3 +1,5 @@
+// src/components/CardComponent.tsx
+
 import type { Card } from "../types/game";
 
 interface CardComponentProps {
@@ -13,7 +15,6 @@ export const CardComponent: React.FC<CardComponentProps> = ({
   onClick,
   size = "md",
 }) => {
-  // Size mappings optimized for mobile touch targets
   const sizeClasses = {
     sm: "w-10 h-14 text-[10px]",
     md: "w-14 h-20 text-xs",
@@ -21,7 +22,6 @@ export const CardComponent: React.FC<CardComponentProps> = ({
   };
 
   const handleDragStart = (e: React.DragEvent) => {
-    // 🌟 Pass the entire card JSON so drop targets (Workspace/Board) receive full metadata
     e.dataTransfer.setData("application/json", JSON.stringify(card));
     e.dataTransfer.effectAllowed = "move";
   };
@@ -35,13 +35,22 @@ export const CardComponent: React.FC<CardComponentProps> = ({
     >
       <img
         src={card.photoUrl}
-        alt={`Photo letter ${card.letter}`}
+        alt={`Photo letter ${card.assignedLetter || card.letter}`}
         className="letter-card-img pointer-events-none w-full h-full object-cover brightness-105 contrast-105"
         onError={(e) => {
-          // Fallback if an image fails to load
+          // Fallback image if path fails to resolve
           (e.target as HTMLImageElement).src = "/photo-letters/fallback.jpg";
         }}
       />
+
+      {/* 🌟 WILD CARD OVERLAY: Shows selected assigned letter clearly on top */}
+      {card.isWild && card.assignedLetter && (
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center border-2 border-cyan-400 rounded-xl">
+          <span className="text-xl font-black text-cyan-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            {card.assignedLetter}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
