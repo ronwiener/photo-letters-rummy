@@ -6,6 +6,7 @@ import { isValidWord as checkDictionaryWord } from "../utils/wordChecker";
 
 interface WorkspaceProps {
   stagedCards: Card[];
+  onStageCard?: (card: Card) => void;
   onRemoveCard: (card: Card) => void;
   onReorderCards: (newCards: Card[]) => void;
   onClearWorkspace: () => void;
@@ -19,7 +20,6 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   onReorderCards,
   onClearWorkspace,
   onSubmitWord,
-  isValidWord,
 }) => {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
