@@ -125,17 +125,26 @@ export function App() {
       return;
     }
 
-    // Check card properties
-    console.log(
-      "Is Wild?",
-      card.isWild,
-      "Assigned Letter?",
-      card.assignedLetter,
-    );
+    // 🛡️ BULLETPROOF CHECK: Catches isWild, "WILD" letter, ID containing WILD, or photo path containing wild
+    const isWildCard =
+      card.isWild === true ||
+      card.letter === "WILD" ||
+      card.id?.toUpperCase().includes("WILD") ||
+      card.photoUrl?.toLowerCase().includes("wild");
 
-    if (card.isWild && !card.assignedLetter) {
-      console.log("🌟 Triggering setPendingWildCard!");
-      setPendingWildCard(card);
+    console.log("Is Wild Detected?", isWildCard);
+
+    if (isWildCard && !card.assignedLetter) {
+      console.log("🌟 Triggering Wild Card Modal!");
+
+      // Force normalize the card object so it has everything it needs
+      const normalizedWildCard: Card = {
+        ...card,
+        isWild: true,
+        letter: "WILD" as any,
+      };
+
+      setPendingWildCard(normalizedWildCard);
       return;
     }
 
