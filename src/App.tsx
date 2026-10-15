@@ -191,9 +191,15 @@ export function App() {
 
     // Only return to hand if it came from the player's hand, NOT the board word
     if (!isOriginalBoardCard) {
-      // If it's a wild card, reset assignedLetter back to undefined before returning to hand
-      const cardToReturn = card.isWild
-        ? { ...card, assignedLetter: undefined }
+      // 🛡️ Bulletproof wild reset when unstaging back to hand
+      const isWildCard = card.isWild || card.letter === "WILD";
+      const cardToReturn = isWildCard
+        ? {
+            ...card,
+            assignedLetter: undefined,
+            isWild: true,
+            letter: "WILD" as any,
+          }
         : card;
 
       setGameState((prev) => ({
@@ -211,14 +217,16 @@ export function App() {
     handCard: Card,
     playerId: PlayerId,
   ) => {
-    if (!targetWildCard.isWild || !targetWildCard.assignedLetter) {
+    const isWild = targetWildCard.isWild || targetWildCard.letter === "WILD";
+    const assigned = (targetWildCard.assignedLetter || "").toUpperCase();
+    if (!isWild || !assigned) {
       console.warn("Blocked: Target card is not an assigned Wild Card!");
       return;
     }
 
-    if (handCard.letter !== targetWildCard.assignedLetter) {
+    if ((handCard.letter || "").toUpperCase() !== assigned) {
       console.warn(
-        `Blocked: Hand card '${handCard.letter}' does not match Wild Card assigned letter '${targetWildCard.assignedLetter}'!`,
+        `Blocked: Hand card '${handCard.letter}' does not match Wild Card assigned letter '${assigned}'!`,
       );
       return;
     }
@@ -227,6 +235,8 @@ export function App() {
     const reclaimedWildCard: Card = {
       ...targetWildCard,
       assignedLetter: undefined,
+      isWild: true,
+      letter: "WILD" as any,
     };
 
     // 1. Update Staged Cards (if target is currently in staging workspace)
@@ -290,9 +300,12 @@ export function App() {
       return;
     }
 
-    if (handCard.letter !== targetWildCard.assignedLetter) {
+    const assigned = (targetWildCard.assignedLetter || "").toUpperCase();
+    const handLetter = (handCard.letter || "").toUpperCase();
+
+    if (handLetter !== assigned) {
       console.warn(
-        `Blocked: You must use a '${targetWildCard.assignedLetter}' card to swap this Wild Card!`,
+        `Blocked: You must use a '${assigned}' card to swap this Wild Card!`,
       );
       return;
     }
@@ -301,23 +314,30 @@ export function App() {
   };
 
   const handleClearWorkspace = () => {
+    // 🛡️ Bulletproof Wild Card reset helper
+    const resetWildCard = (card: Card): Card =>
+      card.isWild || card.letter === "WILD"
+        ? { ...card, assignedLetter: undefined, isWild: true }
+        : card;
+
     if (targetBoardWord) {
       const originalCardIds = new Set(targetBoardWord.cards.map((c) => c.id));
-      const handCardsInWorkspace = stagedCards.filter(
-        (c) => !originalCardIds.has(c.id),
-      );
 
-      // Return ONLY hand cards back to hand
+      const handCardsToReturn = stagedCards
+        .filter((c) => !originalCardIds.has(c.id))
+        .map(resetWildCard);
+
       setGameState((prev) => ({
         ...prev,
-        humanHand: [...prev.humanHand, ...handCardsInWorkspace],
+        humanHand: [...prev.humanHand, ...handCardsToReturn],
       }));
       setTargetBoardWord(null);
     } else {
-      // Normal workspace clear
+      const handCardsToReturn = stagedCards.map(resetWildCard);
+
       setGameState((prev) => ({
         ...prev,
-        humanHand: [...prev.humanHand, ...stagedCards],
+        humanHand: [...prev.humanHand, ...handCardsToReturn],
       }));
     }
 
@@ -348,7 +368,7 @@ export function App() {
     // 1. 🛡️ BUILD FULL PROPOSED WORD STRING (Resolving Wild Cards Safely)
     const proposedWordText = stagedCards
       .map((c) => {
-        if (c.isWild) {
+        if (c.isWild || c.letter === "WILD") {
           return (c.assignedLetter || "").toUpperCase();
         }
         return (c.letter || "").toUpperCase();
@@ -357,7 +377,7 @@ export function App() {
 
     // 2. 🛡️ MANDATORY DICTIONARY & WILD ASSIGNMENT VALIDATION GATE
     const containsUnassignedWild = stagedCards.some(
-      (c) => c.isWild && !c.assignedLetter,
+      (c) => (c.isWild || c.letter === "WILD") && !c.assignedLetter,
     );
 
     if (containsUnassignedWild) {

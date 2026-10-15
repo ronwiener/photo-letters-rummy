@@ -33,24 +33,31 @@ const BLOCKED_WORDS = new Set<string>([
 ]);
 
 export function isValidWord(word: string): boolean {
+  if (!word) return false;
+
   const lowerWord = word.trim().toLowerCase();
 
   // 1. Minimum word length rule (Rummy standard: at least 3 letters)
   if (lowerWord.length < 3) return false;
 
-  // 2. Reject blocked words / non-word acronyms
+  // 2. Reject if string contains non-alphabetic characters (e.g., numbers or unassigned wild cards)
+  if (!/^[a-z]+$/.test(lowerWord)) {
+    return false;
+  }
+
+  // 3. Reject blocked words / non-word acronyms
   if (BLOCKED_WORDS.has(lowerWord) || BLOCKED_ACRONYMS?.has(lowerWord)) {
     return false;
   }
 
-  // 3. Reject consonant clusters without a vowel or 'y' (e.g., "rwd", "tsi", "bdf")
+  // 4. Reject consonant clusters without a vowel or 'y' (e.g., "rwd", "tsi", "bdf")
   const hasVowel = /[aeiouy]/.test(lowerWord);
   if (!hasVowel) return false;
 
-  // 4. Reject words with 4 or more consecutive consonants (e.g., "zzzg", "bcdf")
+  // 5. Reject words with 4 or more consecutive consonants (e.g., "zzzg", "bcdf")
   const hasExcessiveConsonants = /[^aeiouy]{4,}/.test(lowerWord);
   if (hasExcessiveConsonants) return false;
 
-  // 5. Check dictionary lookup
-  return dictionary[lowerWord] === 1;
+  // 6. Check dictionary lookup (Ensure dictionary is loaded & lowerWord exists)
+  return Boolean(dictionary && dictionary[lowerWord] === 1);
 }
