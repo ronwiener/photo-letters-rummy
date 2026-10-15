@@ -19,6 +19,18 @@ import { WildCardPickerModal } from "./components/WildCardPickerModal";
 
 export type TurnPhase = "draw" | "play" | "discard";
 
+// 🛡️ CENTRALIZED HELPER: Placed safely outside the component
+const getConstructedWord = (cards: Card[]): string => {
+  return cards
+    .map((c) => {
+      if (c.isWild || c.letter === "WILD") {
+        return (c.assignedLetter || "").toUpperCase();
+      }
+      return (c.letter || "").toUpperCase();
+    })
+    .join("");
+};
+
 export function App() {
   const [gameState, setGameState] = useState<GameState>(() => {
     const deal = dealNewGame();
@@ -114,6 +126,8 @@ export function App() {
   // CARD STAGING / UNSTAGING IN WORKSPACE & WILD CARD HANDLING
   // -------------------------------------------------------------
   const handleStageCard = (card: Card) => {
+    if (pendingWildCard) return;
+
     console.log("➡️ handleStageCard triggered with card:", card);
 
     if (gameState.currentTurn !== "human") {
@@ -147,13 +161,27 @@ export function App() {
       setPendingWildCard(normalizedWildCard);
       return;
     }
-
+    console.log("📥 Staging card into workspace:", card);
     // Standard staging flow
     setGameState((prev) => ({
       ...prev,
       humanHand: prev.humanHand.filter((c) => c.id !== card.id),
     }));
-    setStagedCards((prev) => [...prev, card]);
+    setStagedCards((prev) => {
+      const nextStaged = [...prev, card];
+
+      // 🔍 LOG THE EXACT WORD STRING PRODUCED BY STAGED CARDS USING CENTRAL HELPER
+      const constructedWord = getConstructedWord(nextStaged);
+
+      console.log("🧪 Staged Cards:", nextStaged);
+      console.log("🧪 Constructed Word String:", `"${constructedWord}"`);
+      console.log(
+        "🧪 Dictionary Validation Result:",
+        isValidWord(constructedWord),
+      );
+
+      return nextStaged;
+    });
   };
 
   // Called when player picks a letter in WildCardPickerModal
@@ -164,6 +192,7 @@ export function App() {
       ...pendingWildCard,
       assignedLetter: selectedLetter.toUpperCase(),
     };
+    console.log("🎯 Wild Card Assigned:", configuredWildCard);
 
     // Remove from hand and add configured wild card to workspace
     setGameState((prev) => ({
@@ -365,17 +394,10 @@ export function App() {
   const handleSubmitWord = () => {
     if (gameState.currentTurn !== "human" || turnPhase !== "play") return;
 
-    // 1. 🛡️ BUILD FULL PROPOSED WORD STRING (Resolving Wild Cards Safely)
-    const proposedWordText = stagedCards
-      .map((c) => {
-        if (c.isWild || c.letter === "WILD") {
-          return (c.assignedLetter || "").toUpperCase();
-        }
-        return (c.letter || "").toUpperCase();
-      })
-      .join("");
+    // 🛡️ 1. BUILD PROPOSED WORD STRING USING CENTRAL HELPER
+    const proposedWordText = getConstructedWord(stagedCards);
 
-    // 2. 🛡️ MANDATORY DICTIONARY & WILD ASSIGNMENT VALIDATION GATE
+    // 🛡️ 2. CHECK FOR UNASSIGNED WILD CARDS
     const containsUnassignedWild = stagedCards.some(
       (c) => (c.isWild || c.letter === "WILD") && !c.assignedLetter,
     );
@@ -637,6 +659,28 @@ export function App() {
       setIsAiThinking(true);
       setAiStatusText(`${gameState.botName} is checking hand cards...`);
 
+      // 🛡️ SAFETY GUARD: Ensure any Wild Cards played by Monica have assignedLetter resolved
+      const sanitizeAiCards = (
+        cards: Card[],
+        wordText: string,
+        startIndex: number = 0,
+      ): Card[] => {
+        return cards.map((card, index) => {
+          if (card.isWild || card.letter === "WILD") {
+            const targetIndex = startIndex + index;
+            const inferredLetter =
+              card.assignedLetter || (wordText ? wordText[targetIndex] : "A");
+            return {
+              ...card,
+              isWild: true,
+              letter: "WILD" as any,
+              assignedLetter: (inferredLetter || "A").toUpperCase(),
+            };
+          }
+          return card;
+        });
+      };
+
       // Step 1: Draw Phase Delay
       const timer1 = setTimeout(() => {
         let compHand = [...gameState.computerHand];
@@ -758,6 +802,13 @@ export function App() {
               }
               compRoundScore += pointsAwarded;
 
+              // Sanitize any Wild Cards in the stolen hand cards
+              const sanitizedStealCards = sanitizeAiCards(
+                stealCandidate.cardsFromHand,
+                stealCandidate.newWordText,
+                targetWord.cards.length,
+              );
+
               // Update Board
               newBoard = newBoard.map((w) => {
                 if (w.id === targetWord.id) {
@@ -765,7 +816,7 @@ export function App() {
                   return {
                     ...w,
                     word: stealCandidate.newWordText,
-                    cards: [...w.cards, ...stealCandidate.cardsFromHand],
+                    cards: [...w.cards, ...sanitizedStealCards],
                     playedBy: "computer" as const, // 👑 Ownership transferred to Monica
                     scoreAwarded: pointsAwarded,
                     history: [
@@ -821,10 +872,16 @@ export function App() {
                   // New Word: Award full score
                   compRoundScore += playResult.score;
 
+                  const sanitizedNewCards = sanitizeAiCards(
+                    playResult.cardsUsed,
+                    playResult.wordText,
+                    0,
+                  );
+
                   newBoard.push({
                     id: `word-ai-${Date.now()}-${Math.random()}`,
                     word: playResult.wordText,
-                    cards: playResult.cardsUsed,
+                    cards: sanitizedNewCards,
                     playedBy: "computer",
                     scoreAwarded: playResult.score,
                     history: [
@@ -846,6 +903,9 @@ export function App() {
                   const previousWordScore = existingWordObj
                     ? existingWordObj.scoreAwarded || 0
                     : 0;
+                  const existingCardsLength = existingWordObj
+                    ? existingWordObj.cards.length
+                    : 0;
 
                   // 🎯 Extension Fix: Calculate points earned derived from extension vs full new word
                   const extensionPointsGained = Math.max(
@@ -859,6 +919,12 @@ export function App() {
                       ? extensionPointsGained
                       : playResult.score;
 
+                  const sanitizedExtensionCards = sanitizeAiCards(
+                    playResult.cardsUsed,
+                    playResult.wordText,
+                    existingCardsLength,
+                  );
+
                   newBoard = newBoard.map((w) => {
                     if (w.id === playResult.targetWordId) {
                       const existingHistory = w.history || [];
@@ -870,7 +936,7 @@ export function App() {
                       return {
                         ...w,
                         word: playResult.wordText,
-                        cards: [...w.cards, ...playResult.cardsUsed],
+                        cards: [...w.cards, ...sanitizedExtensionCards],
                         scoreAwarded: updatedScore,
                         history: [
                           ...existingHistory,

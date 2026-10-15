@@ -43,7 +43,7 @@ export const NEON_ASSET_REGISTRY: Record<AssetKey, string[]> = {
 // Populate the registry with bundled asset URLs
 Object.entries(imageModules).forEach(([path, url]) => {
   // Option 0: Check for wild card subfolder or wild image name, e.g. "/photo-letters/wild/" or "wild.jpeg"
-  if (/\/photo-letters\/wild/i.test(path)) {
+  if (/\/photo-letters\/.*wild/i.test(path)) {
     NEON_ASSET_REGISTRY.WILD.push(url);
     return;
   }
