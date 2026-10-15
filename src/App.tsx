@@ -390,7 +390,7 @@ export function App() {
     setStagedCards([...playedWord.cards]);
   };
 
-  // Updated handleSubmitWord supporting New Words, Extension, Rearranging, and Word Stealing
+  // Updated handleSubmitWord supporting New Words, Extension, Rearranging, Word Stealing, and 0-card Going Out
   const handleSubmitWord = () => {
     if (gameState.currentTurn !== "human" || turnPhase !== "play") return;
 
@@ -416,6 +416,8 @@ export function App() {
       alert(`"${proposedWordText}" is not a valid dictionary word!`);
       return;
     }
+
+    let calculatedNextHand: Card[] = [];
 
     if (targetBoardWord) {
       // --- RULES 6 & 7: EXTENSION, REARRANGING & STEALING VALIDATION ---
@@ -497,6 +499,8 @@ export function App() {
           !newCardsFromHand.some((played) => played.id === handCard.id),
       );
 
+      calculatedNextHand = updatedHand;
+
       // 🎯 Calculate score adjustments (deduct old word score from opponent if stolen)
       const previousOwner = targetBoardWord.playedBy;
       const previousScore = targetBoardWord.scoreAwarded || 0;
@@ -548,6 +552,8 @@ export function App() {
         (handCard) => !stagedCards.some((staged) => staged.id === handCard.id),
       );
 
+      calculatedNextHand = updatedHand;
+
       setGameState((prev) => ({
         ...prev,
         wordBoard: [...prev.wordBoard, newPlayedWord],
@@ -559,14 +565,21 @@ export function App() {
       }));
     }
 
-    // Cleanup workspace and remain in "play" phase so multiple plays are possible before discarding
+    // Cleanup workspace and set play state
     setStagedCards([]);
     setTargetBoardWord(null);
-    setHasPlayedWordThisTurn(true);
 
-    // Note: Check if player went out completely
-    if (gameState.humanHand.length === 0) {
-      // Handle going out without needing to discard!
+    // 🏆 0-CARD GOING OUT GUARD: If player cleared their entire hand, end round immediately!
+    if (calculatedNextHand.length === 0) {
+      console.log("🎉 Player went out with 0 cards remaining!");
+      setAiStatusText("🎉 You went out! Round ending...");
+
+      setTimeout(() => {
+        handleEndRound("went_out");
+      }, 1200);
+    } else {
+      // Remain in "play" phase so multiple plays are possible before discarding
+      setHasPlayedWordThisTurn(true);
     }
   };
 
