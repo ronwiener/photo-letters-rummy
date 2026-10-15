@@ -88,7 +88,7 @@ export function App() {
       // 🛡️ STALEMATE TRIGGER 1: Draw pile and recycle pool are completely empty!
       if (res.drawn.length === 0) {
         // If consecutive passes have occurred or no cards remain to be drawn
-        if (gameState.consecutivePasses >= 1) {
+        if (gameState.consecutivePasses >= 8) {
           handleEndRound("stalemate");
           return;
         }
@@ -458,10 +458,10 @@ export function App() {
         return;
       }
 
-      // Rule 8 Extension/Rearrangement Scoring
+      // Rule 8 Extension/Rearrangement Scoring (Passes full card arrays for Option A math)
       const pointsAwarded = calculateExtensionPoints(
-        targetBoardWord.cards.length,
-        stagedCards.length,
+        targetBoardWord.cards,
+        stagedCards,
       );
 
       const existingHistory = targetBoardWord.history || [];
@@ -529,7 +529,8 @@ export function App() {
       });
     } else {
       // --- STANDARD NEW WORD PLAY ---
-      const pointsAwarded = calculateWordPoints(stagedCards.length);
+      // 🎯 Calculates score using stagedCards array (Letter Values + Length Bonus)
+      const pointsAwarded = calculateWordPoints(stagedCards);
 
       const newPlayedWord: PlayedWord = {
         id: `word-${Date.now()}`,
@@ -625,7 +626,7 @@ export function App() {
       ? 0
       : gameState.consecutivePasses + 1;
 
-    if (isPileEmpty && nextConsecutivePasses >= 2) {
+    if (isPileEmpty && nextConsecutivePasses >= 8) {
       handleEndRound("stalemate");
       return;
     }
@@ -653,7 +654,7 @@ export function App() {
 
     if (
       gameState.consecutivePasses >= 4 ||
-      (isDeckEmpty && gameState.consecutivePasses >= 2)
+      (isDeckEmpty && gameState.consecutivePasses >= 8)
     ) {
       handleEndRound("stalemate");
     }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Card } from "../types/game";
 import { CardComponent } from "./CardComponent";
-import { getWordScore } from "../constants/gameConstants";
+import { calculateWordPoints } from "../utils/scoreUtils";
 import { isValidWord as checkDictionaryWord } from "../utils/wordChecker";
 
 interface WorkspaceProps {
@@ -24,8 +24,9 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
+  // 🎯 Calculate potential score using individual card letter values + length bonus
   const potentialScore =
-    stagedCards.length >= 3 ? getWordScore(stagedCards.length) : 0;
+    stagedCards.length >= 3 ? calculateWordPoints(stagedCards) : 0;
 
   // --- Drag & Drop Handlers ---
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -74,12 +75,8 @@ export const Workspace: React.FC<WorkspaceProps> = ({
     .join("")
     .toUpperCase();
 
-  // (Make sure `isValidWord` function is imported at the top of your file from your dictionary utility)
   const isValidWord =
     stagedWordText.length >= 3 && checkDictionaryWord(stagedWordText);
-  // Note: If your dictionary function is directly named `isValidWord`, import it as `checkDictionary`
-  // (e.g., `import { isValidWord as checkDictionary } from '../utils/dictionary'`)
-  // and use `checkDictionary(stagedWordText)` here so you can name this boolean `isValidWord`.
 
   return (
     <div className="flex flex-col gap-1.5 p-2 bg-neutral-900/95 rounded-xl border border-neutral-800 shadow-2xl">

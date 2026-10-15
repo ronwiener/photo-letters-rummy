@@ -1,6 +1,7 @@
 // src/components/CardComponent.tsx
 
 import type { Card } from "../types/game";
+import { getCardPointValue } from "../utils/scoreUtils";
 
 interface CardComponentProps {
   card: Card;
@@ -26,6 +27,9 @@ export const CardComponent: React.FC<CardComponentProps> = ({
     e.dataTransfer.effectAllowed = "move";
   };
 
+  const pointValue = getCardPointValue(card);
+  const isWild = card.isWild || card.letter === "WILD";
+
   return (
     <div
       draggable
@@ -49,6 +53,20 @@ export const CardComponent: React.FC<CardComponentProps> = ({
           <span className="text-xl font-black text-cyan-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             {card.assignedLetter}
           </span>
+        </div>
+      )}
+
+      {/* 🌟 FLUSH BOTTOM-RIGHT CORNER BADGE */}
+      {!isWild && (
+        <div className="absolute bottom-0 right-0 z-10 pointer-events-none flex items-center justify-center w-4 h-4 bg-black/15 backdrop-blur-[1px] text-amber-300 text-[10px] font-black leading-none rounded-tl-full rounded-br-xl border-t border-l border-amber-300/30 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.95)]">
+          {pointValue}
+        </div>
+      )}
+
+      {/* 🌟 WILD CARD STAR BADGE */}
+      {isWild && (
+        <div className="absolute bottom-0 right-0 z-10 pointer-events-none flex items-center justify-center w-4 h-4 bg-purple-900/20 backdrop-blur-[1px] text-pink-300 text-[9px] font-black leading-none rounded-tl-full rounded-br-xl border-t border-l border-pink-400/30 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.95)]">
+          ★
         </div>
       )}
     </div>
