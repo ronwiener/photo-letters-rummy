@@ -96,9 +96,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   1. Draw Phase
                 </h3>
                 <p>
-                  Start your turn by tapping either the{" "}
-                  <strong>Draw Pile</strong> (face-down) or the{" "}
-                  <strong>Discard Pile</strong> (top face-up card).
+                  Start your turn by drawing 1 card from either the face-down{" "}
+                  <strong>Draw Pile</strong> or the top of the{" "}
+                  <strong>Discard Pile</strong>.
                 </p>
               </div>
 
@@ -107,9 +107,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   2. Word Play Phase
                 </h3>
                 <p>
-                  Form a new valid English word on the board or extend an
-                  existing word using hand cards. You can also skip this step by
-                  tapping <strong>Skip Word Play</strong>.
+                  Form a new word (3+ letters) or extend an existing word on the
+                  board using cards from your hand. You can also skip word play
+                  if you have no valid moves.
                 </p>
               </div>
 
@@ -119,10 +119,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   ⚡ Special Action: Word Stealing
                 </h3>
                 <p className="text-amber-100 text-xs leading-relaxed">
-                  You can steal an opponent’s word from the board by adding{" "}
+                  Steal an opponent’s word by adding{" "}
                   <strong>2 or more cards</strong> from your hand to form a new
-                  valid word. When stolen, full ownership and point value
-                  transfer to you!
+                  valid word. Full ownership and point value transfer to you!
                 </p>
               </div>
 
@@ -135,16 +134,6 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   onto the Discard Pile.
                 </p>
               </div>
-
-              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-emerald-400 uppercase text-[11px] mb-1">
-                  4. Hand Replenish
-                </h3>
-                <p>
-                  If you played cards onto the board, you automatically draw
-                  back up to keep your hand filled for the next turn.
-                </p>
-              </div>
             </div>
           )}
 
@@ -155,10 +144,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   ★ Playing a Wild Card
                 </h3>
                 <p className="text-neutral-200">
-                  There are <strong>2 Wild Cards</strong> in the deck. When you
-                  stage a Wild Card onto the workspace, a letter picker will
-                  appear allowing you to assign it any letter from{" "}
-                  <strong>A to Z</strong>.
+                  When staging a Wild Card, a picker allows you to assign it any
+                  letter from <strong>A to Z</strong>.
                 </p>
               </div>
 
@@ -167,27 +154,24 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   ↺ Wild Card Swapping
                 </h3>
                 <p className="text-neutral-300 mb-2">
-                  If a Wild Card is sitting on the board assigned to a letter
-                  (e.g. <strong>"E"</strong>), <strong>any player</strong>{" "}
-                  holding a physical card of that exact letter can swap it
-                  during their turn!
+                  If a Wild Card on the board is acting as a letter (e.g.{" "}
+                  <strong>"E"</strong>), any player holding a physical card of
+                  that exact letter can swap it during their turn!
                 </p>
                 <p className="text-neutral-400 text-[11px]">
-                  Simply tap the Wild Card on the board while holding the
-                  matching letter card. Your physical card replaces the Wild
-                  Card on the board, and the Wild Card returns to your hand
-                  unassigned, ready to be reused as any letter!
+                  Your natural card replaces the Wild Card on the board, and the
+                  Wild Card returns to your hand unassigned!
                 </p>
               </div>
 
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-rose-400 uppercase text-[11px] mb-1">
-                  Wild Card Points
+                  Wild Card Scoring & Penalties
                 </h3>
                 <p className="text-neutral-300">
-                  Wild Cards count as <strong>0 points</strong> toward word
-                  scoring but carry a 30 point penalty when left in hand at
-                  round end.
+                  Wild Cards add <strong>0 base points</strong> to played words,
+                  and carry a heavy <strong>-30 point penalty</strong> if left
+                  in your hand at round end.
                 </p>
               </div>
             </div>
@@ -195,58 +179,111 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
           {activeTab === "scoring" && (
             <div className="flex flex-col gap-3">
+              {/* Option A Base Letter Scoring */}
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-2">
-                  Word Length Points
+                <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1">
+                  1. Base Letter Values
                 </h3>
-                <div className="grid grid-cols-2 gap-2 text-[11px]">
-                  <div className="flex justify-between bg-neutral-900 p-2 rounded border border-neutral-800">
-                    <span>3 Letters</span>
-                    <span className="font-bold text-cyan-400">+10 pts</span>
+                <p className="text-neutral-400 text-[11px] mb-2">
+                  Each card displays its point value in the bottom-right corner:
+                </p>
+                <div className="grid grid-cols-2 gap-1.5 text-[10px]">
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">
+                      A, E, I, O, U, L, N, S, T, R
+                    </span>
+                    <span className="font-bold text-amber-300">1 pt</span>
                   </div>
-                  <div className="flex justify-between bg-neutral-900 p-2 rounded border border-neutral-800">
-                    <span>4 Letters</span>
-                    <span className="font-bold text-cyan-400">+20 pts</span>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">D, G</span>
+                    <span className="font-bold text-amber-300">2 pts</span>
                   </div>
-                  <div className="flex justify-between bg-neutral-900 p-2 rounded border border-neutral-800">
-                    <span>5 Letters</span>
-                    <span className="font-bold text-cyan-400">+35 pts</span>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">B, C, M, P</span>
+                    <span className="font-bold text-amber-300">3 pts</span>
                   </div>
-                  <div className="flex justify-between bg-neutral-900 p-2 rounded border border-neutral-800">
-                    <span>6+ Letters</span>
-                    <span className="font-bold text-cyan-400">+50+ pts</span>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">F, H, V, W, Y</span>
+                    <span className="font-bold text-amber-300">4 pts</span>
+                  </div>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">K</span>
+                    <span className="font-bold text-amber-300">5 pts</span>
+                  </div>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between">
+                    <span className="text-neutral-300">J, X</span>
+                    <span className="font-bold text-amber-300">8 pts</span>
+                  </div>
+                  <div className="bg-neutral-900 p-1.5 rounded border border-neutral-800 flex justify-between col-span-2">
+                    <span className="text-neutral-300">Q, Z</span>
+                    <span className="font-bold text-amber-300">10 pts</span>
                   </div>
                 </div>
               </div>
 
+              {/* Option A Tier-Based Length Bonus */}
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-rose-400 uppercase text-[11px] mb-2">
-                  Round End Hand Penalties
+                <h3 className="font-extrabold text-cyan-400 uppercase text-[11px] mb-1">
+                  2. Word Length Bonuses
                 </h3>
-                <p className="mb-2 text-neutral-400">
-                  At round end, remaining hand cards deduct points based on
+                <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>3 Letters</span>
+                    <span className="font-bold text-cyan-400">+2 pts</span>
+                  </div>
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>4 Letters</span>
+                    <span className="font-bold text-cyan-400">+5 pts</span>
+                  </div>
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>5 Letters</span>
+                    <span className="font-bold text-cyan-400">+10 pts</span>
+                  </div>
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>6 Letters</span>
+                    <span className="font-bold text-cyan-400">+16 pts</span>
+                  </div>
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>7 Letters</span>
+                    <span className="font-bold text-cyan-400">+25 pts</span>
+                  </div>
+                  <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>8+ Letters</span>
+                    <span className="font-bold text-cyan-400">+10 / extra</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Updated Hand Penalties & Last-Card Tax */}
+              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
+                <h3 className="font-extrabold text-rose-400 uppercase text-[11px] mb-1">
+                  3. Round End Hand Penalties
+                </h3>
+                <p className="mb-2 text-neutral-400 text-[11px]">
+                  At round end, unplayed hand cards deduct points based on
                   letter rarity:
                 </p>
-                <ul className="list-disc list-inside space-y-1 text-neutral-300">
+                <ul className="list-disc list-inside space-y-1 text-neutral-300 text-[11px]">
                   <li>
-                    <strong className="text-white">
-                      Common (A, E, I, O, U, T, N, S):
-                    </strong>{" "}
-                    -5 pts each
+                    <strong className="text-white">Standard:</strong> -5 pts
+                    each
                   </li>
                   <li>
-                    <strong className="text-white">
-                      Medium (B, C, D, F, G, H, L, M, P, R):
-                    </strong>{" "}
-                    -10 pts each
+                    <strong className="text-white">Medium:</strong> -10 pts each
                   </li>
                   <li>
-                    <strong className="text-white">
-                      Rare (J, K, Q, V, W, X, Y, Z):
-                    </strong>{" "}
-                    -20 pts each
+                    <strong className="text-white">High Value:</strong> -20 pts
+                    each
+                  </li>
+                  <li>
+                    <strong className="text-white">Wild Card:</strong> -30 pts
                   </li>
                 </ul>
+                <div className="mt-2 bg-rose-950/40 p-2 rounded border border-rose-800/60 text-[11px] text-rose-200">
+                  <strong>🚨 Last-Card Tax:</strong> Players ending the round
+                  with 1 or 2 remaining cards incur an extra{" "}
+                  <strong>-2 point penalty</strong>!
+                </div>
               </div>
             </div>
           )}
@@ -259,19 +296,19 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </h3>
                 <p>
                   Select any word on the board to modify or extend it with your
-                  hand cards. You can add prefix letters, suffix letters, or
-                  insert cards to transform the word into a valid new word!
+                  hand cards. You can add prefixes, suffixes, or rearrange
+                  letters to transform it into a valid new word!
                 </p>
               </div>
 
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1">
-                  Extension Point Delta
+                  Extension Scoring
                 </h3>
                 <p>
-                  When you extend a word, you earn points equal to the{" "}
-                  <strong>difference in score</strong> between the new expanded
-                  word and the previous word score.
+                  When extending or modifying a word, you earn points equal to
+                  the <strong>difference in score</strong> between the new
+                  expanded word total and the previous word value.
                 </p>
               </div>
             </div>
@@ -284,10 +321,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   First to 1,000 Points
                 </h3>
                 <p>
-                  Matches consist of multiple rounds. Net points earned each
-                  round are added to your cumulative match total. The first
-                  player to reach <strong>1,000 match points</strong> wins the
-                  overall match!
+                  Matches span multiple rounds. Net points earned each round are
+                  added to your cumulative total. The first player to reach{" "}
+                  <strong>1,000 match points</strong> wins!
                 </p>
               </div>
 
@@ -297,13 +333,13 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </h3>
                 <ul className="list-disc list-inside space-y-1 text-neutral-300">
                   <li>
-                    <strong>Going Out:</strong> A player plays or discards their
-                    final hand card.
+                    <strong>Going Out:</strong> A player plays down to 0
+                    remaining hand cards.
                   </li>
                   <li>
-                    <strong>Stalemate:</strong> Draw and discard piles are
-                    depleted, or 4 consecutive passes occur with no playable
-                    moves.
+                    <strong>Stalemate:</strong> Triggers after{" "}
+                    <strong>8 consecutive passes total</strong> (4 turns each)
+                    when players are stuck.
                   </li>
                 </ul>
               </div>
