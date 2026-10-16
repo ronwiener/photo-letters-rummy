@@ -318,7 +318,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div className="flex flex-col gap-3">
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1">
-                  First to 1,000 Points
+                  First to 500 Points
                 </h3>
                 <p>
                   Matches span multiple rounds. Net points earned each round are

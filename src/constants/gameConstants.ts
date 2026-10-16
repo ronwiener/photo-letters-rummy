@@ -63,21 +63,23 @@ export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
   WILD: 2,
 };
 
+// Option A: Tier-based Length Bonuses
 export const WORD_LENGTH_SCORES: Record<number, number> = {
-  3: 30,
-  4: 50,
-  5: 80,
-  6: 120,
-  7: 170,
-  8: 220,
-  9: 270,
-  10: 320,
+  3: 2,
+  4: 5,
+  5: 10,
+  6: 16,
+  7: 25,
+  8: 35,
+  9: 45,
+  10: 55,
 };
 
 export function getWordScore(length: number): number {
-  if (length <= 10) {
+  if (length < 3) return 0;
+  if (length <= 8) {
     return WORD_LENGTH_SCORES[length] || 0;
   }
-  // For words longer than 10 letters: base 320 + 50 per extra letter
-  return 320 + (length - 10) * 50;
+  // For words longer than 8 letters: base 35 (8 letters) + 10 per extra letter
+  return 35 + (length - 8) * 10;
 }

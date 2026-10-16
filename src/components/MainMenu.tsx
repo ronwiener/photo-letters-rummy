@@ -31,7 +31,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </h1>
         <h2 className="text-base text-neutral-400 mt-2 max-w-xs leading-relaxed">
           Form words, extend board plays, and race against {botName} to reach
-          1,000 points!
+          500 points!
         </h2>
       </div>
 
@@ -79,7 +79,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       {/* Footer Info */}
       <div className="text-[10px] text-neutral-500 text-center mb-4 z-10 flex flex-col gap-1">
         <span>v1.0.0 • Offline Ready</span>
-        <span>Goal: 1,000 Points Match</span>
+        <span>Goal: 500 Points Match</span>
       </div>
     </div>
   );

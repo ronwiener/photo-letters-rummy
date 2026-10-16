@@ -1065,9 +1065,9 @@ export function App() {
         computer: prev.matchScores.computer + netCompRoundScore,
       };
 
-      // 4. Check Match Winner (1,000 pts)
+      // 4. Check Match Winner (500 pts)
       const isMatchOver =
-        newMatchScores.human >= 1000 || newMatchScores.computer >= 1000;
+        newMatchScores.human >= 500 || newMatchScores.computer >= 500;
       let matchWinner: "human" | "computer" | "tie" | null = null;
 
       if (isMatchOver) {
@@ -1181,7 +1181,7 @@ export function App() {
               R{gameState.roundNumber}
             </span>
             <span className="text-[10px] font-bold text-neutral-400 uppercase">
-              Goal: 1,000
+              Goal: 500
             </span>
           </div>
 

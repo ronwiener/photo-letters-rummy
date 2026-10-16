@@ -105,18 +105,16 @@ export function calculateExtensionPoints(
  * Letter penalties scale dynamically based on individual letter point values.
  */
 export function calculateHandPenalty(
-  hand: { letter: string; isWild?: boolean }[],
+  hand: { letter: string; isWild?: boolean; assignedLetter?: string }[],
 ): number {
+  if (hand.length === 0) return 0;
+
+  // Deduct exact point value for each card left in hand (+ 30 pts for wild cards)
   return hand.reduce((totalPenalty, card) => {
-    // 🌟 1. Wild Card Penalty (-30 pts)
     if (card.isWild || card.letter === "WILD") {
       return totalPenalty + 30;
     }
 
-    // 2. Letter Penalties derived from letter point values
-    const pointVal = getCardPointValue(card);
-    if (pointVal <= 1) return totalPenalty + 5; // Standard (1 pt) -> -5 penalty
-    if (pointVal <= 4) return totalPenalty + 10; // Moderate (2-4 pts) -> -10 penalty
-    return totalPenalty + 20; // High/Rare (5-10 pts) -> -20 penalty
+    return totalPenalty + getCardPointValue(card);
   }, 0);
 }
