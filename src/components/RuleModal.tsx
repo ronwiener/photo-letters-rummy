@@ -134,29 +134,49 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           )}
 
           {activeTab === "stealing" && (
-            <div className="flex flex-col gap-3">
-              <div className="bg-amber-950/40 p-3 rounded-xl border border-amber-800/60">
+            <div className="flex flex-col gap-2.5">
+              {/* Overview Banner */}
+              <div className="bg-amber-950/40 p-2.5 rounded-xl border border-amber-800/60">
                 <h3 className="font-extrabold text-amber-300 uppercase text-[11px] mb-1 flex items-center gap-1">
                   ⚡ Word Stealing Mechanics
                 </h3>
                 <p className="text-amber-100 text-xs leading-relaxed">
-                  Starting on Turn 2, anytime you add{" "}
-                  <strong>1 or more cards</strong> from your hand to an
-                  opponent’s word to make a valid new word, it counts as a{" "}
-                  <strong>Steal</strong>!
+                  Starting on Turn 2, you can take any word from the board, add
+                  cards from your hand, and rearrange all letters into a brand
+                  new valid word to execute a <strong>Steal</strong>!
                 </p>
               </div>
 
-              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-cyan-400 uppercase text-[11px] mb-1">
-                  Double Points Awarded
-                </h3>
-                <p className="text-neutral-300 leading-relaxed">
-                  Executing a steal transfers full ownership of the word to you
-                  and awards <strong>Double Points (2x)</strong> for the new
-                  word value! Your opponent loses the original points earned
-                  from that word.
-                </p>
+              {/* 1-Letter vs 2+ Letter Scoring Breakdown */}
+              <div className="bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 space-y-2">
+                <div>
+                  <h4 className="font-extrabold text-cyan-400 uppercase text-[10px] tracking-wider mb-0.5">
+                    1 Letter Added = Base Word Score
+                  </h4>
+                  <p className="text-neutral-300 text-xs leading-relaxed">
+                    Adding <strong>1 card</strong> from your hand earns you the
+                    standard point value of the newly formed word.
+                  </p>
+                </div>
+
+                <div className="pt-1.5 border-t border-neutral-800/80">
+                  <h4 className="font-extrabold text-pink-400 uppercase text-[10px] tracking-wider mb-0.5">
+                    2+ Letters Added = Double Points (2x)
+                  </h4>
+                  <p className="text-neutral-300 text-xs leading-relaxed">
+                    Adding <strong>2 or more cards</strong> from your hand
+                    awards <strong>2x Double Points</strong> for the complete
+                    new word value!
+                  </p>
+                </div>
+
+                <div className="pt-1.5 border-t border-neutral-800/80">
+                  <p className="text-amber-200/90 text-[11px] font-medium leading-tight">
+                    💡 Successful steals transfer word ownership to you and
+                    deduct the original word's point value from your opponent's
+                    score!
+                  </p>
+                </div>
               </div>
             </div>
           )}

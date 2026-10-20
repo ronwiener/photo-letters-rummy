@@ -86,9 +86,9 @@ export function findMonicaPlay(
   handCards: Card[],
   wordBoard: PlayedWord[],
   difficulty: "easy" | "medium" | "pro",
-  customIsValidWord?: (word: string) => boolean,
+  _customIsValidWord?: (word: string) => boolean, // 👈 Added underscore prefix
 ): AiPlayResult | null {
-  const checkWord = customIsValidWord || isValidWord;
+  const checkWord = _customIsValidWord || isValidWord;
 
   // Strict validation helper across all difficulties
   const isAllowedWord = (word: string): boolean => {
