@@ -1,22 +1,62 @@
 import type { Card, PlayedWord } from "../types/game";
 import { isValidWord } from "./wordChecker";
-import { calculateWordPoints, calculateExtensionPoints } from "./scoreUtils";
+import { calculateWordPoints, calculateStealScore } from "./scoreUtils";
 
-// Filter out ultra-obscure or non-standard words for common playability
-const COMMON_WORD_FILTER = new Set([
-  "QI",
-  "ZA",
-  "AX",
-  "XI",
-  "XU",
-  "JO",
-  "KA",
-  "ZO",
-  "XYLEM",
-  "QUIRT",
-  "ZAX",
+// Extended blacklist of obscure/archaic words common in Scrabble dictionaries
+const OBSCURE_WORD_FILTER = new Set([
   "AA",
-  "AE",
+  "AR",
+  "DE",
+  "EF",
+  "EN",
+  "ER",
+  "ES",
+  "ET",
+  "EX",
+  "FE",
+  "GI",
+  "HM",
+  "KA",
+  "KI",
+  "NE",
+  "OD",
+  "OE",
+  "OO",
+  "OP",
+  "OS",
+  "SH",
+  "TA",
+  "UT",
+  "WO",
+  "XI",
+  "YO",
+  "YU",
+  "ZA",
+  "XU",
+  "DANLI",
+  "OIE",
+  "STETH",
+  "AAH",
+  "AAL",
+  "ABA",
+  "ABO",
+  "ABS",
+  "ABY",
+  "ACE",
+  "ACT",
+  "ADD",
+  "ADO",
+  "ADS",
+  "ADZ",
+  "AGI",
+  "AHO",
+  "AHS",
+  "AIA",
+  "AIL",
+  "AIM",
+  "AIN",
+  "AIS",
+  "AIT",
 ]);
 
 export interface AiPlayResult {
@@ -28,198 +68,138 @@ export interface AiPlayResult {
 }
 
 /**
- * Helper to generate permutations of up to maxLen cards from hand
+ * Helper to get all letters from a card array, substituting wildcards dynamically if needed
  */
-function getHandPermutationsUpTo(cards: Card[], maxLen: number): Card[][] {
-  const results: Card[][] = [];
-
-  function permute(current: Card[], remaining: Card[]) {
-    if (current.length > 0 && current.length <= maxLen) {
-      results.push(current);
+function resolveCardLetters(cards: Card[]): string[] {
+  return cards.map((c) => {
+    if (c.isWild) {
+      return (c.assignedLetter || "A").toUpperCase();
     }
-    if (current.length >= maxLen) return;
-
-    for (let i = 0; i < remaining.length; i++) {
-      const nextRemaining = [
-        ...remaining.slice(0, i),
-        ...remaining.slice(i + 1),
-      ];
-      permute([...current, remaining[i]], nextRemaining);
-    }
-  }
-
-  permute([], cards);
-  return results;
+    return (c.letter || "").toUpperCase();
+  });
 }
 
 /**
- * Safely extracts the letter character for a card (supporting assigned Wild Cards)
- */
-function getCardLetter(card: Card): string {
-  if (card.isWild) {
-    return (card.assignedLetter || "").toUpperCase();
-  }
-  return (card.letter || "").toUpperCase();
-}
-
-/**
- * Finds the optimal play for Monica based on hand, board, and selected difficulty.
+ * Finds the optimal play for Monica based on hand, board, continuous rules, and difficulty.
  */
 export function findMonicaPlay(
   handCards: Card[],
   wordBoard: PlayedWord[],
   difficulty: "easy" | "medium" | "pro",
-  // Accept external dictionary checker if passed
   customIsValidWord?: (word: string) => boolean,
 ): AiPlayResult | null {
   const checkWord = customIsValidWord || isValidWord;
 
-  // Difficulty Rule Configurations
+  // Strict validation helper across all difficulties
+  const isAllowedWord = (word: string): boolean => {
+    const cleanWord = word.toUpperCase().trim();
+
+    // Disallow 2-letter words for Monica unless on Pro mode to prevent obscure two-letter drops
+    if (cleanWord.length < 3 && difficulty !== "pro") return false;
+
+    // Filter blacklisted obscure words
+    if (OBSCURE_WORD_FILTER.has(cleanWord)) return false;
+
+    return checkWord(cleanWord);
+  };
+
   const maxWordLength =
-    difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 8;
+    difficulty === "easy" ? 5 : difficulty === "medium" ? 6 : 8;
   const maxSingleTurnScore =
-    difficulty === "easy" ? 50 : difficulty === "medium" ? 100 : 200;
-  const extensionChance =
-    difficulty === "easy" ? 0 : difficulty === "medium" ? 0.4 : 0.85;
+    difficulty === "easy" ? 40 : difficulty === "medium" ? 80 : 250;
+  const stealChance =
+    difficulty === "easy" ? 0.2 : difficulty === "medium" ? 0.5 : 0.85;
 
   const validPlays: AiPlayResult[] = [];
 
-  // 1. BOARD EXTENSION CHECK (Medium & Pro only)
-  if (wordBoard.length > 0 && Math.random() < extensionChance) {
-    // Generate 1-card, 2-card, and 3-card combinations from Monica's hand
-    const extensionCardCombos = getHandPermutationsUpTo(
-      handCards,
-      difficulty === "pro" ? 3 : 2,
-    );
+  // -------------------------------------------------------------
+  // 1. STEAL / ANAGRAM REARRANGEMENT ATTEMPTS (Targeting human words)
+  // -------------------------------------------------------------
+  const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
-    for (const boardItem of wordBoard) {
-      for (const combo of extensionCardCombos) {
-        // Skip combo if it contains unassigned wild cards
-        const containsUnassignedWild = combo.some(
-          (c) => c.isWild && !c.assignedLetter,
-        );
-        if (containsUnassignedWild) continue;
+  if (humanWords.length > 0 && Math.random() < stealChance) {
+    const maxStealCards = difficulty === "pro" ? 3 : 2;
 
-        const addedLetters = combo
-          .map((c) => getCardLetter(c))
-          .join("")
-          .toUpperCase();
+    for (const boardItem of humanWords) {
+      for (
+        let len = 1;
+        len <= Math.min(maxStealCards, handCards.length);
+        len++
+      ) {
+        const combos = getSubsets(handCards, len);
 
-        // A. Suffix Extension (e.g., PLAY + ER = PLAYER)
-        const suffixWord = (boardItem.word + addedLetters).toUpperCase();
-        if (
-          suffixWord.length <= maxWordLength &&
-          !COMMON_WORD_FILTER.has(suffixWord) &&
-          checkWord(suffixWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
-        ) {
-          const rawScore = calculateExtensionPoints(
-            boardItem.word.length,
-            suffixWord.length,
+        for (const combo of combos) {
+          // Resolve cards to letters
+          const resolvedCombo = assignWildcardsForSteal(
+            combo,
+            boardItem.word,
+            isAllowedWord,
+            maxWordLength,
           );
-          const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-          validPlays.push({
-            type: "extension",
-            cardsUsed: combo,
-            wordText: suffixWord,
-            score: cappedScore,
-            targetWordId: boardItem.id,
-          });
-        }
+          if (!resolvedCombo) continue;
 
-        // B. Prefix Extension (e.g., RE + PLAY = REPLAY)
-        const prefixWord = (addedLetters + boardItem.word).toUpperCase();
-        if (
-          prefixWord.length <= maxWordLength &&
-          !COMMON_WORD_FILTER.has(prefixWord) &&
-          checkWord(prefixWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
-        ) {
-          const rawScore = calculateExtensionPoints(
-            boardItem.word.length,
-            prefixWord.length,
-          );
-          const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-          validPlays.push({
-            type: "extension",
-            cardsUsed: combo,
-            wordText: prefixWord,
-            score: cappedScore,
-            targetWordId: boardItem.id,
-          });
-        }
+          const addedLetters = resolvedCombo.letters.join("");
+          const cardsAddedCount = combo.length;
+          const fullCardsArray = [...boardItem.cards, ...resolvedCombo.cards];
 
-        // C. Sandwich / Both Ends Extension (For 2-card plays, e.g. S + TART + S = STARTS)
-        if (combo.length === 2) {
-          const letter1 = getCardLetter(combo[0]);
-          const letter2 = getCardLetter(combo[1]);
-          const sandwichWord = (
-            letter1 +
-            boardItem.word +
-            letter2
-          ).toUpperCase();
-
-          if (
-            sandwichWord.length <= maxWordLength &&
-            !COMMON_WORD_FILTER.has(sandwichWord) &&
-            checkWord(sandwichWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
-          ) {
-            const rawScore = calculateExtensionPoints(
-              boardItem.word.length,
-              sandwichWord.length,
+          // 🔤 FULL ANAGRAM REARRANGEMENT SEARCH (e.g. EAST + R -> STARE)
+          const combinedLetters = (boardItem.word + addedLetters).toUpperCase();
+          if (combinedLetters.length <= maxWordLength) {
+            const validAnagrams = getValidAnagrams(
+              combinedLetters,
+              isAllowedWord,
+              maxWordLength,
             );
-            const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-            validPlays.push({
-              type: "extension",
-              cardsUsed: combo,
-              wordText: sandwichWord,
-              score: cappedScore,
-              targetWordId: boardItem.id,
-            });
+
+            for (const anagramWord of validAnagrams) {
+              const rawScore = calculateStealScore(
+                fullCardsArray,
+                cardsAddedCount,
+              );
+              const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+
+              validPlays.push({
+                type: "extension", // Treated as a steal/extension on the board
+                cardsUsed: resolvedCombo.cards,
+                wordText: anagramWord,
+                score: cappedScore,
+                targetWordId: boardItem.id,
+              });
+            }
           }
         }
       }
     }
   }
 
-  // If extensions were found, prioritize top scoring extension
+  // If valid steals/anagrams were found, return the highest scoring one
   if (validPlays.length > 0) {
     validPlays.sort((a, b) => b.score - a.score);
     return validPlays[0];
   }
 
+  // -------------------------------------------------------------
   // 2. STANDALONE WORD PLAY FROM HAND
+  // -------------------------------------------------------------
   function searchHandPermutations(
     currentCombination: Card[],
     remainingCards: Card[],
   ) {
     if (
-      currentCombination.length >= 3 &&
+      currentCombination.length >= 2 &&
       currentCombination.length <= maxWordLength
     ) {
-      // Skip if any unassigned wild card is present
-      const hasUnassignedWild = currentCombination.some(
-        (c) => c.isWild && !c.assignedLetter,
-      );
+      const candidateWord = resolveCardLetters(currentCombination).join("");
 
-      if (!hasUnassignedWild) {
-        const candidateWord = currentCombination
-          .map((c) => getCardLetter(c))
-          .join("")
-          .toUpperCase();
-
-        if (
-          !COMMON_WORD_FILTER.has(candidateWord) &&
-          checkWord(candidateWord) // 🛡️ MANDATORY DICTIONARY VALIDATION
-        ) {
-          const rawScore = calculateWordPoints(candidateWord.length);
-          const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-
-          validPlays.push({
-            type: "new_word",
-            cardsUsed: [...currentCombination],
-            wordText: candidateWord,
-            score: cappedScore,
-          });
-        }
+      if (isAllowedWord(candidateWord)) {
+        const rawScore = calculateWordPoints(currentCombination);
+        const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+        validPlays.push({
+          type: "new_word",
+          cardsUsed: [...currentCombination],
+          wordText: candidateWord,
+          score: cappedScore,
+        });
       }
     }
 
@@ -246,4 +226,82 @@ export function findMonicaPlay(
   return difficulty === "easy"
     ? validPlays[validPlays.length - 1]
     : validPlays[0];
+}
+
+// Helper: Get k-combinations of hand cards
+function getSubsets<T>(array: T[], size: number): T[][] {
+  const result: T[][] = [];
+  function p(t: T[], i: number) {
+    if (t.length === size) {
+      result.push(t);
+      return;
+    }
+    if (i >= array.length) return;
+    p([...t, array[i]], i + 1);
+    p(t, i + 1);
+  }
+  p([], 0);
+  return result;
+}
+
+// Helper: Find valid anagram words from a combined letter pool
+function getValidAnagrams(
+  letterPool: string,
+  validator: (word: string) => boolean,
+  maxLen: number,
+): string[] {
+  const results = new Set<string>();
+  const letters = letterPool.split("");
+
+  function permute(current: string, remaining: string[]) {
+    if (current.length >= 2 && current.length <= maxLen) {
+      if (validator(current)) {
+        results.add(current);
+      }
+    }
+    if (current.length >= maxLen) return;
+
+    for (let i = 0; i < remaining.length; i++) {
+      const nextRemaining = [
+        ...remaining.slice(0, i),
+        ...remaining.slice(i + 1),
+      ];
+      permute(current + remaining[i], nextRemaining);
+    }
+  }
+
+  permute("", letters);
+  return Array.from(results);
+}
+
+// Helper: Assign letters to wildcards when attempting steals
+function assignWildcardsForSteal(
+  cards: Card[],
+  baseWord: string,
+  validator: (word: string) => boolean,
+  maxLen: number,
+): { cards: Card[]; letters: string[] } | null {
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const processedCards = cards.map((c) => ({ ...c }));
+  const letters: string[] = [];
+
+  for (const card of processedCards) {
+    if (card.isWild && !card.assignedLetter) {
+      let foundValid = false;
+      for (const char of ALPHABET) {
+        const testPool = (baseWord + char).toUpperCase();
+        if (testPool.length <= maxLen) {
+          card.assignedLetter = char;
+          letters.push(char);
+          foundValid = true;
+          break;
+        }
+      }
+      if (!foundValid) card.assignedLetter = "E";
+    } else {
+      letters.push((card.isWild ? card.assignedLetter : card.letter) || "A");
+    }
+  }
+
+  return { cards: processedCards, letters };
 }

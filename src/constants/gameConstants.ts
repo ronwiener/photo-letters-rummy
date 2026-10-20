@@ -65,6 +65,7 @@ export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
 
 // Option A: Tier-based Length Bonuses
 export const WORD_LENGTH_SCORES: Record<number, number> = {
+  2: 0,
   3: 2,
   4: 5,
   5: 10,
@@ -76,7 +77,7 @@ export const WORD_LENGTH_SCORES: Record<number, number> = {
 };
 
 export function getWordScore(length: number): number {
-  if (length < 3) return 0;
+  if (length < 2) return 0;
   if (length <= 8) {
     return WORD_LENGTH_SCORES[length] || 0;
   }

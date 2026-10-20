@@ -39,7 +39,7 @@ export interface Card {
 export type PlayerId = "human" | "computer";
 
 export interface HistoryEntry {
-  action: "created" | "extended" | "rearranged" | "stolen";
+  action: "created" | "stolen";
   player: PlayerId;
   description: string;
   timestamp: number;
@@ -64,16 +64,23 @@ export interface GameState {
   consecutivePasses: number;
   botName: string;
   aiDifficulty: AIDifficulty;
+
+  // Hand & Deck management
   humanHand: Card[];
   computerHand: Card[];
-  drawPile: Card[];
-  discardPile: Card[];
+  deck: Card[]; // 👈 Unified 100-card pool (replaces drawPile & discardPile)
+
+  // Board & Turn state
   wordBoard: PlayedWord[];
   currentTurn: PlayerId;
+  isFirstTurn: boolean; // 👈 Enforces single standalone word on Turn 1
+  hasPlayedThisTurn: boolean; // 👈 ADD THIS LINE HERE
+
+  // Game lifecycle
   isRoundOver: boolean;
   roundEndReason?: "went_out" | "stalemate" | null;
   lastRoundPenalties?: { human: number; computer: number };
   isGameOver: boolean;
-  winner: PlayerId | "tie" | null;
-  pendingWildCard?: Card | null; // 👈 Optional state tracker for Wild Card staging
+  winner: PlayerId | "tie" | "draw" | null;
+  pendingWildCard?: Card | null;
 }

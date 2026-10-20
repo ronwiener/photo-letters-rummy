@@ -2,8 +2,22 @@ import type { Card, Letter } from "../types/game";
 import { LETTER_COUNTS } from "../constants/gameConstants";
 import { NEON_ASSET_REGISTRY } from "../constants/neonAssets";
 
-//creates a new 100 card deck on game start
+/**
+ * Generic Fisher-Yates array shuffle helper.
+ */
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
+/**
+ * Creates a brand new 100-card deck with letter distributions and wild cards.
+ * Cycles through available photo assets evenly to prevent premature duplicate photos.
+ */
 export function createDeck(): Card[] {
   const deck: Card[] = [];
   let cardCounter = 1;
@@ -18,111 +32,89 @@ export function createDeck(): Card[] {
       );
     }
 
+    // 1. Shuffle the available photo pool for this letter once
+    const shuffledPhotos = shuffleArray([...availablePhotos]);
+
     for (let i = 0; i < count; i++) {
-      const randomPhotoUrl =
-        availablePhotos.length > 0
-          ? availablePhotos[Math.floor(Math.random() * availablePhotos.length)]
+      // 2. Cycle through photos evenly using modulo so duplicates only occur when needed
+      const photoUrl =
+        shuffledPhotos.length > 0
+          ? shuffledPhotos[i % shuffledPhotos.length]
           : `/photo-letters/fallback.jpg`;
 
       deck.push({
         id: `${letter}-${cardCounter++}`,
         letter: letter,
-        photoUrl: randomPhotoUrl,
+        photoUrl: photoUrl,
       });
     }
   });
 
-  // 🌟 ADD WILD CARDS HERE (e.g., adding 2 wild cards to the deck)
+  // 🌟 ADD WILD CARDS (2 Wild Cards included)
   const numberOfWildCards = 2;
   for (let i = 1; i <= numberOfWildCards; i++) {
     deck.push({
       id: `WILD-${i}`,
       letter: "WILD" as Letter,
-      photoUrl: "/photo-letters/wild-card/wild.jpeg", // 👈 Your exact path
-      isWild: true, // 👈 Explicitly true!
+      photoUrl: "/photo-letters/wild-card/wild.jpeg",
+      isWild: true,
     });
   }
 
   return deck;
 }
+
 /**
  * Shuffles an array of cards using the Fisher-Yates algorithm.
  */
 export function shuffleDeck(deck: Card[]): Card[] {
-  const shuffled = [...deck];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+  return shuffleArray(deck);
 }
 
 /**
- * Draws `count` cards from the draw pile.
- * If draw pile runs out, reshuffles discard pile (minus top card) into draw pile.
+ * Creates and shuffles a fresh 100-card deck.
  */
-export function drawCards(
-  drawPile: Card[],
-  discardPile: Card[],
+export function createAndShuffle100CardDeck(): Card[] {
+  const freshDeck = createDeck();
+  return shuffleDeck(freshDeck);
+}
+
+/**
+ * Draws `count` cards directly from the continuous deck.
+ */
+export function drawCardsFromDeck(
+  deck: Card[],
   count: number,
-): { drawn: Card[]; remainingDraw: Card[]; remainingDiscard: Card[] } {
-  let currentDraw = [...drawPile];
-  let currentDiscard = [...discardPile];
-  const drawn: Card[] = [];
-
-  for (let i = 0; i < count; i++) {
-    if (currentDraw.length === 0) {
-      // Reshuffle discard pile if draw pile is empty (keeping top card)
-      if (currentDiscard.length > 1) {
-        const topDiscard = currentDiscard[currentDiscard.length - 1];
-        const toReshuffle = currentDiscard.slice(0, -1);
-
-        // Simple Fisher-Yates shuffle
-        for (let j = toReshuffle.length - 1; j > 0; j--) {
-          const k = Math.floor(Math.random() * (j + 1));
-          [toReshuffle[j], toReshuffle[k]] = [toReshuffle[k], toReshuffle[j]];
-        }
-
-        currentDraw = toReshuffle;
-        currentDiscard = [topDiscard];
-      } else {
-        break; // No more cards available in deck
-      }
-    }
-
-    const card = currentDraw.pop();
-    if (card) drawn.push(card);
-  }
+): { drawn: Card[]; remainingDeck: Card[] } {
+  const drawn = deck.slice(0, count);
+  const remainingDeck = deck.slice(count);
 
   return {
     drawn,
-    remainingDraw: currentDraw,
-    remainingDiscard: currentDiscard,
+    remainingDeck,
   };
 }
 
 /**
- * Initializes a brand new game state for dealing (Rule 3):
- * 1. Generates and shuffles the 100-card deck.
- * 2. Deals 7 cards to the human player.
- * 3. Deals 7 cards to the computer player.
- * 4. Places 1 card face up on the discard pile.
- * 5. Leaves the remaining 85 cards in the draw pile.
+ * Initializes a brand new game state for continuous play:
+ * - Generates and shuffles a 100-card deck.
+ * - Deals 8 cards to the human player.
+ * - Deals 8 cards to the computer player.
+ * - Leaves remaining 84 cards in the continuous draw deck.
  */
+export const dealNewGame = () => {
+  const fullDeck = createAndShuffle100CardDeck();
 
-export function dealNewGame() {
-  const rawDeck = createDeck();
-  const shuffled = shuffleDeck(rawDeck);
+  // Deal 8 cards to each player
+  const humanHand = fullDeck.slice(0, 8);
+  const computerHand = fullDeck.slice(8, 16);
 
-  const humanHand = shuffled.slice(0, 10);
-  const computerHand = shuffled.slice(10, 20);
-  const discardPile = [shuffled[20]];
-  const drawPile = shuffled.slice(21); // Exactly 79 cards remaining
+  // The remaining cards become the continuous deck pool
+  const deck = fullDeck.slice(16);
 
   return {
     humanHand,
     computerHand,
-    drawPile,
-    discardPile,
+    deck,
   };
-}
+};

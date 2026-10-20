@@ -8,52 +8,86 @@ export interface StealCandidate {
 
 /**
  * Evaluates human-owned words on the board to see if Monica can steal one
- * using 2 or more cards from her hand.
+ * using 1 or more cards from her hand.
  */
 export function findMonicaStealCandidate(
   gameState: GameState,
   isValidWordFn: (word: string) => boolean,
 ): StealCandidate | null {
   const humanWords = gameState.wordBoard.filter((w) => w.playedBy === "human");
-  if (!humanWords.length || gameState.computerHand.length < 2) return null;
+  if (!humanWords.length || gameState.computerHand.length === 0) return null;
 
   for (const boardWord of humanWords) {
     const existingLetters = boardWord.cards
-      .map((c) => c.letter.toLowerCase())
+      .map((c) => (c.isWild ? c.assignedLetter || "a" : c.letter).toLowerCase())
       .join("");
 
-    // Try all pairs of cards in Monica's hand (2-card minimum requirement)
+    // -------------------------------------------------------------
+    // 1. TRY 1-CARD STEALS (Prefix & Suffix)
+    // -------------------------------------------------------------
     for (let i = 0; i < gameState.computerHand.length; i++) {
-      for (let j = i + 1; j < gameState.computerHand.length; j++) {
-        const cardA = gameState.computerHand[i];
-        const cardB = gameState.computerHand[j];
+      const card = gameState.computerHand[i];
+      const letter = (
+        card.isWild ? card.assignedLetter || "a" : card.letter
+      ).toLowerCase();
 
-        const letterA = cardA.letter.toLowerCase();
-        const letterB = cardB.letter.toLowerCase();
+      const singleCandidates = [
+        { text: `${existingLetters}${letter}`, cards: [card] }, // Suffix (e.g., CAT -> CATS)
+        { text: `${letter}${existingLetters}`, cards: [card] }, // Prefix (e.g., LATE -> PLATE)
+      ];
 
-        // Check common expansion patterns (prefix + suffix, double suffix, double prefix)
-        const candidates = [
-          {
-            text: `${letterA}${existingLetters}${letterB}`,
-            cards: [cardA, cardB],
-          },
-          {
-            text: `${existingLetters}${letterA}${letterB}`,
-            cards: [cardA, cardB],
-          },
-          {
-            text: `${letterA}${letterB}${existingLetters}`,
-            cards: [cardA, cardB],
-          },
-        ];
+      for (const candidate of singleCandidates) {
+        if (isValidWordFn(candidate.text)) {
+          return {
+            targetWord: boardWord,
+            cardsFromHand: candidate.cards,
+            newWordText: candidate.text,
+          };
+        }
+      }
+    }
 
-        for (const candidate of candidates) {
-          if (isValidWordFn(candidate.text)) {
-            return {
-              targetWord: boardWord,
-              cardsFromHand: candidate.cards,
-              newWordText: candidate.text,
-            };
+    // -------------------------------------------------------------
+    // 2. TRY 2-CARD STEALS (Prefix, Suffix, Sandwich)
+    // -------------------------------------------------------------
+    if (gameState.computerHand.length >= 2) {
+      for (let i = 0; i < gameState.computerHand.length; i++) {
+        for (let j = 0; j < gameState.computerHand.length; j++) {
+          if (i === j) continue; // Must be distinct cards
+
+          const cardA = gameState.computerHand[i];
+          const cardB = gameState.computerHand[j];
+
+          const letterA = (
+            cardA.isWild ? cardA.assignedLetter || "a" : cardA.letter
+          ).toLowerCase();
+          const letterB = (
+            cardB.isWild ? cardB.assignedLetter || "a" : cardB.letter
+          ).toLowerCase();
+
+          const doubleCandidates = [
+            {
+              text: `${letterA}${existingLetters}${letterB}`,
+              cards: [cardA, cardB],
+            },
+            {
+              text: `${existingLetters}${letterA}${letterB}`,
+              cards: [cardA, cardB],
+            },
+            {
+              text: `${letterA}${letterB}${existingLetters}`,
+              cards: [cardA, cardB],
+            },
+          ];
+
+          for (const candidate of doubleCandidates) {
+            if (isValidWordFn(candidate.text)) {
+              return {
+                targetWord: boardWord,
+                cardsFromHand: candidate.cards,
+                newWordText: candidate.text,
+              };
+            }
           }
         }
       }

@@ -1,19 +1,43 @@
 import React from "react";
-import type { PlayedWord } from "../types/game";
+import type { Card, PlayedWord } from "../types/game";
 import { CardComponent } from "./CardComponent";
 
 interface WordHistoryModalProps {
   word: PlayedWord | null;
+  humanHand?: Card[];
   onClose: () => void;
   onSelectToModify?: (word: PlayedWord) => void;
+  onSwapWildCard?: (targetWild: Card, handCard: Card) => void;
 }
 
 export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
   word,
+  humanHand = [],
   onClose,
   onSelectToModify,
+  onSwapWildCard,
 }) => {
   if (!word) return null;
+
+  // Check if this played word contains an assigned Wild Card
+  const targetWildCard = word.cards.find(
+    (c) => (c.isWild || c.letter === "WILD") && c.assignedLetter,
+  );
+
+  const assignedLetter = (targetWildCard?.assignedLetter || "").toUpperCase();
+
+  // Find if player holds the matching natural letter card in hand
+  const matchingHandCard =
+    assignedLetter && humanHand.length > 0
+      ? humanHand.find(
+          (c) =>
+            !c.isWild &&
+            c.letter !== "WILD" &&
+            (c.letter || "").toUpperCase() === assignedLetter,
+        )
+      : null;
+
+  const canSwap = Boolean(targetWildCard && matchingHandCard && onSwapWildCard);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
@@ -30,7 +54,7 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center font-bold text-sm"
+            className="w-8 h-8 rounded-full bg-neutral-800 text-neutral-400 hover:text-white flex items-center justify-center font-bold text-sm cursor-pointer"
           >
             ✕
           </button>
@@ -38,7 +62,7 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
 
         {/* Current Word Display */}
         <div className="flex flex-col items-center gap-2 bg-neutral-950/60 p-4 rounded-2xl border border-neutral-800">
-          <div className="flex gap-1.5">
+          <div className="flex gap-1.5 flex-wrap justify-center">
             {word.cards.map((card) => (
               <CardComponent key={card.id} card={card} size="md" />
             ))}
@@ -91,18 +115,34 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
           )}
         </div>
 
-        {/* Action Button */}
-        {onSelectToModify && (
-          <button
-            onClick={() => {
-              onSelectToModify(word);
-              onClose();
-            }}
-            className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)] cursor-pointer"
-          >
-            Modify / Extend Word
-          </button>
-        )}
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-2">
+          {/* Wild Card Swap Button */}
+          {canSwap && targetWildCard && matchingHandCard && (
+            <button
+              onClick={() => {
+                onSwapWildCard!(targetWildCard, matchingHandCard);
+                onClose();
+              }}
+              className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] border border-amber-300 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>🃏 Swap Wild Card for '{assignedLetter}'</span>
+            </button>
+          )}
+
+          {/* Modify / Extend Word Button */}
+          {onSelectToModify && (
+            <button
+              onClick={() => {
+                onSelectToModify(word);
+                onClose();
+              }}
+              className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)] cursor-pointer"
+            >
+              Modify / Extend Word
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

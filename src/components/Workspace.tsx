@@ -24,9 +24,9 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  // 🎯 Calculate potential score using individual card letter values + length bonus
+  // 🎯 Calculate potential score using individual card letter values + length bonus (2+ letters supported)
   const potentialScore =
-    stagedCards.length >= 3 ? calculateWordPoints(stagedCards) : 0;
+    stagedCards.length >= 2 ? calculateWordPoints(stagedCards) : 0;
 
   // --- Drag & Drop Handlers ---
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -76,17 +76,17 @@ export const Workspace: React.FC<WorkspaceProps> = ({
     .toUpperCase();
 
   const isValidWord =
-    stagedWordText.length >= 3 && checkDictionaryWord(stagedWordText);
+    stagedWordText.length >= 2 && checkDictionaryWord(stagedWordText);
 
   return (
-    <div className="flex flex-col gap-1.5 p-2 bg-neutral-900/95 rounded-xl border border-neutral-800 shadow-2xl">
+    <div className="flex flex-col gap-1 p-1.5 bg-neutral-900/95 rounded-xl border border-neutral-800 shadow-2xl">
       {/* Action Header */}
-      <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-1.5">
+      <div className="flex items-center justify-between px-0.5">
+        <div className="flex items-center gap-1">
           {stagedCards.length > 0 && (
             <button
               onClick={onClearWorkspace}
-              className="px-2.5 py-1 text-xs font-bold rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-600 active:scale-95 transition-all cursor-pointer"
+              className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-600 active:scale-95 transition-all cursor-pointer"
             >
               Clear
             </button>
@@ -95,21 +95,21 @@ export const Workspace: React.FC<WorkspaceProps> = ({
 
         <button
           onClick={onSubmitWord}
-          disabled={stagedCards.length < 3 || !isValidWord}
-          className={`px-3.5 py-1.5 text-xs font-black rounded-lg transition-all shadow-md ${
-            stagedCards.length < 3
-              ? /* State 1: Need 3+ Letters - High-contrast subtle warning */
+          disabled={stagedCards.length < 2 || !isValidWord}
+          className={`px-3 py-1 text-[11px] font-black rounded-lg transition-all shadow-md ${
+            stagedCards.length < 2
+              ? /* State 1: Need 2+ Letters */
                 "bg-neutral-800 text-amber-300 border-2 border-amber-500/70 opacity-100 cursor-not-allowed"
               : !isValidWord
-                ? /* State 2: Invalid Word - High-visibility crimson / rose warning */
+                ? /* State 2: Invalid Word */
                   "bg-rose-950 text-rose-200 border-2 border-rose-500 opacity-100 cursor-not-allowed"
-                : /* State 3: Valid Word - Super vibrant neon pink/cyan gradient with dark bold text */
-                  "bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:to-cyan-400 text-slate-950 font-black border-2 border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)] active:scale-95 cursor-pointer"
+                : /* State 3: Valid Word */
+                  "bg-linear-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:to-cyan-400 text-slate-950 font-black border-2 border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)] active:scale-95 cursor-pointer"
           }`}
         >
-          {stagedCards.length < 3 ? (
+          {stagedCards.length < 2 ? (
             <span className="flex items-center gap-1">
-              <span>⚠️</span> Need 3+ Letters
+              <span>⚠️</span> 2+ Letters Required
             </span>
           ) : !isValidWord ? (
             <span className="flex items-center gap-1">
@@ -123,11 +123,11 @@ export const Workspace: React.FC<WorkspaceProps> = ({
         </button>
       </div>
 
-      {/* Staged Cards Container */}
-      <div className="min-h-16 p-1.5 bg-neutral-950/80 rounded-lg border border-cyan-500/30 flex items-center justify-center gap-1 overflow-x-auto scrollbar-none">
+      {/* Staged Cards Container (Reduced min-height & padding) */}
+      <div className="min-h-12 p-1 bg-neutral-950/80 rounded-lg border border-cyan-500/30 flex items-center justify-center gap-1 overflow-x-auto scrollbar-none">
         {stagedCards.length === 0 ? (
-          <p className="text-[11px] text-neutral-500 italic text-center">
-            Tap or drag cards from your hand to build a word
+          <p className="text-[10px] text-neutral-500 italic text-center">
+            Tap cards from your hand to build a word
           </p>
         ) : (
           stagedCards.map((card, index) => (

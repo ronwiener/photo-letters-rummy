@@ -4,8 +4,6 @@ import { CardComponent } from "./CardComponent";
 interface GameBoardProps {
   gameState: GameState;
   onCardClick?: (card: Card) => void;
-  onDrawPileClick?: () => void;
-  onDiscardPileClick?: () => void;
   targetBoardWord?: PlayedWord | null;
   onSelectWordForModification?: (playedWord: PlayedWord) => void;
 }
@@ -13,106 +11,95 @@ interface GameBoardProps {
 export const GameBoard: React.FC<GameBoardProps> = ({
   gameState,
   onCardClick,
-  onDrawPileClick,
-  onDiscardPileClick,
   targetBoardWord,
   onSelectWordForModification,
 }) => {
-  const discardPile = gameState?.discardPile ?? [];
-  const topDiscardCard =
-    discardPile.length > 0 ? discardPile[discardPile.length - 1] : null;
-
   const humanHand = gameState?.humanHand ?? [];
   const wordBoard = gameState?.wordBoard ?? [];
-  const drawPile = gameState?.drawPile ?? [];
+  const deckCount = gameState?.deck?.length ?? 0;
   const botName = gameState?.botName ?? "Monica";
 
+  // Color coding for unified deck badge level
+  const getDeckBadgeColor = (count: number) => {
+    if (count > 20)
+      return "bg-emerald-500/20 border-emerald-500/50 text-emerald-400";
+    if (count >= 10)
+      return "bg-amber-500/20 border-amber-500/50 text-amber-400";
+    return "bg-rose-500/20 border-rose-500/50 text-rose-400";
+  };
+
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-1.5 w-full h-full">
       {/* Top Section: Balanced Side-by-Side Scores Bar */}
-      <div className="flex items-center justify-between bg-neutral-900/80 py-2.5 px-4 rounded-xl border border-neutral-800 shadow-sm">
+      <div className="flex items-center justify-between bg-neutral-900/80 py-1.5 px-3 rounded-xl border border-neutral-800 shadow-sm">
         {/* Human Player Score */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-[11px] text-neutral-400 uppercase font-bold tracking-wider">
             You
           </span>
-          <span className="text-lg font-extrabold text-cyan-400">
+          <span className="text-base font-extrabold text-cyan-400">
             {gameState?.roundScores?.human ?? 0}{" "}
-            <span className="text-xs font-semibold text-neutral-500">pts</span>
+            <span className="text-[10px] font-semibold text-neutral-500">
+              pts
+            </span>
           </span>
         </div>
 
-        <div className="h-4 w-px bg-neutral-800" />
+        <div className="h-3.5 w-px bg-neutral-800" />
+
         {/* Monica Score & Hand Count */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-extrabold text-pink-400">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-base font-extrabold text-pink-400">
             {gameState?.roundScores?.computer ?? 0}{" "}
-            <span className="text-xs font-semibold text-neutral-500">pts</span>
+            <span className="text-[10px] font-semibold text-neutral-500">
+              pts
+            </span>
           </span>
-          <span className="text-xs text-neutral-400 uppercase font-bold tracking-wider">
+          <span className="text-[11px] text-neutral-400 uppercase font-bold tracking-wider">
             {botName}
           </span>
 
-          {/* 🎴 MONICA'S CARD COUNT BADGE */}
-          <span className="px-2 py-0.5 bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-extrabold rounded-full ml-1">
+          {/* Monica's Card Count Badge */}
+          <span className="px-1.5 py-0.2 bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[10px] font-extrabold rounded-full ml-0.5">
             {gameState?.computerHand?.length ?? 0}{" "}
             {gameState?.computerHand?.length === 1 ? "card" : "cards"}
           </span>
         </div>
       </div>
 
-      {/* Middle Section: Piles & Played Word Summary */}
-      <div className="grid grid-cols-3 gap-2 bg-neutral-900/80 p-2.5 rounded-2xl border border-neutral-800 items-center">
-        {/* Draw Pile */}
-        <button
-          onClick={onDrawPileClick}
-          className="flex flex-col items-center justify-center bg-neutral-800/80 hover:bg-neutral-800 border border-neutral-700 rounded-xl p-2 transition-all active:scale-95 cursor-pointer"
-        >
-          <span className="text-xl font-black text-cyan-400">
-            {drawPile.length}
+      {/* Middle Section: Compact Deck Counter & Words Played Summary */}
+      <div className="flex items-center justify-between px-2.5 py-1 bg-neutral-900/80 rounded-lg border border-neutral-800 text-[11px] text-neutral-300">
+        {/* Unified Deck Counter Badge */}
+        <div className="flex items-center gap-1 font-medium">
+          <span className="text-neutral-400 font-bold uppercase text-[9px] tracking-wide">
+            Deck:
           </span>
-          <span className="text-[10px] text-neutral-400 uppercase font-bold">
-            Draw Pile
+          <span
+            className={`px-1.5 py-0.2 text-[10px] font-black border rounded-full ${getDeckBadgeColor(deckCount)}`}
+          >
+            {deckCount}
           </span>
-        </button>
-
-        {/* Discard Pile */}
-        <button
-          onClick={onDiscardPileClick}
-          className="flex flex-col items-center justify-center bg-neutral-800/80 hover:bg-neutral-800 border border-neutral-700 rounded-xl p-2 transition-all active:scale-95 cursor-pointer"
-        >
-          {topDiscardCard ? (
-            <div className="w-8 h-10 flex items-center justify-center">
-              <CardComponent card={topDiscardCard} size="sm" state="active" />
-            </div>
-          ) : (
-            <span className="text-xs text-neutral-500 font-bold">Empty</span>
-          )}
-          <span className="text-[10px] text-neutral-400 uppercase font-bold mt-1">
-            Discard
-          </span>
-        </button>
+        </div>
 
         {/* Played Words Count */}
-        <div className="flex flex-col items-center justify-center text-center">
-          <span className="text-xl font-bold text-emerald-400">
-            {wordBoard.length}
+        <div className="flex items-center gap-1 font-medium">
+          <span className="text-neutral-400 font-bold uppercase text-[9px] tracking-wide">
+            Words Played:
           </span>
-          <span className="text-[10px] text-neutral-400 uppercase font-bold">
-            Words Played
+          <span className="text-[10px] font-black text-emerald-400 bg-neutral-800/80 px-1.5 py-0.2 rounded border border-neutral-700">
+            {wordBoard.length}
           </span>
         </div>
       </div>
 
       {/* Shared Neon Word Board */}
-      <div className="bg-neutral-900/60 p-3 rounded-2xl border border-neutral-800 min-h-20 max-h-35 overflow-y-auto flex flex-wrap gap-2.5 items-center justify-center scrollbar-thin scrollbar-thumb-neutral-700">
+      <div className="bg-neutral-900/60 p-2 rounded-xl border border-neutral-800 flex-1 min-h-24 overflow-y-auto flex flex-wrap content-start items-start justify-center gap-2 scrollbar-thin scrollbar-thumb-neutral-700">
         {wordBoard.length === 0 ? (
-          <p className="text-xs text-neutral-500 italic">
+          <p className="text-[11px] text-neutral-500 italic my-auto">
             No words played yet. Be the first to build one!
           </p>
         ) : (
           wordBoard.map((played) => {
-            // Check if this word is currently selected for extension/editing
             const isSelected = targetBoardWord?.id === played.id;
 
             return (
@@ -122,27 +109,24 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   onSelectWordForModification &&
                   onSelectWordForModification(played)
                 }
-                className={`flex p-1.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+                className={`flex p-0.5 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer ${
                   isSelected
-                    ? /* 🌟 SELECTED TARGET WORD: High-visibility glowing amber ring */
-                      "border-2 border-amber-400 bg-amber-500/30 ring-4 ring-amber-400/50 shadow-[0_0_20px_rgba(251,191,36,0.8)] scale-105 z-10"
+                    ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50 shadow-[0_0_15px_rgba(251,191,36,0.8)] scale-105 z-10"
                     : played.playedBy === "human"
-                      ? /* 🩵 PLAYER WORD: Bright cyan neon border */
-                        "border-2 border-cyan-400 bg-cyan-950/50 shadow-[0_0_12px_rgba(6,182,212,0.4)] hover:border-cyan-300 hover:shadow-[0_0_18px_rgba(6,182,212,0.6)]"
-                      : /* 🩷 MONICA WORD: Bright pink neon border */
-                        "border-2 border-pink-400 bg-pink-950/50 shadow-[0_0_12px_rgba(236,72,153,0.4)] hover:border-pink-300 hover:shadow-[0_0_18px_rgba(236,72,153,0.6)]"
+                      ? "border border-cyan-400 bg-cyan-950/50 shadow-[0_0_8px_rgba(6,182,212,0.3)] hover:border-cyan-300"
+                      : "border border-pink-400 bg-pink-950/50 shadow-[0_0_8px_rgba(236,72,153,0.3)] hover:border-pink-300"
                 }`}
                 title={
                   isSelected
                     ? "Currently selected for extension"
-                    : "Tap to extend or rearrange this word"
+                    : "Tap to extend or steal this word"
                 }
               >
-                {played.cards.map((card) => (
+                {played.cards.map((card, idx) => (
                   <CardComponent
-                    key={card.id}
+                    key={`${played.id}-${card.id}-${idx}`}
                     card={card}
-                    size="sm"
+                    size="md"
                     state="active"
                   />
                 ))}
@@ -153,14 +137,14 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Human Hand Header */}
-      <div className="flex justify-between items-center px-1">
-        <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+      <div className="flex justify-between items-center px-1 mt-0.5">
+        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
           Your Hand ({humanHand.length} cards)
         </span>
       </div>
 
       {/* Human Cards */}
-      <div className="max-w-md mx-auto grid grid-cols-5 gap-2 p-3 bg-neutral-900/60 rounded-2xl border border-neutral-800 justify-items-center">
+      <div className="max-w-2xl mx-auto flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 bg-neutral-900/60 rounded-xl border border-neutral-800 overflow-x-auto">
         {humanHand.map((card) => (
           <CardComponent
             key={card.id}

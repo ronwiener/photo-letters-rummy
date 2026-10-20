@@ -1,4 +1,6 @@
 import type { GameState } from "../types/game";
+import { PenaltyBreakdown } from "./PenaltyBreakdown";
+import { calculateHandPenalty } from "../utils/scoreUtils";
 
 interface RoundEndModalProps {
   gameState: GameState;
@@ -23,9 +25,15 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
     winner,
   } = gameState;
 
+  // 🌟 Calculate penalty points dynamically from remaining player hands
+  const humanPenaltyPoints = calculateHandPenalty(gameState.humanHand || []);
+  const computerPenaltyPoints = calculateHandPenalty(
+    gameState.computerHand || [],
+  );
+
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5 text-center relative">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5 text-center relative max-h-[90vh] overflow-y-auto">
         {/* Banner Title */}
         <div>
           <span className="text-xs font-black uppercase text-cyan-400 tracking-widest">
@@ -81,6 +89,23 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
                 {roundScores.computer - (lastRoundPenalties?.computer || 0)} pts
               </div>
             </div>
+          </div>
+
+          {/* Penalty Breakdowns */}
+          <div className="flex flex-col gap-2 my-2">
+            {/* Human Player Penalty breakdown */}
+            <PenaltyBreakdown
+              playerName="You"
+              hand={gameState.humanHand || []}
+              totalPenalty={humanPenaltyPoints}
+            />
+
+            {/* Monica Penalty breakdown */}
+            <PenaltyBreakdown
+              playerName={gameState.botName || "Monica"}
+              hand={gameState.computerHand || []}
+              totalPenalty={computerPenaltyPoints}
+            />
           </div>
         </div>
 
