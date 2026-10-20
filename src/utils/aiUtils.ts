@@ -278,7 +278,7 @@ function getValidAnagrams(
 function assignWildcardsForSteal(
   cards: Card[],
   baseWord: string,
-  validator: (word: string) => boolean,
+  _validator: (word: string) => boolean,
   maxLen: number,
 ): { cards: Card[]; letters: string[] } | null {
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
