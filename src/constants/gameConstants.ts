@@ -34,7 +34,7 @@ export const LETTER_COUNTS: Record<AssetKey, number> = {
 
 // Stores card distribution and scoring chart
 export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
-  A: 33,
+  A: 32,
   B: 24,
   C: 15,
   D: 21,
@@ -47,19 +47,19 @@ export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
   K: 15,
   L: 14,
   M: 10,
-  N: 17,
-  O: 25,
+  N: 16,
+  O: 21,
   P: 11,
   Q: 4,
   R: 24,
   S: 29,
-  T: 26,
-  U: 16,
+  T: 25,
+  U: 13,
   V: 15,
   W: 10,
   X: 7,
   Y: 8,
-  Z: 8,
+  Z: 6,
   WILD: 2,
 };
 

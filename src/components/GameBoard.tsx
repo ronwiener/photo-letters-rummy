@@ -1,3 +1,5 @@
+import React from "react";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 import type { GameState, Card, PlayedWord } from "../types/game";
 import { CardComponent } from "./CardComponent";
 
@@ -5,12 +7,14 @@ interface GameBoardProps {
   gameState: GameState;
   onCardClick?: (card: Card) => void;
   targetBoardWord?: PlayedWord | null;
+  onOpenWordsModal: () => void;
   onSelectWordForModification?: (playedWord: PlayedWord) => void;
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({
   gameState,
   onCardClick,
+  onOpenWordsModal,
   targetBoardWord,
   onSelectWordForModification,
 }) => {
@@ -75,11 +79,21 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             Deck:
           </span>
           <span
-            className={`px-1.5 py-0.2 text-[10px] font-black border rounded-full ${getDeckBadgeColor(deckCount)}`}
+            className={`px-1.5 py-0.2 text-[10px] font-black border rounded-full ${getDeckBadgeColor(
+              deckCount,
+            )}`}
           >
             {deckCount}
           </span>
         </div>
+
+        {/* CENTER: Words Played Button */}
+        <button
+          onClick={onOpenWordsModal}
+          className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-medium text-slate-200 rounded-lg border border-slate-700 transition-all shadow-sm cursor-pointer"
+        >
+          📖 Words List
+        </button>
 
         {/* Played Words Count */}
         <div className="flex items-center gap-1 font-medium">
@@ -93,7 +107,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Shared Neon Word Board */}
-      <div className="bg-neutral-900/60 p-2 rounded-xl border border-neutral-800 flex-1 min-h-24 overflow-y-auto flex flex-wrap content-start items-start justify-center gap-2 scrollbar-thin scrollbar-thumb-neutral-700">
+      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-24 max-h-64 sm:max-h-80 overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
         {wordBoard.length === 0 ? (
           <p className="text-[11px] text-neutral-500 italic my-auto">
             No words played yet. Be the first to build one!
@@ -101,15 +115,19 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         ) : (
           wordBoard.map((played) => {
             const isSelected = targetBoardWord?.id === played.id;
+            const isShortWord = played.cards.length <= 3;
 
             return (
               <button
                 key={played.id}
+                type="button"
                 onClick={() =>
                   onSelectWordForModification &&
                   onSelectWordForModification(played)
                 }
-                className={`flex p-0.5 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer ${
+                className={`flex p-0.5 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer flex-shrink-0 max-w-full overflow-x-auto ${
+                  isShortWord ? "w-auto" : "w-full sm:w-auto justify-center"
+                } ${
                   isSelected
                     ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50 shadow-[0_0_15px_rgba(251,191,36,0.8)] scale-105 z-10"
                     : played.playedBy === "human"
@@ -143,17 +161,42 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         </span>
       </div>
 
-      {/* Human Cards */}
-      <div className="max-w-2xl mx-auto flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 bg-neutral-900/60 rounded-xl border border-neutral-800 overflow-x-auto">
-        {humanHand.map((card) => (
-          <CardComponent
-            key={card.id}
-            card={card}
-            state="active"
-            onClick={() => onCardClick && onCardClick(card)}
-          />
-        ))}
-      </div>
+      {/* Human Cards Droppable Rack */}
+      <Droppable droppableId="player-hand" direction="horizontal">
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`max-w-2xl mx-auto flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 rounded-xl border overflow-x-auto transition-all ${
+              snapshot.isDraggingOver
+                ? "bg-neutral-900 border-amber-400/60"
+                : "bg-neutral-900/60 border-neutral-800"
+            }`}
+          >
+            {humanHand.map((card, index) => (
+              <Draggable key={card.id} draggableId={card.id} index={index}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className={`touch-none ${
+                      snapshot.isDragging ? "z-50 scale-105" : ""
+                    }`}
+                  >
+                    <CardComponent
+                      card={card}
+                      state="active"
+                      onClick={() => onCardClick && onCardClick(card)}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

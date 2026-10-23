@@ -1,9 +1,13 @@
-import type { AIDifficulty } from "../types/game";
+import React, { useState } from "react";
+import type { AIDifficulty, ScoringMode } from "../types/game";
+import { ScoringModeModal } from "./ScoringModeModal";
 
 interface MainMenuProps {
   botName: string;
   aiDifficulty: AIDifficulty;
+  scoringMode: ScoringMode;
   onSelectDifficulty: (diff: AIDifficulty) => void;
+  onSelectScoringMode: (mode: ScoringMode) => void;
   onStartMatch: () => void;
   onOpenRules: () => void;
 }
@@ -11,10 +15,20 @@ interface MainMenuProps {
 export const MainMenu: React.FC<MainMenuProps> = ({
   botName,
   aiDifficulty,
+  scoringMode,
   onSelectDifficulty,
+  onSelectScoringMode,
   onStartMatch,
   onOpenRules,
 }) => {
+  // State to manage the explanation modal for mode selection
+  const [explainMode, setExplainMode] = useState<ScoringMode | null>(null);
+
+  const handleModeClick = (mode: ScoringMode) => {
+    onSelectScoringMode(mode);
+    setExplainMode(mode);
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col justify-between items-center p-6 relative overflow-hidden">
       {/* Background Glow Accents */}
@@ -74,6 +88,42 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             ))}
           </div>
         </div>
+
+        {/* 🗡️ GAME SCORING MODE TOGGLE */}
+        <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-2 text-center">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">
+            Game Play Style
+          </span>
+          <div className="grid grid-cols-2 gap-1.5 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
+            <button
+              type="button"
+              onClick={() => handleModeClick("cutthroat")}
+              className={`py-1.5 px-2 rounded-lg text-[11px] font-black uppercase transition-all cursor-pointer ${
+                scoringMode === "cutthroat"
+                  ? "bg-rose-600 text-white shadow-[0_0_10px_rgba(225,29,72,0.5)]"
+                  : "text-neutral-500 hover:text-neutral-300"
+              }`}
+            >
+              Aggressive
+            </button>
+            <button
+              type="button"
+              onClick={() => handleModeClick("accumulator")}
+              className={`py-1.5 px-2 rounded-lg text-[11px] font-black uppercase transition-all cursor-pointer ${
+                scoringMode === "accumulator"
+                  ? "bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                  : "text-neutral-500 hover:text-neutral-300"
+              }`}
+            >
+              Passive
+            </button>
+          </div>
+          <p className="text-[10px] text-neutral-400 italic leading-tight px-1 mt-0.5">
+            {scoringMode === "cutthroat"
+              ? "Stealing deducts points from your opponent and transfers them to you, but beware Monica can also steal from you!"
+              : "Stealing awards new points while both players still keep all original points."}
+          </p>
+        </div>
       </div>
 
       {/* Footer Info */}
@@ -81,6 +131,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         <span>v1.0.0 • Offline Ready</span>
         <span>Goal: 500 Points Match</span>
       </div>
+
+      {/* 📜 Scoring Mode Explanation Modal */}
+      <ScoringModeModal
+        mode={explainMode}
+        onSelectMode={onSelectScoringMode}
+        onClose={() => setExplainMode(null)}
+        onConfirm={() => setExplainMode(null)}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Droppable, Draggable } from "@hello-pangea/dnd";
 import type { Card } from "../types/game";
 import { CardComponent } from "./CardComponent";
 import { calculateWordPoints } from "../utils/scoreUtils";
@@ -17,55 +17,12 @@ interface WorkspaceProps {
 export const Workspace: React.FC<WorkspaceProps> = ({
   stagedCards,
   onRemoveCard,
-  onReorderCards,
   onClearWorkspace,
   onSubmitWord,
 }) => {
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-
   // 🎯 Calculate potential score using individual card letter values + length bonus (2+ letters supported)
   const potentialScore =
     stagedCards.length >= 2 ? calculateWordPoints(stagedCards) : 0;
-
-  // --- Drag & Drop Handlers ---
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index.toString());
-  };
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    if (dragOverIndex !== index) {
-      setDragOverIndex(index);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      setDragOverIndex(null);
-      return;
-    }
-
-    const updated = [...stagedCards];
-    const [movedCard] = updated.splice(draggedIndex, 1);
-    updated.splice(dropIndex, 0, movedCard);
-
-    // 🚀 Updates stagedCards directly in App.tsx
-    onReorderCards(updated);
-
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
-
-  const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-  };
 
   // 🛡️ Compute the resolved word string and dictionary validation boolean locally
   const stagedWordText = stagedCards
@@ -123,36 +80,46 @@ export const Workspace: React.FC<WorkspaceProps> = ({
         </button>
       </div>
 
-      {/* Staged Cards Container (Reduced min-height & padding) */}
-      <div className="min-h-12 p-1 bg-neutral-950/80 rounded-lg border border-cyan-500/30 flex items-center justify-center gap-1 overflow-x-auto scrollbar-none">
-        {stagedCards.length === 0 ? (
-          <p className="text-[10px] text-neutral-500 italic text-center">
-            Tap cards from your hand to build a word
-          </p>
-        ) : (
-          stagedCards.map((card, index) => (
-            <div
-              key={card.id}
-              draggable
-              onDragStart={(e) => handleDragStart(e, index)}
-              onDragOver={(e) => handleDragOver(e, index)}
-              onDrop={(e) => handleDrop(e, index)}
-              onDragEnd={handleDragEnd}
-              onClick={() => onRemoveCard(card)}
-              className={`shrink-0 cursor-grab active:cursor-grabbing transition-all ${
-                draggedIndex === index ? "opacity-30 scale-95" : ""
-              } ${
-                dragOverIndex === index
-                  ? "border-b-2 border-cyan-400 -translate-y-1"
-                  : ""
-              }`}
-              title="Drag to reorder, or tap to return to hand"
-            >
-              <CardComponent card={card} size="sm" state="active" />
-            </div>
-          ))
+      {/* Staged Cards Container with Droppable zone */}
+      <Droppable droppableId="workspace-rack" direction="horizontal">
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`min-h-12 p-1 rounded-lg border transition-all flex items-center justify-center gap-1 overflow-x-auto scrollbar-none ${
+              snapshot.isDraggingOver
+                ? "bg-cyan-950/40 border-cyan-400/80 border-dashed"
+                : "bg-neutral-950/80 border-cyan-500/30"
+            }`}
+          >
+            {stagedCards.length === 0 && !snapshot.isDraggingOver ? (
+              <p className="text-[10px] text-neutral-500 italic text-center">
+                Tap cards from your hand to build a word
+              </p>
+            ) : (
+              stagedCards.map((card, index) => (
+                <Draggable key={card.id} draggableId={card.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      onClick={() => onRemoveCard(card)}
+                      className={`shrink-0 cursor-grab active:cursor-grabbing transition-all touch-none ${
+                        snapshot.isDragging ? "z-50 scale-105 opacity-80" : ""
+                      }`}
+                      title="Drag to reorder, or tap to return to hand"
+                    >
+                      <CardComponent card={card} size="sm" state="active" />
+                    </div>
+                  )}
+                </Draggable>
+              ))
+            )}
+            {provided.placeholder}
+          </div>
         )}
-      </div>
+      </Droppable>
     </div>
   );
 };

@@ -23,6 +23,7 @@ export function createDeck(): Card[] {
   let cardCounter = 1;
 
   (Object.keys(LETTER_COUNTS) as Letter[]).forEach((letter) => {
+    if ((letter as string) === "WILD") return;
     const count = LETTER_COUNTS[letter];
     const availablePhotos = NEON_ASSET_REGISTRY[letter] || [];
 
@@ -32,11 +33,9 @@ export function createDeck(): Card[] {
       );
     }
 
-    // 1. Shuffle the available photo pool for this letter once
     const shuffledPhotos = shuffleArray([...availablePhotos]);
 
     for (let i = 0; i < count; i++) {
-      // 2. Cycle through photos evenly using modulo so duplicates only occur when needed
       const photoUrl =
         shuffledPhotos.length > 0
           ? shuffledPhotos[i % shuffledPhotos.length]
@@ -50,18 +49,32 @@ export function createDeck(): Card[] {
     }
   });
 
-  // 🌟 ADD WILD CARDS (2 Wild Cards included)
+  // 🌟 ADD EXACTLY 2 WILD CARDS (with unique IDs)
   const numberOfWildCards = 2;
   for (let i = 1; i <= numberOfWildCards; i++) {
     deck.push({
-      id: `WILD-${i}`,
+      id: `WILD-${i}-${Date.now()}`,
       letter: "WILD" as Letter,
       photoUrl: "/photo-letters/wild-card/wild.jpeg",
       isWild: true,
     });
   }
 
-  return deck;
+  // 🛡️ ULTIMATE SAFETY FILTER: Guarantee max 2 wild cards even if merged elsewhere
+  const standardCards = deck.filter((c) => !c.isWild && c.letter !== "WILD");
+  const wildCards = deck
+    .filter((c) => c.isWild || c.letter === "WILD")
+    .slice(0, 2);
+
+  const finalDeck = shuffleArray([...standardCards, ...wildCards]);
+
+  // 🔍 DEBUG LOGS: Verify wildcard count upon deck creation
+  const createdWilds = finalDeck.filter((c) => c.isWild || c.letter === "WILD");
+  console.log("🃏 NEW DECK CREATED:");
+  console.log(`- Total Cards in Deck: ${finalDeck.length}`);
+  console.log(`- Wildcard Count: ${createdWilds.length}`, createdWilds);
+
+  return finalDeck;
 }
 
 /**

@@ -25,12 +25,6 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               How to Play Photo Letter Rummy
             </h2>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 flex items-center justify-center font-bold text-sm cursor-pointer"
-          >
-            ✕
-          </button>
         </div>
 
         {/* Tab Navigation */}
@@ -108,8 +102,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   2. Turn Actions
                 </h3>
                 <p>
-                  On the very 1st turn whether it's Monica or you, there is a
-                  choice of three actions:
+                  You are allowed only one action per turn. On the very 1st turn
+                  whether it's Monica or you, there is a choice of three
+                  actions:
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-neutral-300 mt-1">
                   <li>
@@ -124,11 +119,11 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                     <strong>Pass Turn:</strong> Skip your turn if you have no
                     moves.
                   </li>
-                  <h3 className="font-extrabold text-pink-400 uppercase text-[11px] mb-1">
-                    On subsequent turns, 1 submitted word is allowed but the
-                    option of word steals is open.
-                  </h3>
                 </ul>
+                <p className="font-bold text-pink-300 text-[11px] mt-2">
+                  On subsequent turns, once there is a word played the option of
+                  a word steal is now available.
+                </p>
               </div>
             </div>
           )}
@@ -169,12 +164,33 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                     new word value!
                   </p>
                 </div>
+              </div>
 
-                <div className="pt-1.5 border-t border-neutral-800/80">
-                  <p className="text-amber-200/90 text-[11px] font-medium leading-tight">
-                    💡 Successful steals transfer word ownership to you and
-                    deduct the original word's point value from your opponent's
-                    score!
+              {/* Scoring Mode Breakdown */}
+              <div className="bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 space-y-2">
+                <h3 className="font-extrabold text-amber-400 uppercase text-[11px]">
+                  Scoring Modes
+                </h3>
+
+                <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
+                  <h4 className="font-extrabold text-rose-400 uppercase text-[10px] tracking-wider mb-0.5">
+                    Aggresive
+                  </h4>
+                  <p className="text-neutral-300 text-[11px] leading-relaxed">
+                    Stealing a word transfers ownership to you{" "}
+                    <strong>AND deducts</strong> the original word's point value
+                    from your opponent's score!
+                  </p>
+                </div>
+
+                <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
+                  <h4 className="font-extrabold text-emerald-400 uppercase text-[10px] tracking-wider mb-0.5">
+                    Passive
+                  </h4>
+                  <p className="text-neutral-300 text-[11px] leading-relaxed">
+                    Stealing awards full score value to the thief, but the
+                    original owner{" "}
+                    <strong>keeps all their previously earned points</strong>!
                   </p>
                 </div>
               </div>

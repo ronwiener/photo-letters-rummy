@@ -37,6 +37,7 @@ export interface Card {
 }
 
 export type PlayerId = "human" | "computer";
+export type ScoringMode = "cutthroat" | "accumulator";
 
 export interface HistoryEntry {
   action: "created" | "stolen";
@@ -75,6 +76,7 @@ export interface GameState {
   currentTurn: PlayerId;
   isFirstTurn: boolean; // 👈 Enforces single standalone word on Turn 1
   hasPlayedThisTurn: boolean; // 👈 ADD THIS LINE HERE
+  scoringMode: ScoringMode;
 
   // Game lifecycle
   isRoundOver: boolean;

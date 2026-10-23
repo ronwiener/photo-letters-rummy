@@ -44,12 +44,12 @@ export const CardComponent: React.FC<CardComponentProps> = ({
           : "bg-neutral-900 border-neutral-700/50"
       } ${sizeClasses[size]} card-state-${state}`}
     >
-      {/* 📸 CARD PHOTO IMAGE */}
+      {/* 📸 CARD PHOTO IMAGE (Enhanced with higher brightness, contrast & vivid saturation) */}
       {card.photoUrl && !imgError ? (
         <img
           src={card.photoUrl}
           alt={`Photo letter ${displayLetter}`}
-          className="letter-card-img pointer-events-none w-full h-full object-cover brightness-105 contrast-105"
+          className="letter-card-img pointer-events-none w-full h-full object-cover brightness-125 contrast-110 saturate-125"
           onError={() => setImgError(true)}
         />
       ) : (
@@ -67,10 +67,10 @@ export const CardComponent: React.FC<CardComponentProps> = ({
         </div>
       )}
 
-      {/* 🌟 WILD CARD OVERLAY (BOARD ASSIGNED) */}
+      {/* 🌟 OVERSIZED WILD CARD OVERLAY (BOARD ASSIGNED) */}
       {isWild && card.assignedLetter && (
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center border-2 border-cyan-400">
-          <span className="text-base font-black text-cyan-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex items-center justify-center border-2 border-cyan-400 rounded-lg">
+          <span className="text-4xl sm:text-5xl font-black text-cyan-200 drop-shadow-[0_0_12px_rgba(6,182,212,1)] tracking-wider uppercase scale-110">
             {card.assignedLetter}
           </span>
         </div>
@@ -78,14 +78,14 @@ export const CardComponent: React.FC<CardComponentProps> = ({
 
       {/* 🌟 POINT BADGE FOR REGULAR CARDS */}
       {!isWild && (
-        <div className="absolute bottom-0.5 right-0.5 z-10 pointer-events-none flex items-center justify-center w-3.5 h-3.5 rounded-full bg-black/20 backdrop-blur-[1px] text-yellow-300 text-[8px] font-black leading-none border border-yellow-400/40 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+        <div className="absolute bottom-0 left-0 z-10 pointer-events-none flex items-center justify-center w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full bg-black/15 backdrop-blur-[1px] text-yellow-300 text-[10px] sm:text-[11px] font-black leading-none border border-yellow-400/40 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
           {pointValue}
         </div>
       )}
 
       {/* 🌟 WILD CARD STAR BADGE */}
       {isWild && (
-        <div className="absolute bottom-0 right-0 z-10 pointer-events-none flex items-center justify-center w-3.5 h-3.5 bg-purple-900/40 backdrop-blur-[1px] text-amber-300 text-[8px] font-black leading-none border-t border-l border-amber-400/40 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.95)]">
+        <div className="absolute bottom-0 left-0 z-10 pointer-events-none flex items-center justify-center w-3.5 h-3.5 bg-purple-900/40 backdrop-blur-[1px] text-amber-300 text-[8px] font-black leading-none border-t border-l border-amber-400/40 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.95)]">
           ★
         </div>
       )}
