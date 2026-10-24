@@ -112,26 +112,22 @@ export function App() {
   useEffect(() => {
     // 1. Gather wildcards from all known game locations
     const deckWilds = (gameState.deck || []).filter(
-      (c) => c.isWild || c.letter === "WILD",
+      (c: Card) => c.isWild || c.letter === "WILD",
     );
-    const centerWilds = (gameState.centerPool || []).filter(
-      (c) => c.isWild || c.letter === "WILD",
+    const playerWilds = (gameState.humanHand || []).filter(
+      (c: Card) => c.isWild || c.letter === "WILD",
     );
-    const playerWilds = (gameState.playerHand || []).filter(
-      (c) => c.isWild || c.letter === "WILD",
-    );
-    const aiWilds = (gameState.aiHand || []).filter(
-      (c) => c.isWild || c.letter === "WILD",
+    const aiWilds = (gameState.computerHand || []).filter(
+      (c: Card) => c.isWild || c.letter === "WILD",
     );
 
     // Wildcards embedded in words on the board
     const boardWilds = (gameState.wordBoard || [])
       .flatMap((word) => word.cards)
-      .filter((c) => c.isWild || c.letter === "WILD");
+      .filter((c: Card) => c.isWild || c.letter === "WILD");
 
     const totalWilds =
       deckWilds.length +
-      centerWilds.length +
       playerWilds.length +
       aiWilds.length +
       boardWilds.length;
@@ -143,9 +139,8 @@ export function App() {
       );
       console.log("Locations Snapshot:", {
         deck: deckWilds,
-        centerPool: centerWilds,
-        playerHand: playerWilds,
-        aiHand: aiWilds,
+        humanHand: playerWilds,
+        computerHand: aiWilds,
         wordBoard: boardWilds,
       });
     }
