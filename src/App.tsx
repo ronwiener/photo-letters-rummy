@@ -109,6 +109,48 @@ export function App() {
     setGameState((prev) => ({ ...prev, scoringMode: mode })); // Updates gameState rule
   };
 
+  useEffect(() => {
+    // 1. Gather wildcards from all known game locations
+    const deckWilds = (gameState.deck || []).filter(
+      (c) => c.isWild || c.letter === "WILD",
+    );
+    const centerWilds = (gameState.centerPool || []).filter(
+      (c) => c.isWild || c.letter === "WILD",
+    );
+    const playerWilds = (gameState.playerHand || []).filter(
+      (c) => c.isWild || c.letter === "WILD",
+    );
+    const aiWilds = (gameState.aiHand || []).filter(
+      (c) => c.isWild || c.letter === "WILD",
+    );
+
+    // Wildcards embedded in words on the board
+    const boardWilds = (gameState.wordBoard || [])
+      .flatMap((word) => word.cards)
+      .filter((c) => c.isWild || c.letter === "WILD");
+
+    const totalWilds =
+      deckWilds.length +
+      centerWilds.length +
+      playerWilds.length +
+      aiWilds.length +
+      boardWilds.length;
+
+    // 2. Alert immediately if wildcard count exceeds 2
+    if (totalWilds > 2) {
+      console.warn(
+        `🚨 EXTRA WILDCARD DETECTED! Total Wildcards in Play: ${totalWilds}`,
+      );
+      console.log("Locations Snapshot:", {
+        deck: deckWilds,
+        centerPool: centerWilds,
+        playerHand: playerWilds,
+        aiHand: aiWilds,
+        wordBoard: boardWilds,
+      });
+    }
+  }, [gameState]);
+
   // When tapping a word on the board:
   const handleInspectWord = (playedWord: PlayedWord) => {
     setInspectingWord(playedWord);
@@ -832,11 +874,15 @@ export function App() {
       const timer1 = setTimeout(() => {
         let compHand = [...gameState.computerHand];
         let currentDeck = [...gameState.deck];
-        let newBoard = [...gameState.wordBoard];
+        // Immutably clone wordBoard structure
+        let newBoard = gameState.wordBoard.map((w) => ({
+          ...w,
+          cards: [...w.cards],
+        }));
 
         // 🌟 WILD SWAP CHECK: Swap matching letters from hand with assigned Wild Cards on board
-        newBoard.forEach((playedWord) => {
-          playedWord.cards.forEach((card) => {
+        newBoard = newBoard.map((playedWord) => {
+          const updatedCards = playedWord.cards.map((card) => {
             if (card.isWild && card.assignedLetter) {
               const matchingHandCard = compHand.find(
                 (c) => c.letter === card.assignedLetter,
@@ -847,7 +893,6 @@ export function App() {
                   `[Computer AI] Swapping '${matchingHandCard.letter}' card for Wild Card on word "${playedWord.word}"`,
                 );
 
-                // 🛡️ FIX: Assign a fresh, unique ID to the reclaimed wild card to prevent ID collisions
                 const reclaimedWildCard: Card = {
                   ...card,
                   id: `WILD-reclaimed-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -856,20 +901,19 @@ export function App() {
                   assignedLetter: undefined,
                 };
 
-                playedWord.cards = playedWord.cards.map((c) =>
-                  c.id === card.id ? matchingHandCard : c,
-                );
+                // Remove matching letter from hand and add reclaimed wild card
+                compHand = [
+                  ...compHand.filter((c) => c.id !== matchingHandCard.id),
+                  reclaimedWildCard,
+                ];
 
-                // 🛡️ Strict deduplication when adding back to hand
-                const filteredHand = compHand.filter(
-                  (c) =>
-                    c.id !== matchingHandCard.id &&
-                    c.id !== reclaimedWildCard.id,
-                );
-                compHand = [...filteredHand, reclaimedWildCard];
+                return matchingHandCard;
               }
             }
+            return card;
           });
+
+          return { ...playedWord, cards: updatedCards };
         });
 
         // Step 2: Word Evaluation & Play Execution
@@ -900,6 +944,7 @@ export function App() {
             const previousOwner = targetWord.playedBy;
             const previousScore = targetWord.scoreAwarded || 0;
 
+            // 🛡️ FIX 1: Ensure full word card set (target word + added hand cards) is constructed
             const fullCardsArray =
               "totalCards" in stealCandidate &&
               Array.isArray((stealCandidate as any).totalCards)
@@ -907,10 +952,12 @@ export function App() {
                 : "newWordCards" in stealCandidate &&
                     Array.isArray((stealCandidate as any).newWordCards)
                   ? (stealCandidate as any).newWordCards
-                  : [...(stealCandidate.cardsFromHand || [])];
+                  : [
+                      ...targetWord.cards,
+                      ...(stealCandidate.cardsFromHand || []),
+                    ];
 
             // 🔀 REORDER CARDS directly — reorderCardsToMatchWord handles wildcards
-            // without needing sanitizeAiCards to overwrite assignedLetter properties
             const correctlyOrderedStealCards = reorderCardsToMatchWord(
               fullCardsArray,
               stealCandidate.newWordText,
@@ -931,12 +978,12 @@ export function App() {
               // 🔋 ACCUMULATOR MODE: Skip deduction so human retains earned points
               if (gameState.scoringMode === "cutthroat") {
                 humanRoundScore = Math.max(0, humanRoundScore - previousScore);
-                statusAnnouncement = `⚡ ${gameState.botName} stole "${targetWord.word}" and formed "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
+                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${targetWord.word}" to make "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
               } else {
-                statusAnnouncement = `⚡ ${gameState.botName} stole "${targetWord.word}" and formed "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
+                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${targetWord.word}" to make "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
               }
             } else {
-              statusAnnouncement = `${gameState.botName} expanded "${targetWord.word}" into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`;
+              statusAnnouncement = `${gameState.botName} expanded her word "${targetWord.word}" into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`;
             }
 
             // Update Board by REPLACING targetWord cards with exact correctly ordered cards
@@ -946,7 +993,7 @@ export function App() {
                 return {
                   ...w,
                   word: stealCandidate.newWordText,
-                  cards: correctlyOrderedStealCards, // 👈 Correctly ordered sequence
+                  cards: correctlyOrderedStealCards, // 👈 Correctly ordered sequence of ALL cards
                   playedBy: "computer" as const,
                   scoreAwarded: pointsAwarded,
                   history: [
@@ -1032,7 +1079,7 @@ export function App() {
                   0,
                 );
 
-                // 🔀 REORDER CARDS to match exact word sequence (e.g., F-I-R-E)
+                // 🔀 REORDER CARDS to match exact word sequence
                 const correctlyOrderedExtensionCards = reorderCardsToMatchWord(
                   sanitizedExtensionCards,
                   playResult.wordText,
@@ -1055,8 +1102,6 @@ export function App() {
                 compRoundScore += pointsAwarded;
 
                 if (previousOwner === "human") {
-                  // 🗡️ CUTTHROAT MODE: Deduct points from human player
-                  // 🔋 ACCUMULATOR MODE: Skip deduction so human retains earned points
                   if (gameState.scoringMode === "cutthroat") {
                     humanRoundScore = Math.max(
                       0,
@@ -1076,7 +1121,7 @@ export function App() {
                     return {
                       ...w,
                       word: playResult.wordText,
-                      cards: correctlyOrderedExtensionCards, // 👈 Correctly ordered sequence
+                      cards: correctlyOrderedExtensionCards,
                       playedBy: "computer",
                       scoreAwarded: pointsAwarded,
                       history: [
@@ -1118,7 +1163,7 @@ export function App() {
             }
           }
 
-          // 🔄 AUTO-REFILL HAND TO 8 CARDS IF A PLAY WAS MADE (with strict ID check)
+          // 🔄 AUTO-REFILL HAND TO 8 CARDS IF A PLAY WAS MADE
           if (aiPlayedWord) {
             const cardsNeeded = 8 - compHand.length;
             if (cardsNeeded > 0 && currentDeck.length > 0) {
@@ -1133,7 +1178,6 @@ export function App() {
               compHand = [...compHand, ...uniqueDrawnCards];
             }
           } else {
-            // 🔄 IF NO PLAY WAS MADE: Trade cards if deck has remaining cards, otherwise pass
             if (currentDeck.length >= 2) {
               const cardsToTradeCount = Math.min(3, currentDeck.length);
               const tradedCards = compHand.slice(0, cardsToTradeCount);
@@ -1159,10 +1203,8 @@ export function App() {
             }
           }
 
-          // 📢 Update status message display
           setAiStatusText(statusAnnouncement);
 
-          // Advance turn back to human
           const timer3 = setTimeout(() => {
             setGameState((prev) => ({
               ...prev,
@@ -1180,7 +1222,6 @@ export function App() {
 
             setIsAiThinking(false);
 
-            // Endgame check
             if (compHand.length === 0 && currentDeck.length === 0) {
               handleEndRound("went_out");
             }
