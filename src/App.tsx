@@ -900,10 +900,14 @@ export function App() {
             const previousOwner = targetWord.playedBy;
             const previousScore = targetWord.scoreAwarded || 0;
 
-            const fullCardsArray = stealCandidate.totalCards || [
-              ...targetWord.cards,
-              ...stealCandidate.cardsFromHand,
-            ];
+            const fullCardsArray =
+              "totalCards" in stealCandidate &&
+              Array.isArray((stealCandidate as any).totalCards)
+                ? (stealCandidate as any).totalCards
+                : "newWordCards" in stealCandidate &&
+                    Array.isArray((stealCandidate as any).newWordCards)
+                  ? (stealCandidate as any).newWordCards
+                  : [...(stealCandidate.cardsFromHand || [])];
 
             // 🔀 REORDER CARDS directly — reorderCardsToMatchWord handles wildcards
             // without needing sanitizeAiCards to overwrite assignedLetter properties

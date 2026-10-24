@@ -1,5 +1,5 @@
 import React from "react";
-import type { ScoringMode } from "./types/game";
+import type { ScoringMode } from "../types/game";
 
 interface ScoringModeModalProps {
   mode: ScoringMode | null;

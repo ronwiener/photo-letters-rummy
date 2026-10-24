@@ -17,7 +17,9 @@ export const WordsPlayedModal: React.FC<WordsPlayedModalProps> = ({
   // Filter words played/stolen by each player
   const playerWords = wordBoard.filter((w) => w.playedBy === "human");
   const monicaWords = wordBoard.filter(
-    (w) => w.playedBy === "monica" || (w.playedBy as string) === "computer",
+    (w) =>
+      (w.playedBy as string) === "monica" ||
+      (w.playedBy as string) === "computer",
   );
 
   return (
