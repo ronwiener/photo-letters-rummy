@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { GameBoard } from "./components/GameBoard";
 import { Workspace } from "./components/Workspace";
 import { dealNewGame } from "./utils/deckUtils";
 import { isValidWord } from "./utils/wordChecker";
 import { findMonicaPlay, reorderCardsToMatchWord } from "./utils/aiUtils";
-import type {
-  GameState,
-  Card,
-  PlayerId,
-  PlayedWord,
-  ScoringMode,
+import {
+  type GameState,
+  type Card,
+  type PlayerId,
+  type PlayedWord,
+  type ScoringMode,
+  type GameStatistics,
 } from "./types/game";
 import {
   calculateWordPoints,
@@ -26,6 +27,9 @@ import { TradeModal } from "./components/TradeModal";
 import { SwapSkipModal } from "./components/SwapSkipModal";
 import { WordsPlayedModal } from "./components/WordsPlayedModal";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
+import { getStoredStats, saveStoredStats } from "./utils/statsStorage";
+import { StatsModal } from "./components/StatsModal";
+import { calculateUpdatedStats } from "./utils/statHelper";
 
 // 🛡️ CENTRALIZED HELPER: Placed safely outside the component
 const getConstructedWord = (cards: Card[]): string => {
@@ -98,8 +102,43 @@ export function App() {
   );
   const [isSwapSkipModalOpen, setIsSwapSkipModalOpen] = useState(false);
   const [isWordsModalOpen, setIsWordsModalOpen] = useState(false);
-  // ✅ CORRECT: Pass the string default value "cutthroat"
   const [scoringMode, setScoringMode] = useState<ScoringMode>("cutthroat");
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [stats, setStats] = useState<GameStatistics>(() => {
+    const loaded = getStoredStats();
+    return loaded && typeof loaded === "object"
+      ? loaded
+      : {
+          gamesPlayed: 0,
+          gamesWon: 0,
+          totalWordsPlayed: 0,
+          highestScoringWord: { word: "", score: 0 },
+          longestWord: "",
+          cutthroatWins: 0,
+          accumulatorWins: 0,
+        };
+  });
+
+  useEffect(() => {
+    console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
+  }, [isStatsModalOpen]);
+
+  const updateStats = (
+    newStatsUpdater: (prev: GameStatistics) => GameStatistics,
+  ): void => {
+    console.log("📊 updateStats FUNCTION TRIGGERED");
+
+    setStats((prev) => {
+      console.log("📊 Previous stats state inside setter:", prev);
+      const updated = newStatsUpdater(prev);
+      console.log("📊 New calculated stats state:", updated);
+      saveStoredStats(updated);
+      return updated;
+    });
+  };
+
+  // ✅ Declare matchWordsRef at the top level
+  const matchWordsRef = useRef<{ word: string; score: number }[]>([]);
 
   const stagedWordText = getConstructedWord(stagedCards);
   const wordValid = isValidWord(stagedWordText);
@@ -611,6 +650,12 @@ export function App() {
         pointsAwarded = calculateWordPoints(newCardsFromHand);
       }
 
+      // 📊 RECORD PLAYED WORD FOR CAREER STATS
+      matchWordsRef.current.push({
+        word: proposedWordText,
+        score: pointsAwarded,
+      });
+
       const existingHistory = targetBoardWord.history || [];
       const updatedPlayedWord: PlayedWord = {
         id: targetBoardWord.id,
@@ -676,6 +721,12 @@ export function App() {
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
       const pointsAwarded = calculateWordPoints(stagedCards);
+
+      // 📊 RECORD PLAYED WORD FOR CAREER STATS
+      matchWordsRef.current.push({
+        word: proposedWordText,
+        score: pointsAwarded,
+      });
 
       const newPlayedWord: PlayedWord = {
         id: `word-${Date.now()}`,
@@ -1300,7 +1351,7 @@ export function App() {
     setTargetBoardWord(null);
   };
   // --- ROUND END HANDLER ---
-  const handleEndRound = (reason: "went_out" | "stalemate") => {
+  const handleEndRound = (reason: "went_out" | "stalemate"): void => {
     setGameState((prev) => {
       // 🛡️ CRITICAL GUARD: Prevent running twice if round is already ended
       if (prev.isRoundOver) return prev;
@@ -1335,12 +1386,23 @@ export function App() {
         else if (newMatchScores.computer > newMatchScores.human)
           matchWinner = "computer";
         else matchWinner = "tie";
+
+        const didHumanWin = matchWinner === "human";
+
+        updateStats((currentStats: GameStatistics) =>
+          calculateUpdatedStats(currentStats, {
+            didWin: didHumanWin,
+            scoringMode: prev.scoringMode,
+            wordsPlayedThisMatch: matchWordsRef.current,
+          }),
+        );
+
+        matchWordsRef.current = [];
       }
 
       return {
         ...prev,
-        // 💡 KEEP roundScores as gross play points (e.g., +140)
-        matchScores: newMatchScores, // 👈 Adds Net +130 to Match Total
+        matchScores: newMatchScores,
         isRoundOver: true,
         roundEndReason: reason,
         lastRoundPenalties: { human: humanPenalty, computer: computerPenalty },
@@ -1448,10 +1510,17 @@ export function App() {
             setIsGameActive(true);
           }}
           onOpenRules={() => setIsRulesOpen(true)}
+          onOpenStats={() => setIsStatsModalOpen(true)}
         />
+
         <RulesModal
           isOpen={isRulesOpen}
           onClose={() => setIsRulesOpen(false)}
+        />
+        <StatsModal
+          isOpen={isStatsModalOpen}
+          stats={stats}
+          onClose={() => setIsStatsModalOpen(false)}
         />
       </>
     );
@@ -1663,6 +1732,15 @@ export function App() {
         onClose={() => setIsSwapSkipModalOpen(false)}
         handCards={gameState.humanHand}
         onConfirmSwapOrSkip={handleConfirmSwapOrSkip}
+      />
+
+      <StatsModal
+        isOpen={isStatsModalOpen}
+        stats={stats}
+        onClose={() => {
+          console.log("❌ CLOSING MODAL: Setting isStatsModalOpen to FALSE");
+          setIsStatsModalOpen(false);
+        }}
       />
     </div>
   );

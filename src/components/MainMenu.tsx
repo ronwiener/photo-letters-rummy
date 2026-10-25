@@ -10,6 +10,7 @@ interface MainMenuProps {
   onSelectScoringMode: (mode: ScoringMode) => void;
   onStartMatch: () => void;
   onOpenRules: () => void;
+  onOpenStats: () => void;
 }
 
 export const MainMenu: React.FC<MainMenuProps> = ({
@@ -20,6 +21,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   onSelectScoringMode,
   onStartMatch,
   onOpenRules,
+  onOpenStats,
 }) => {
   // State to manage the explanation modal for mode selection
   const [explainMode, setExplainMode] = useState<ScoringMode | null>(null);
@@ -65,6 +67,16 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           className="w-full py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
         >
           📖 How to Play & Rules
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenStats();
+          }}
+          className="w-full py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
+        >
+          📊 Statistics
         </button>
 
         {/* AI Opponent Difficulty Selector */}

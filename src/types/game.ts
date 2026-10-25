@@ -36,6 +36,26 @@ export interface Card {
   assignedLetter?: string; // 👈 Stores the assigned letter (A-Z) when played on board
 }
 
+export interface GameStatistics {
+  gamesPlayed: number;
+  gamesWon: number;
+  totalWordsPlayed: number;
+  highestScoringWord: { word: string; score: number };
+  longestWord: string;
+  cutthroatWins: number;
+  accumulatorWins: number;
+}
+
+export const DEFAULT_STATS: GameStatistics = {
+  gamesPlayed: 0,
+  gamesWon: 0,
+  totalWordsPlayed: 0,
+  highestScoringWord: { word: "", score: 0 },
+  longestWord: "",
+  cutthroatWins: 0,
+  accumulatorWins: 0,
+};
+
 export type PlayerId = "human" | "computer";
 export type ScoringMode = "cutthroat" | "accumulator";
 
