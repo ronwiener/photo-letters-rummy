@@ -1352,9 +1352,16 @@ export function App() {
   };
   // --- ROUND END HANDLER ---
   const handleEndRound = (reason: "went_out" | "stalemate"): void => {
+    let matchEndedThisRound = false;
+    let didHumanWin = false;
+    let currentScoringMode: ScoringMode = "cutthroat";
+    let wordsPlayedSnapshot: any[] = [];
+
     setGameState((prev) => {
       // 🛡️ CRITICAL GUARD: Prevent running twice if round is already ended
       if (prev.isRoundOver) return prev;
+
+      currentScoringMode = prev.scoringMode;
 
       // 1. Determine penalties (0 penalty if a player's hand is completely empty)
       const humanPenalty =
@@ -1381,22 +1388,15 @@ export function App() {
       let matchWinner: "human" | "computer" | "tie" | null = null;
 
       if (isMatchOver) {
+        matchEndedThisRound = true;
         if (newMatchScores.human > newMatchScores.computer)
           matchWinner = "human";
         else if (newMatchScores.computer > newMatchScores.human)
           matchWinner = "computer";
         else matchWinner = "tie";
 
-        const didHumanWin = matchWinner === "human";
-
-        updateStats((currentStats: GameStatistics) =>
-          calculateUpdatedStats(currentStats, {
-            didWin: didHumanWin,
-            scoringMode: prev.scoringMode,
-            wordsPlayedThisMatch: matchWordsRef.current,
-          }),
-        );
-
+        didHumanWin = matchWinner === "human";
+        wordsPlayedSnapshot = [...matchWordsRef.current];
         matchWordsRef.current = [];
       }
 
@@ -1410,8 +1410,18 @@ export function App() {
         winner: matchWinner,
       };
     });
-  };
 
+    // 📊 Trigger persistent stats update safely outside the state reducer
+    if (matchEndedThisRound) {
+      updateStats((currentStats: GameStatistics) =>
+        calculateUpdatedStats(currentStats, {
+          didWin: didHumanWin,
+          scoringMode: currentScoringMode,
+          wordsPlayedThisMatch: wordsPlayedSnapshot,
+        }),
+      );
+    }
+  };
   // --- START NEXT ROUND HANDLER ---
   const handleStartNextRound = () => {
     // Re-initialize fresh deck and 8-card hands
