@@ -1183,11 +1183,6 @@ export function App() {
               }
 
               // Filter out played cards from hand (only cards taken from computer hand)
-              const boardCardIds = new Set(
-                newBoard
-                  .find((w) => w.id === playResult.targetWordId)
-                  ?.cards.map((c) => c.id) || [],
-              );
 
               // 🧹 Bulletproof hand cleanup for standard plays:
               const usedHandCardIds = new Set(
