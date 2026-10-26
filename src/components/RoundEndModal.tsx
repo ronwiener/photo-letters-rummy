@@ -48,7 +48,11 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
                   : "IT'S A MATCH TIE!"
               : roundEndReason === "went_out"
                 ? "PLAYER WENT OUT!"
-                : "STALEMATE DRAW"}
+                : gameState.roundScores.human > gameState.roundScores.computer
+                  ? "🎉 YOU WIN THE ROUND!"
+                  : gameState.roundScores.computer > gameState.roundScores.human
+                    ? `${gameState.botName.toUpperCase()} WINS THE ROUND!`
+                    : "STALEMATE TIE!"}
           </h2>
         </div>
 
@@ -95,14 +99,14 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
           <div className="flex flex-col gap-2 my-2">
             {/* Human Player Penalty breakdown */}
             <PenaltyBreakdown
-              playerName="You"
+              playerName="Player"
               hand={gameState.humanHand || []}
               totalPenalty={humanPenaltyPoints}
             />
 
             {/* Monica Penalty breakdown */}
             <PenaltyBreakdown
-              playerName={gameState.botName || "Monica"}
+              playerName={gameState.botName || "Monica's"}
               hand={gameState.computerHand || []}
               totalPenalty={computerPenaltyPoints}
             />

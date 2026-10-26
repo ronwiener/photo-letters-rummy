@@ -159,9 +159,9 @@ export function findMonicaPlay(
   const maxWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 6 : 8;
   const maxSingleTurnScore =
-    difficulty === "easy" ? 30 : difficulty === "medium" ? 75 : 250;
+    difficulty === "easy" ? 30 : difficulty === "medium" ? 50 : 250;
   const stealChance =
-    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.5 : 0.85;
+    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.4 : 0.85;
 
   const validPlays: AiPlayResult[] = [];
 
@@ -286,10 +286,35 @@ export function findMonicaPlay(
   }
 
   if (difficulty === "medium") {
-    // Pick randomly from top 3 candidates so she plays strong, high-scoring moves
-    const topCandidatesCount = Math.min(3, validPlays.length);
+    // 1. Pass / trade if best available play is under 12 pts (30% chance)
+    if (validPlays[0].score < 12 && Math.random() < 0.3) {
+      return null; // Triggers pass/trade turn logic
+    }
+
+    // 2. Filter out low-value wildcard plays (< 20 pts) to hoard wildcards
+    const filteredPlays = validPlays.filter((play) => {
+      const usedWild = play.cardsUsed.some(
+        (c) => c.isWild || c.letter === "WILD",
+      );
+      if (usedWild && play.score < 20) {
+        return false; // Skip low-scoring wildcard plays
+      }
+      return true;
+    });
+
+    const candidatePool = filteredPlays.length > 0 ? filteredPlays : validPlays;
+
+    // 3. 35% chance to pick a mid-tier play from the pool
+    const pickSubOptimal = Math.random() < 0.35 && candidatePool.length > 3;
+    if (pickSubOptimal) {
+      const midIndex = Math.floor(candidatePool.length / 2);
+      return candidatePool[midIndex];
+    }
+
+    // 4. Otherwise pick randomly from top 5 candidates
+    const topCandidatesCount = Math.min(5, candidatePool.length);
     const randomIndex = Math.floor(Math.random() * topCandidatesCount);
-    return validPlays[randomIndex];
+    return candidatePool[randomIndex];
   }
 
   // Pro Mode: Always take the #1 highest scoring play
