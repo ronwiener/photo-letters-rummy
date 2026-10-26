@@ -174,7 +174,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-rose-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Aggresive
+                    Hiigh Stakes
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing a word transfers ownership to you{" "}
@@ -185,7 +185,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-emerald-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Passive
+                    Low Stakes
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing awards full score value to the thief, but the
@@ -349,12 +349,12 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div className="flex flex-col gap-3">
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1">
-                  First to 500 Points
+                  First to 1000 Points
                 </h3>
                 <p>
                   Matches span multiple rounds. Net points earned each round are
                   added to your cumulative total. The first player to reach{" "}
-                  <strong>500 match points</strong> wins!
+                  <strong>1000 match points</strong> wins!
                 </p>
               </div>
 

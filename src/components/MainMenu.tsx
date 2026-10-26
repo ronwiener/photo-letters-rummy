@@ -47,7 +47,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </h1>
         <h2 className="text-base text-neutral-400 mt-2 max-w-xs leading-relaxed">
           Form words, extend board plays, and race against {botName} to reach
-          500 points!
+          1000 points!
         </h2>
       </div>
 
@@ -116,7 +116,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >
-              Aggressive
+              High Stakes
             </button>
             <button
               type="button"
@@ -127,7 +127,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >
-              Passive
+              Low Stakes
             </button>
           </div>
           <p className="text-[10px] text-neutral-400 italic leading-tight px-1 mt-0.5">

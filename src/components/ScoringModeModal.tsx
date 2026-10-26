@@ -41,7 +41,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
               Scoring Mode Rule
             </span>
             <h3 className="text-lg font-black text-white">
-              {isCutthroat ? "Aggressive" : "Passive"}
+              {isCutthroat ? "High Stakes" : "Low Stakes"}
             </h3>
           </div>
         </div>
@@ -107,7 +107,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
                 : "bg-emerald-400 hover:bg-emerald-300 shadow-lg shadow-emerald-950/40"
             }`}
           >
-            Select {isCutthroat ? "Aggressive" : "Passive"}
+            Select {isCutthroat ? "High Stakes" : "Low Stakes"}
           </button>
         </div>
       </div>

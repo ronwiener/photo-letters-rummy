@@ -150,7 +150,7 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
             onClick={onNewMatch}
             className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] cursor-pointer"
           >
-            Start New 500-Pt Match
+            Start New 1000-Pt Match
           </button>
         ) : (
           <button

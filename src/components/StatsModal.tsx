@@ -138,13 +138,13 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             </h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-slate-800/40 border border-slate-700/40 p-3 rounded-xl flex justify-between items-center">
-                <span className="text-sm text-slate-300">Aggressive</span>
+                <span className="text-sm text-slate-300">High Stakes</span>
                 <span className="font-bold text-cyan-400">
                   {safeStats.cutthroatWins ?? 0} wins
                 </span>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/40 p-3 rounded-xl flex justify-between items-center">
-                <span className="text-sm text-slate-300">Passive</span>
+                <span className="text-sm text-slate-300">Low Stakes</span>
                 <span className="font-bold text-cyan-400">
                   {safeStats.accumulatorWins ?? 0} wins
                 </span>
