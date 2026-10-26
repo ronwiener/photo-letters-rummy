@@ -1056,17 +1056,14 @@ export function App() {
               return w;
             });
 
-            // Remove used cards from hand
+            // 🧹 Bulletproof hand cleanup for steal plays:
             const usedCardIds = new Set(
-              stealCandidate.cardsFromHand.map((p) => p.id).filter(Boolean),
+              (stealCandidate.cardsFromHand || [])
+                .map((c) => c.id)
+                .filter(Boolean),
             );
-            compHand = compHand.filter((c) => {
-              if (c.id && usedCardIds.has(c.id)) {
-                usedCardIds.delete(c.id);
-                return false;
-              }
-              return true;
-            });
+
+            compHand = compHand.filter((c) => c.id && !usedCardIds.has(c.id));
           } else {
             // 2. FALLBACK TO STANDARD PLAY EVALUATION
             const playResult = findMonicaPlay(
@@ -1192,20 +1189,14 @@ export function App() {
                   ?.cards.map((c) => c.id) || [],
               );
 
+              // 🧹 Bulletproof hand cleanup for standard plays:
               const usedHandCardIds = new Set(
-                playResult.cardsUsed
-                  .filter((c) => !boardCardIds.has(c.id))
-                  .map((p) => p.id)
-                  .filter(Boolean),
+                playResult.cardsUsed.map((c) => c.id).filter(Boolean),
               );
 
-              compHand = compHand.filter((c) => {
-                if (c.id && usedHandCardIds.has(c.id)) {
-                  usedHandCardIds.delete(c.id);
-                  return false;
-                }
-                return true;
-              });
+              compHand = compHand.filter(
+                (c) => c.id && !usedHandCardIds.has(c.id),
+              );
             }
           }
 
