@@ -690,6 +690,45 @@ export function App() {
       const previousOwner = targetBoardWord.playedBy;
       const previousScore = targetBoardWord.scoreAwarded || 0;
 
+      // 🛑 CHECK FOR IMMEDIATE ROUND END (0 cards in hand)
+      if (remainingHand.length === 0) {
+        setGameState((prev) => {
+          const updatedRoundScores = { ...prev.roundScores };
+
+          if (
+            prev.scoringMode === "cutthroat" &&
+            isOpponentWord &&
+            previousOwner &&
+            previousOwner !== "human"
+          ) {
+            updatedRoundScores[previousOwner] = Math.max(
+              0,
+              updatedRoundScores[previousOwner] - previousScore,
+            );
+          }
+
+          updatedRoundScores.human += pointsAwarded;
+
+          return {
+            ...prev,
+            wordBoard: updatedWordBoard,
+            roundScores: updatedRoundScores,
+            humanHand: [],
+            hasPlayedThisTurn: true,
+            consecutivePasses: 0,
+          };
+        });
+
+        handleEndRound({
+          reason: "went_out",
+          winner: "human",
+        });
+
+        setStagedCards([]);
+        setTargetBoardWord(null);
+        return;
+      }
+
       setGameState((prev) => {
         const updatedRoundScores = { ...prev.roundScores };
 
@@ -748,6 +787,30 @@ export function App() {
       const remainingHand = gameState.humanHand.filter(
         (handCard) => !stagedCards.some((staged) => staged.id === handCard.id),
       );
+
+      // 🛑 CHECK FOR IMMEDIATE ROUND END (0 cards in hand)
+      if (remainingHand.length === 0) {
+        setGameState((prev) => ({
+          ...prev,
+          wordBoard: [...prev.wordBoard, newPlayedWord],
+          roundScores: {
+            ...prev.roundScores,
+            human: prev.roundScores.human + pointsAwarded,
+          },
+          humanHand: [],
+          hasPlayedThisTurn: true,
+          consecutivePasses: 0,
+        }));
+
+        handleEndRound({
+          reason: "went_out",
+          winner: "human",
+        });
+
+        setStagedCards([]);
+        setTargetBoardWord(null);
+        return;
+      }
 
       if (gameState.isFirstTurn) {
         // 🔄 TURN 1 END OF TURN: Refill hand to 8 cards & PASS TURN TO MONICA
@@ -1337,7 +1400,15 @@ export function App() {
     setTargetBoardWord(null);
   };
   // --- ROUND END HANDLER ---
-  const handleEndRound = (reason: "went_out" | "stalemate"): void => {
+  const handleEndRound = (
+    endInput:
+      | "went_out"
+      | "stalemate"
+      | { reason: "went_out" | "stalemate"; winner?: string },
+  ): void => {
+    // Extract the reason string whether an object or string was passed
+    const reason = typeof endInput === "object" ? endInput.reason : endInput;
+
     let matchEndedThisRound = false;
     let didHumanWin = false;
     let currentScoringMode: ScoringMode = "cutthroat";
