@@ -1604,9 +1604,6 @@ export function App() {
             <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
               R{gameState.roundNumber}
             </span>
-            <span className="text-[10px] font-bold text-neutral-400 uppercase">
-              Goal: 500
-            </span>
           </div>
 
           {/* Rules & Main Menu Navigation Buttons */}
