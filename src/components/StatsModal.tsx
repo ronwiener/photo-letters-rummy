@@ -154,7 +154,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-950/40 border-t border-slate-800 flex justify-end">
+        <div className="p-4 bg-slate-950/40 border-t border-slate-800 flex justify-center">
           <button
             type="button"
             onClick={onClose}
