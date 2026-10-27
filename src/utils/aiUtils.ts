@@ -296,7 +296,7 @@ export function findMonicaPlay(
       const usedWild = play.cardsUsed.some(
         (c) => c.isWild || c.letter === "WILD",
       );
-      if (usedWild && play.score < 20) {
+      if (usedWild && play.score < 12) {
         return false; // Skip low-scoring wildcard plays
       }
       return true;
