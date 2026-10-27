@@ -120,7 +120,7 @@ export const RoundEndModal: React.FC<RoundEndModalProps> = ({
               TOTAL MATCH SCORE
             </span>
             <span className="text-[10px] text-amber-400 font-semibold">
-              First to 500 Points
+              First to 1000 Points
             </span>
           </div>
           <div className="flex gap-4 items-center">

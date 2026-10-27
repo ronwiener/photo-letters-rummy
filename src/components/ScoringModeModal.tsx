@@ -41,7 +41,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
               Scoring Mode Rule
             </span>
             <h3 className="text-lg font-black text-white">
-              {isCutthroat ? "High Stakes" : "Low Stakes"}
+              {isCutthroat ? "High Risk" : "Low Risk"}
             </h3>
           </div>
         </div>
@@ -58,8 +58,8 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
                   When you or Monica steal a word, the thief takes ownership and
                   gets full points.{" "}
                   <strong className="text-rose-400">
-                    The original owner's score is reduced by the point value of
-                    the stolen word!
+                    But beware the risk is high, the original owner's score is
+                    reduced by the point value of the stolen word!
                   </strong>
                 </>
               ) : (
@@ -67,22 +67,12 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
                   When you or Monica steal a word, the thief takes ownership and
                   gets full points.{" "}
                   <strong className="text-emerald-400">
-                    The original owner keeps all points they previously earned
-                    from that word!
+                    However, the original owner keeps all points they previously
+                    earned from that word! Now the strategy changes, do you
+                    build your own word or steal?
                   </strong>
                 </>
               )}
-            </p>
-          </div>
-
-          <div className="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800 space-y-1.5">
-            <h4 className="font-extrabold text-cyan-400 uppercase text-[11px]">
-              Gameplay Vibe
-            </h4>
-            <p className="text-neutral-400">
-              {isCutthroat
-                ? "High risk, aggressive swings! Scores fluctuate dynamically, making every steal a double blow to your opponent."
-                : "Fast-paced, high-scoring matches! Focuses on offensive word building without losing hard-earned points to steals."}
             </p>
           </div>
         </div>
@@ -107,7 +97,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
                 : "bg-emerald-400 hover:bg-emerald-300 shadow-lg shadow-emerald-950/40"
             }`}
           >
-            Select {isCutthroat ? "High Stakes" : "Low Stakes"}
+            Select {isCutthroat ? "High Risk" : "Low Risk"}
           </button>
         </div>
       </div>

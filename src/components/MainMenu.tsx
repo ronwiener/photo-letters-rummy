@@ -116,7 +116,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >
-              High Stakes
+              High Risk
             </button>
             <button
               type="button"
@@ -127,21 +127,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >
-              Low Stakes
+              Low Risk
             </button>
           </div>
-          <p className="text-[10px] text-neutral-400 italic leading-tight px-1 mt-0.5">
-            {scoringMode === "cutthroat"
-              ? "Stealing deducts points from your opponent and transfers them to you, but beware Monica can also steal from you!"
-              : "Stealing awards new points while both players still keep all original points."}
-          </p>
         </div>
-      </div>
-
-      {/* Footer Info */}
-      <div className="text-[10px] text-neutral-500 text-center mb-4 z-10 flex flex-col gap-1">
-        <span>v1.0.0 • Offline Ready</span>
-        <span>Goal: 500 Points Match</span>
       </div>
 
       {/* 📜 Scoring Mode Explanation Modal */}
