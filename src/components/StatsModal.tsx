@@ -59,7 +59,6 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             Career Statistics & Records
           </h2>
         </div>
-
         {/* Modal Body */}
         <div className="p-6 overflow-y-auto space-y-6 text-slate-200">
           {/* Overview Grid */}
@@ -152,17 +151,17 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             </div>
           </div>
         </div>
-
         {/* Modal Footer */}
         <div className="p-4 bg-slate-950/40 border-t border-slate-800 flex justify-center">
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-xl transition-colors shadow-lg shadow-cyan-600/30"
+            className="min-w-45 px-10 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-xl transition-colors shadow-lg shadow-cyan-600/30"
           >
             Close
           </button>
         </div>
+        .
       </div>
     </div>,
     document.body,
