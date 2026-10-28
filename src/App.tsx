@@ -1083,16 +1083,21 @@ export function App() {
             compRoundScore += pointsAwarded;
 
             if (previousOwner === "human") {
-              // 🗡️ CUTTHROAT MODE: Deduct points from human player
-              // 🔋 ACCUMULATOR MODE: Skip deduction so human retains earned points
+              // Safe fallbacks in case properties are ever undefined
+              const stolenWordText =
+                targetWord?.word || targetWord?.originalWord || "your word";
+              const newWordText = stealCandidate?.newWordText || "a new word";
+
               if (gameState.scoringMode === "cutthroat") {
                 humanRoundScore = Math.max(0, humanRoundScore - previousScore);
-                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${targetWord.word}" to make "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
+                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
               } else {
-                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${targetWord.word}" to make "${stealCandidate.newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
+                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
               }
             } else {
-              statusAnnouncement = `${gameState.botName} expanded her word "${targetWord.word}" into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`;
+              const baseWordText = targetWord?.word || "word";
+              const newWordText = stealCandidate?.newWordText || "a new word";
+              statusAnnouncement = `${gameState.botName} expanded her word "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)`;
             }
 
             // Update Board by REPLACING targetWord cards with exact correctly ordered cards
@@ -1320,13 +1325,13 @@ export function App() {
             if (compHand.length === 0 && currentDeck.length === 0) {
               handleEndRound("went_out");
             }
-          }, 2500);
+          }, 3500);
 
           return () => clearTimeout(timer3);
-        }, 2000);
+        }, 3500);
 
         return () => clearTimeout(timer2);
-      }, 2000);
+      }, 4500);
 
       return () => {
         clearTimeout(timer0);
@@ -1406,6 +1411,9 @@ export function App() {
       | "stalemate"
       | { reason: "went_out" | "stalemate"; winner?: string },
   ): void => {
+    // 🛡️ ULTRA-STRONG GUARD: If round is already over, completely exit out!
+    if (gameState.isRoundOver) return;
+
     // Extract the reason string whether an object or string was passed
     const reason = typeof endInput === "object" ? endInput.reason : endInput;
 
@@ -1438,11 +1446,21 @@ export function App() {
         human: prev.matchScores.human + netHumanRoundScore,
         computer: prev.matchScores.computer + netCompRoundScore,
       };
+      console.log("--- ROUND END DEBUG ---");
+      console.log(
+        "Previous Cumulative Match Score (Human):",
+        prev.matchScores.human,
+      );
+      console.log("Round Gross Score (Human):", prev.roundScores.human);
+      console.log("Round Penalty (Human):", humanPenalty);
+      console.log("Net Round Score (Human):", netHumanRoundScore);
+      console.log("New Total Match Score (Human):", newMatchScores.human);
 
       // 4. Check Match Winner (500 pts)
       const isMatchOver =
-        newMatchScores.human >= 500 || newMatchScores.computer >= 500;
+        newMatchScores.human >= 100 || newMatchScores.computer >= 100;
       let matchWinner: "human" | "computer" | "tie" | null = null;
+      console.log("Is Match Over?:", isMatchOver);
 
       if (isMatchOver) {
         matchEndedThisRound = true;
@@ -1468,7 +1486,7 @@ export function App() {
       };
     });
 
-    // 📊 Trigger persistent stats update safely outside the state reducer
+    // 📊 Trigger persistent stats update immediately if the match ended
     if (matchEndedThisRound) {
       updateStats((currentStats: GameStatistics) =>
         calculateUpdatedStats(currentStats, {

@@ -79,7 +79,7 @@ export const CardComponent: React.FC<CardComponentProps> = ({
       {/* 🌟 POINT BADGE FOR REGULAR CARDS */}
       {!isWild && (
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 text-yellow-300 font-bold text-[9px] select-none pointer-events-none"
+          className="absolute bottom-0 right-0 -translate-x-1/2 z-10 text-yellow-300 font-bold text-[9px] select-none pointer-events-none"
           style={{
             textShadow:
               "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 1px 2px rgba(0,0,0,0.8)",

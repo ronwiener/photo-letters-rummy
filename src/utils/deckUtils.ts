@@ -15,6 +15,38 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 /**
+ * 🛡️ Anti-Clumping Helper:
+ * Ensures no single letter appears more than maxPerHand (e.g. 2) times
+ * in any sequential 8-card window.
+ */
+function antiClumpDeck(deck: Card[], maxPerHand: number = 2): Card[] {
+  const result = [...deck];
+  const windowSize = 8;
+
+  for (let i = 0; i <= result.length - windowSize; i += windowSize) {
+    const counts: Record<string, number> = {};
+
+    for (let j = 0; j < windowSize; j++) {
+      const idx = i + j;
+      const letter = result[idx].letter;
+      counts[letter] = (counts[letter] || 0) + 1;
+
+      // If a letter exceeds our limit in this 8-card slice, swap it down
+      if (counts[letter] > maxPerHand) {
+        const remainingLength = result.length - (i + windowSize);
+        if (remainingLength > 0) {
+          const swapIndex =
+            i + windowSize + Math.floor(Math.random() * remainingLength);
+          [result[idx], result[swapIndex]] = [result[swapIndex], result[idx]];
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+/**
  * Creates a brand new 100-card deck with letter distributions and wild cards.
  * Cycles through available photo assets evenly to prevent premature duplicate photos.
  */
@@ -49,7 +81,7 @@ export function createDeck(): Card[] {
     }
   });
 
-  // 🌟 ADD EXACTLY 2 WILD CARDS (with unique IDs)
+  // 🌟 ADD EXACTLY 2 WILD CARDS
   const numberOfWildCards = 2;
   for (let i = 1; i <= numberOfWildCards; i++) {
     deck.push({
@@ -60,19 +92,22 @@ export function createDeck(): Card[] {
     });
   }
 
-  // 🛡️ ULTIMATE SAFETY FILTER: Guarantee max 2 wild cards even if merged elsewhere
+  // Guarantee max 2 wild cards
   const standardCards = deck.filter((c) => !c.isWild && c.letter !== "WILD");
   const wildCards = deck
     .filter((c) => c.isWild || c.letter === "WILD")
     .slice(0, 2);
 
-  const finalDeck = shuffleArray([...standardCards, ...wildCards]);
+  // 1. Initial true random shuffle
+  const rawShuffled = shuffleArray([...standardCards, ...wildCards]);
 
-  // 🔍 DEBUG LOGS: Verify wildcard count upon deck creation
+  // 2. Smooth out vowel & letter clumping across 8-card draw windows
+  const finalDeck = antiClumpDeck(rawShuffled, 2);
+
   const createdWilds = finalDeck.filter((c) => c.isWild || c.letter === "WILD");
-  console.log("🃏 NEW DECK CREATED:");
-  console.log(`- Total Cards in Deck: ${finalDeck.length}`);
-  console.log(`- Wildcard Count: ${createdWilds.length}`, createdWilds);
+  console.log("🃏 NEW DECK CREATED & ANTI-CLUMPED:");
+  console.log(`Total Cards in Deck: ${finalDeck.length}`);
+  console.log(`Wildcard Count: ${createdWilds.length}`, createdWilds);
 
   return finalDeck;
 }
@@ -85,11 +120,10 @@ export function shuffleDeck(deck: Card[]): Card[] {
 }
 
 /**
- * Creates and shuffles a fresh 100-card deck.
+ * Creates and anti-clumps a fresh 100-card deck.
  */
 export function createAndShuffle100CardDeck(): Card[] {
-  const freshDeck = createDeck();
-  return shuffleDeck(freshDeck);
+  return createDeck();
 }
 
 /**
@@ -109,11 +143,7 @@ export function drawCardsFromDeck(
 }
 
 /**
- * Initializes a brand new game state for continuous play:
- * - Generates and shuffles a 100-card deck.
- * - Deals 8 cards to the human player.
- * - Deals 8 cards to the computer player.
- * - Leaves remaining 84 cards in the continuous draw deck.
+ * Initializes a brand new game state for continuous play.
  */
 export const dealNewGame = () => {
   const fullDeck = createAndShuffle100CardDeck();
