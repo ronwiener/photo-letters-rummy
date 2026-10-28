@@ -49,16 +49,16 @@ export const CardComponent: React.FC<CardComponentProps> = ({
         <img
           src={card.photoUrl}
           alt={`Photo letter ${displayLetter}`}
-          className="letter-card-img pointer-events-none w-full h-full object-cover brightness-125 contrast-110 saturate-125"
+          className="letter-card-img pointer-events-none w-full h-full object-cover brightness-95 contrast-110 saturate-110"
           onError={() => setImgError(true)}
         />
       ) : (
         /* 🎨 STYLED FALLBACK / UNASSIGNED WILD CARD DISPLAY */
-        <div className="w-full h-full flex flex-col items-center justify-center p-0.5 text-center bg-gradient-to-b from-neutral-800 to-neutral-950">
+        <div className="w-full h-full flex flex-col items-center justify-center p-0.5 text-center bg-linear-to-b from-neutral-800 to-neutral-950">
           <span
             className={`font-black tracking-wider ${
               isWild && !card.assignedLetter
-                ? "text-[8px] text-amber-400 uppercase drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]"
+                ? "text-[12px] text-amber-400 uppercase drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]"
                 : "text-base text-cyan-300"
             }`}
           >
@@ -91,7 +91,7 @@ export const CardComponent: React.FC<CardComponentProps> = ({
 
       {/* 🌟 WILD CARD STAR BADGE */}
       {isWild && (
-        <div className="absolute bottom-0 left-0 z-10 pointer-events-none flex items-center justify-center w-3.5 h-3.5 bg-purple-900/40 backdrop-blur-[1px] text-amber-300 text-[8px] font-black leading-none border-t border-l border-amber-400/40 drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.95)]">
+        <div className="absolute bottom-1 right-1 z-10 pointer-events-none text-amber-300 text-[10px] font-black drop-shadow-[0_2px_2px_rgba(0,0,0,0.99)]">
           ★
         </div>
       )}
