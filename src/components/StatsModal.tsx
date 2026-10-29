@@ -9,6 +9,8 @@ interface StatsModalProps {
   matchScores?: { human: number; computer: number };
   onClose: () => void;
   onNewMatch?: () => void;
+  wins: number;
+  losses: number;
 }
 
 export const StatsModal: React.FC<StatsModalProps> = ({
@@ -19,6 +21,8 @@ export const StatsModal: React.FC<StatsModalProps> = ({
   matchScores,
   onClose,
   onNewMatch,
+  wins,
+  losses,
 }) => {
   if (!isOpen) return null;
 
@@ -65,14 +69,12 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Wins:</span>
-            <span className="font-bold text-emerald-400">
-              {stats.wins}
-            </span>{" "}
+            <span className="font-bold text-emerald-400">{wins}</span>{" "}
             {/* 👈 Use prop */}
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Losses:</span>
-            <span className="font-bold text-rose-400">{stats.losses}</span>{" "}
+            <span className="font-bold text-rose-400">{losses}</span>{" "}
             {/* 👈 Use prop */}
           </div>
         </div>

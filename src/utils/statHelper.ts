@@ -30,17 +30,21 @@ export const calculateUpdatedStats = (
     }
   }
 
+  const didWin = result.didWin;
+
   return {
     gamesPlayed: prevStats.gamesPlayed + 1,
-    gamesWon: prevStats.gamesWon + (result.didWin ? 1 : 0),
+    gamesWon: (prevStats.gamesWon || 0) + (didWin ? 1 : 0),
+    wins: (prevStats.wins || 0) + (didWin ? 1 : 0),
+    losses: (prevStats.losses || 0) + (!didWin ? 1 : 0),
     totalWordsPlayed: totalWordsCount,
     highestScoringWord: highestWord,
     longestWord: longestWord,
     cutthroatWins:
       prevStats.cutthroatWins +
-      (result.didWin && result.scoringMode === "cutthroat" ? 1 : 0),
+      (didWin && result.scoringMode === "cutthroat" ? 1 : 0),
     accumulatorWins:
       prevStats.accumulatorWins +
-      (result.didWin && result.scoringMode === "accumulator" ? 1 : 0),
+      (didWin && result.scoringMode === "accumulator" ? 1 : 0),
   };
 };

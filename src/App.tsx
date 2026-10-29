@@ -1475,7 +1475,8 @@ export function App() {
 
       // 🏁 Match Over Condition: Deck is empty and hand is exhausted
       const isMatchOver = newDeck.length === 0 && newHand.length === 0;
-      let matchWinner: "human" | "computer" | "tie" | null = prev.winner;
+      let matchWinner: "human" | "computer" | "tie" | "draw" | PlayerId | null =
+        prev.winner;
 
       if (isMatchOver) {
         if (prev.matchScores.human > prev.matchScores.computer) {
