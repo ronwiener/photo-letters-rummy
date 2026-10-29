@@ -80,8 +80,7 @@ export type AIDifficulty = "easy" | "medium" | "pro";
 
 export interface GameState {
   matchScores: { human: number; computer: number };
-  roundScores: { human: number; computer: number };
-  roundNumber: number;
+
   consecutivePasses: number;
   botName: string;
   aiDifficulty: AIDifficulty;
@@ -99,8 +98,7 @@ export interface GameState {
   scoringMode: ScoringMode;
 
   // Game lifecycle
-  isRoundOver: boolean;
-  roundEndReason?: "went_out" | "stalemate" | null;
+
   lastRoundPenalties?: { human: number; computer: number };
   isGameOver: boolean;
   winner: PlayerId | "tie" | "draw" | null;

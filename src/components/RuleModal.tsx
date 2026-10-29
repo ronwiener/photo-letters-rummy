@@ -174,7 +174,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-rose-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Hiigh Stakes
+                    Hiigh Risk
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing a word transfers ownership to you{" "}
@@ -185,7 +185,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-emerald-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Low Stakes
+                    Low Risk
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing awards full score value to the thief, but the
@@ -332,7 +332,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-rose-400 uppercase text-[11px] mb-1">
-                  3. Round End Hand Penalties
+                  3. Game End Hand Penalties
                 </h3>
                 <p className="text-neutral-300 text-[11px] leading-relaxed">
                   A player who goes out incurs <strong>0 penalty points</strong>
@@ -348,19 +348,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           {activeTab === "match" && (
             <div className="flex flex-col gap-3">
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-amber-400 uppercase text-[11px] mb-1">
-                  First to 1000 Points
-                </h3>
-                <p>
-                  Matches span multiple rounds. Net points earned each round are
-                  added to your cumulative total. The first player to reach{" "}
-                  <strong>1000 match points</strong> wins!
-                </p>
-              </div>
-
-              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-pink-400 uppercase text-[11px] mb-1">
-                  Round End Conditions
+                  Game End Conditions
                 </h3>
                 <ul className="list-disc list-inside space-y-1 text-neutral-300">
                   <li>
@@ -371,6 +360,11 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                     <strong>Stalemate:</strong> Triggers after{" "}
                     <strong>8 consecutive passes total</strong> (or 4 passes
                     when the deck is empty).
+                  </li>
+                  <li>
+                    <strong>
+                      The player with the most net points is the Winner!
+                    </strong>
                   </li>
                 </ul>
               </div>

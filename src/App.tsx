@@ -18,7 +18,7 @@ import {
   calculateHandPenalty,
 } from "./utils/scoreUtils";
 import { WordHistoryModal } from "./components/WordHistoryModal";
-import { RoundEndModal } from "./components/RoundEndModal";
+
 import { MainMenu } from "./components/MainMenu";
 import { RulesModal } from "./components/RuleModal";
 import { findMonicaStealCandidate } from "./utils/wordSteal";
@@ -58,31 +58,26 @@ const replenishHand = (hand: Card[], deck: Card[], targetSize: number = 8) => {
 
 export function App() {
   const [gameState, setGameState] = useState<GameState>(() => {
-    // Expected updated dealNewGame to return { humanHand (8), computerHand (8), deck (84) }
     const deal = dealNewGame();
+    const initialStarter = Math.random() < 0.5 ? "human" : "computer";
 
     return {
       matchScores: { human: 0, computer: 0 },
-      roundScores: { human: 0, computer: 0 },
-      roundNumber: 1,
       consecutivePasses: 0,
       botName: "Monica",
       aiDifficulty: "medium",
-      humanHand: deal.humanHand, // Initial 8 cards
+      humanHand: deal.humanHand,
       computerHand: deal.computerHand,
-      hasPlayedThisTurn: false, // Initial 8 cards
-      deck: deal.deck, // 100-card pool minus hands
+      hasPlayedThisTurn: false,
+      deck: deal.deck,
       wordBoard: [],
-      currentTurn: "human" as PlayerId,
+      currentTurn: initialStarter, // 🎲 Toss-up: 50/50 chance for Human or Monica to start
       scoringMode: "cutthroat",
-      isRoundOver: false,
-      roundEndReason: null,
       isGameOver: false,
       winner: null,
       isFirstTurn: true,
     } as GameState;
   });
-
   const [stagedCards, setStagedCards] = useState<Card[]>([]);
   const [isAiThinking, setIsAiThinking] = useState<boolean>(false);
   const [aiStatusText, setAiStatusText] = useState<string>("");
@@ -640,9 +635,6 @@ export function App() {
       const isOpponentWord = targetBoardWord.playedBy !== "human";
       const cardsAddedCount = newCardsFromHand.length;
 
-      // ⚡ SCORE CALCULATION:
-      // - Opponent Steal: Full steal score (base or 2x bonus) minus opponent's prior score.
-      // - Own-Word Extension: Points for newly added cards ONLY (no double-dipping).
       let pointsAwarded = 0;
       if (isOpponentWord) {
         pointsAwarded = calculateStealScore(stagedCards, cardsAddedCount);
@@ -690,70 +682,30 @@ export function App() {
       const previousOwner = targetBoardWord.playedBy;
       const previousScore = targetBoardWord.scoreAwarded || 0;
 
-      // 🛑 CHECK FOR IMMEDIATE ROUND END (0 cards in hand)
-      if (remainingHand.length === 0) {
-        setGameState((prev) => {
-          const updatedRoundScores = { ...prev.roundScores };
-
-          if (
-            prev.scoringMode === "cutthroat" &&
-            isOpponentWord &&
-            previousOwner &&
-            previousOwner !== "human"
-          ) {
-            updatedRoundScores[previousOwner] = Math.max(
-              0,
-              updatedRoundScores[previousOwner] - previousScore,
-            );
-          }
-
-          updatedRoundScores.human += pointsAwarded;
-
-          return {
-            ...prev,
-            wordBoard: updatedWordBoard,
-            roundScores: updatedRoundScores,
-            humanHand: [],
-            hasPlayedThisTurn: true,
-            consecutivePasses: 0,
-          };
-        });
-
-        handleEndRound({
-          reason: "went_out",
-          winner: "human",
-        });
-
-        setStagedCards([]);
-        setTargetBoardWord(null);
-        return;
-      }
-
       setGameState((prev) => {
-        const updatedRoundScores = { ...prev.roundScores };
+        const updatedMatchScores = { ...prev.matchScores };
 
         // 🗡️ CUTTHROAT MODE: Deduct stolen word's score from opponent
-        // 🔋 ACCUMULATOR MODE: Skip deduction so opponent retains earned points
         if (
           prev.scoringMode === "cutthroat" &&
           isOpponentWord &&
           previousOwner &&
           previousOwner !== "human"
         ) {
-          updatedRoundScores[previousOwner] = Math.max(
+          updatedMatchScores[previousOwner] = Math.max(
             0,
-            updatedRoundScores[previousOwner] - previousScore,
+            updatedMatchScores[previousOwner] - previousScore,
           );
         }
 
-        updatedRoundScores.human += pointsAwarded;
+        updatedMatchScores.human += pointsAwarded;
 
         return {
           ...prev,
           wordBoard: updatedWordBoard,
-          roundScores: updatedRoundScores,
+          matchScores: updatedMatchScores,
           humanHand: remainingHand,
-          hasPlayedThisTurn: true, // 👈 Ensures 'Finish Turn' button displays!
+          hasPlayedThisTurn: true,
           consecutivePasses: 0,
         };
       });
@@ -788,28 +740,13 @@ export function App() {
         (handCard) => !stagedCards.some((staged) => staged.id === handCard.id),
       );
 
-      // 🛑 CHECK FOR IMMEDIATE ROUND END (0 cards in hand)
-      if (remainingHand.length === 0) {
-        setGameState((prev) => ({
-          ...prev,
-          wordBoard: [...prev.wordBoard, newPlayedWord],
-          roundScores: {
-            ...prev.roundScores,
-            human: prev.roundScores.human + pointsAwarded,
-          },
-          humanHand: [],
-          hasPlayedThisTurn: true,
-          consecutivePasses: 0,
-        }));
-
-        handleEndRound({
-          reason: "went_out",
-          winner: "human",
-        });
-
-        setStagedCards([]);
-        setTargetBoardWord(null);
-        return;
+      // 🏁 Check if deck is empty and hand is empty
+      if (updatedDeck.length === 0 && remainingHand.length === 0) {
+        checkAndFinalizeMatch(
+          updatedDeck,
+          remainingHand,
+          gameState.computerHand,
+        );
       }
 
       if (gameState.isFirstTurn) {
@@ -824,9 +761,9 @@ export function App() {
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
-          roundScores: {
-            ...prev.roundScores,
-            human: prev.roundScores.human + pointsAwarded,
+          matchScores: {
+            ...prev.matchScores,
+            human: prev.matchScores.human + pointsAwarded,
           },
           humanHand: refilledHand,
           deck: updatedDeck,
@@ -839,12 +776,12 @@ export function App() {
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
-          roundScores: {
-            ...prev.roundScores,
-            human: prev.roundScores.human + pointsAwarded,
+          matchScores: {
+            ...prev.matchScores,
+            human: prev.matchScores.human + pointsAwarded,
           },
           humanHand: remainingHand,
-          hasPlayedThisTurn: true, // 👈 Ensures 'Finish Turn' button displays!
+          hasPlayedThisTurn: true,
           consecutivePasses: 0,
         }));
       }
@@ -929,426 +866,486 @@ export function App() {
   // STALEMATE & ENDGAME MONITORING
   // -------------------------------------------------------------
   useEffect(() => {
-    if (gameState.isRoundOver) return;
+    // If the game is already over, don't keep checking
+    if (gameState.isGameOver) return;
 
-    // Trigger stalemate if 8 consecutive passes occur or deck is empty with repeated passes
-    if (
-      gameState.consecutivePasses >= 8 ||
-      (gameState.deck.length === 0 && gameState.consecutivePasses >= 4)
-    ) {
-      handleEndRound("stalemate");
+    // 🏁 Match Over Condition: The 100-card deck is completely empty
+    // and both players have passed consecutively or have no moves left.
+    if (gameState.deck.length === 0 && gameState.consecutivePasses >= 4) {
+      const finalHumanScore = gameState.matchScores.human;
+      const finalComputerScore = gameState.matchScores.computer;
+
+      let matchWinner: PlayerId | "tie" = "tie";
+      if (finalHumanScore > finalComputerScore) matchWinner = "human";
+      else if (finalComputerScore > finalHumanScore) matchWinner = "computer";
+
+      setGameState((prev) => ({
+        ...prev,
+        isGameOver: true,
+        winner: matchWinner,
+      }));
     }
   }, [
-    gameState.consecutivePasses,
     gameState.deck.length,
-    gameState.isRoundOver,
+    gameState.consecutivePasses,
+    gameState.isGameOver,
+    gameState.matchScores,
   ]);
-
   // -------------------------------------------------------------
   // MONICA AI TURN ENGINE (Continuous Phase-Less Flow & Steal Mechanics)
   // -------------------------------------------------------------
   useEffect(() => {
-    if (gameState.currentTurn === "computer" && !gameState.isRoundOver) {
-      setIsAiThinking(true);
+    if (gameState.currentTurn !== "computer" || gameState.isGameOver) return;
 
-      // 🕒 Delay before Monica replaces the Coin Toss announcement message
-      const initialDelay = gameState.isFirstTurn ? 2200 : 0;
+    setIsAiThinking(true);
 
-      const timer0 = setTimeout(() => {
-        setAiStatusText(`${gameState.botName} is looking for plays...`);
-      }, initialDelay);
+    // 🕒 Delay before Monica replaces the Coin Toss announcement message
+    const initialDelay = gameState.isFirstTurn ? 2200 : 0;
 
-      // 🛡️ SAFETY GUARD: Ensure any Wild Cards played by Monica have assignedLetter resolved
-      const sanitizeAiCards = (
-        cards: Card[],
-        wordText: string,
-        startIndex: number = 0,
-      ): Card[] => {
-        return cards.map((card, index) => {
-          if (card.isWild || card.letter === "WILD") {
-            const targetIndex = startIndex + index;
-            const inferredLetter =
-              card.assignedLetter || (wordText ? wordText[targetIndex] : "A");
-            return {
-              ...card,
-              isWild: true,
-              letter: "WILD" as any,
-              assignedLetter: (inferredLetter || "A").toUpperCase(),
-            };
+    const timer0 = setTimeout(() => {
+      setAiStatusText(`${gameState.botName} is looking for plays...`);
+    }, initialDelay);
+
+    // 🛡️ SAFETY GUARD: Ensure any Wild Cards played by Monica have assignedLetter resolved
+    const sanitizeAiCards = (
+      cards: Card[],
+      wordText: string,
+      startIndex: number = 0,
+    ): Card[] => {
+      return cards.map((card, index) => {
+        if (card.isWild || card.letter === "WILD") {
+          const targetIndex = startIndex + index;
+          const inferredLetter =
+            card.assignedLetter || (wordText ? wordText[targetIndex] : "A");
+          return {
+            ...card,
+            isWild: true,
+            letter: "WILD" as any,
+            assignedLetter: (inferredLetter || "A").toUpperCase(),
+          };
+        }
+        return card;
+      });
+    };
+
+    const timer1 = setTimeout(() => {
+      let compHand = [...gameState.computerHand];
+      let currentDeck = [...gameState.deck];
+      // Immutably clone wordBoard structure
+      let newBoard = gameState.wordBoard.map((w) => ({
+        ...w,
+        cards: [...w.cards],
+      }));
+
+      // 🌟 WILD SWAP CHECK: Swap matching letters from hand with assigned Wild Cards on board
+      newBoard = newBoard.map((playedWord) => {
+        const updatedCards = playedWord.cards.map((card) => {
+          if (card.isWild && card.assignedLetter) {
+            const matchingHandCard = compHand.find(
+              (c) => c.letter === card.assignedLetter,
+            );
+
+            if (matchingHandCard) {
+              const reclaimedWildCard: Card = {
+                ...card,
+                id: `WILD-reclaimed-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+                isWild: true,
+                letter: "WILD" as any,
+                assignedLetter: undefined,
+              };
+
+              compHand = [
+                ...compHand.filter((c) => c.id !== matchingHandCard.id),
+                reclaimedWildCard,
+              ];
+
+              return matchingHandCard;
+            }
           }
           return card;
         });
-      };
 
-      const timer1 = setTimeout(() => {
-        let compHand = [...gameState.computerHand];
-        let currentDeck = [...gameState.deck];
-        // Immutably clone wordBoard structure
-        let newBoard = gameState.wordBoard.map((w) => ({
-          ...w,
-          cards: [...w.cards],
-        }));
+        return { ...playedWord, cards: updatedCards };
+      });
 
-        // 🌟 WILD SWAP CHECK: Swap matching letters from hand with assigned Wild Cards on board
-        newBoard = newBoard.map((playedWord) => {
-          const updatedCards = playedWord.cards.map((card) => {
-            if (card.isWild && card.assignedLetter) {
-              const matchingHandCard = compHand.find(
-                (c) => c.letter === card.assignedLetter,
-              );
+      // Step 2: Word Evaluation & Play Execution
+      const timer2 = setTimeout(() => {
+        let compMatchScore = gameState.matchScores.computer;
+        let humanMatchScore = gameState.matchScores.human;
+        let aiPlayedWord = false;
+        let statusAnnouncement = "";
 
-              if (matchingHandCard) {
-                console.log(
-                  `[Computer AI] Swapping '${matchingHandCard.letter}' card for Wild Card on word "${playedWord.word}"`,
-                );
+        const isFirstTurn = gameState.isFirstTurn;
 
-                const reclaimedWildCard: Card = {
-                  ...card,
-                  id: `WILD-reclaimed-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-                  isWild: true,
-                  letter: "WILD" as any,
-                  assignedLetter: undefined,
-                };
+        // 🦹‍♂️ 1. CHECK FOR WORD STEAL OPPORTUNITY (Turn 2+ only, Medium/Pro difficulty)
+        let stealCandidate = null;
+        if (!isFirstTurn && gameState.aiDifficulty !== "easy") {
+          stealCandidate = findMonicaStealCandidate(
+            { ...gameState, computerHand: compHand, wordBoard: newBoard },
+            isValidWord,
+          );
+        }
 
-                // Remove matching letter from hand and add reclaimed wild card
-                compHand = [
-                  ...compHand.filter((c) => c.id !== matchingHandCard.id),
-                  reclaimedWildCard,
-                ];
+        if (
+          stealCandidate &&
+          stealCandidate.cardsFromHand &&
+          stealCandidate.cardsFromHand.length >= 1
+        ) {
+          aiPlayedWord = true;
+          const targetWord = stealCandidate.targetWord;
+          const previousOwner = targetWord.playedBy;
+          const previousScore = targetWord.scoreAwarded || 0;
 
-                return matchingHandCard;
-              }
+          const fullCardsArray =
+            "totalCards" in stealCandidate &&
+            Array.isArray((stealCandidate as any).totalCards)
+              ? (stealCandidate as any).totalCards
+              : "newWordCards" in stealCandidate &&
+                  Array.isArray((stealCandidate as any).newWordCards)
+                ? (stealCandidate as any).newWordCards
+                : [
+                    ...targetWord.cards,
+                    ...(stealCandidate.cardsFromHand || []),
+                  ];
+
+          const correctlyOrderedStealCards = reorderCardsToMatchWord(
+            fullCardsArray,
+            stealCandidate.newWordText,
+          );
+
+          const cardsAddedCount = stealCandidate.cardsFromHand.length;
+          const pointsAwarded = calculateStealScore(
+            correctlyOrderedStealCards,
+            cardsAddedCount,
+          );
+
+          compMatchScore += pointsAwarded;
+
+          if (previousOwner === "human") {
+            const stolenWordText =
+              targetWord?.word || targetWord?.originalWord || "your word";
+            const newWordText = stealCandidate?.newWordText || "a new word";
+
+            if (gameState.scoringMode === "cutthroat") {
+              humanMatchScore = Math.max(0, humanMatchScore - previousScore);
+              statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (+${pointsAwarded} pts)!`;
+            } else {
+              statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (+${pointsAwarded} pts)!`;
             }
-            return card;
+          } else {
+            const baseWordText = targetWord?.word || "word";
+            const newWordText = stealCandidate?.newWordText || "a new word";
+            statusAnnouncement = `${gameState.botName} expanded her word "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)`;
+          }
+
+          newBoard = newBoard.map((w) => {
+            if (w.id === targetWord.id) {
+              const existingHistory = w.history || [];
+              return {
+                ...w,
+                word: stealCandidate.newWordText,
+                cards: correctlyOrderedStealCards,
+                playedBy: "computer" as const,
+                scoreAwarded: pointsAwarded,
+                history: [
+                  ...existingHistory,
+                  {
+                    action: "stolen" as const,
+                    player: "computer" as const,
+                    description: `${gameState.botName} stole "${targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
+                    timestamp: Date.now(),
+                  },
+                ],
+              };
+            }
+            return w;
           });
 
-          return { ...playedWord, cards: updatedCards };
-        });
+          const usedCardIds = new Set(
+            (stealCandidate.cardsFromHand || [])
+              .map((c) => c.id)
+              .filter(Boolean),
+          );
 
-        // Step 2: Word Evaluation & Play Execution
-        const timer2 = setTimeout(() => {
-          let compRoundScore = gameState.roundScores.computer;
-          let humanRoundScore = gameState.roundScores.human;
-          let aiPlayedWord = false;
-          let statusAnnouncement = "";
-
-          const isFirstTurn = gameState.isFirstTurn;
-
-          // 🦹‍♂️ 1. CHECK FOR WORD STEAL OPPORTUNITY (Turn 2+ only, Medium/Pro difficulty)
-          let stealCandidate = null;
-          if (!isFirstTurn && gameState.aiDifficulty !== "easy") {
-            stealCandidate = findMonicaStealCandidate(
-              { ...gameState, computerHand: compHand, wordBoard: newBoard },
-              isValidWord,
-            );
-          }
+          compHand = compHand.filter((c) => c.id && !usedCardIds.has(c.id));
+        } else {
+          // 2. FALLBACK TO STANDARD PLAY EVALUATION
+          const playResult = findMonicaPlay(
+            compHand,
+            newBoard,
+            gameState.aiDifficulty,
+          );
 
           if (
-            stealCandidate &&
-            stealCandidate.cardsFromHand &&
-            stealCandidate.cardsFromHand.length >= 1
+            playResult &&
+            playResult.cardsUsed &&
+            playResult.cardsUsed.length > 0
           ) {
             aiPlayedWord = true;
-            const targetWord = stealCandidate.targetWord;
-            const previousOwner = targetWord.playedBy;
-            const previousScore = targetWord.scoreAwarded || 0;
 
-            // 🛡️ FIX 1: Ensure full word card set (target word + added hand cards) is constructed
-            const fullCardsArray =
-              "totalCards" in stealCandidate &&
-              Array.isArray((stealCandidate as any).totalCards)
-                ? (stealCandidate as any).totalCards
-                : "newWordCards" in stealCandidate &&
-                    Array.isArray((stealCandidate as any).newWordCards)
-                  ? (stealCandidate as any).newWordCards
-                  : [
-                      ...targetWord.cards,
-                      ...(stealCandidate.cardsFromHand || []),
-                    ];
+            if (playResult.type === "new_word") {
+              compMatchScore += playResult.score;
 
-            // 🔀 REORDER CARDS directly — reorderCardsToMatchWord handles wildcards
-            const correctlyOrderedStealCards = reorderCardsToMatchWord(
-              fullCardsArray,
-              stealCandidate.newWordText,
-            );
+              const sanitizedNewCards = sanitizeAiCards(
+                playResult.cardsUsed,
+                playResult.wordText,
+                0,
+              );
 
-            const cardsAddedCount = stealCandidate.cardsFromHand.length;
+              statusAnnouncement = `${gameState.botName} played "${playResult.wordText}" (+${playResult.score} pts)!`;
 
-            // ⚡ CALCULATE STEAL POINTS: 1 letter added = base points, 2+ letters added = double points (2x)
-            const pointsAwarded = calculateStealScore(
-              correctlyOrderedStealCards,
-              cardsAddedCount,
-            );
-
-            compRoundScore += pointsAwarded;
-
-            if (previousOwner === "human") {
-              // Safe fallbacks in case properties are ever undefined
-              const stolenWordText =
-                targetWord?.word || targetWord?.originalWord || "your word";
-              const newWordText = stealCandidate?.newWordText || "a new word";
-
-              if (gameState.scoringMode === "cutthroat") {
-                humanRoundScore = Math.max(0, humanRoundScore - previousScore);
-                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
-              } else {
-                statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
-              }
-            } else {
-              const baseWordText = targetWord?.word || "word";
-              const newWordText = stealCandidate?.newWordText || "a new word";
-              statusAnnouncement = `${gameState.botName} expanded her word "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)`;
-            }
-
-            // Update Board by REPLACING targetWord cards with exact correctly ordered cards
-            newBoard = newBoard.map((w) => {
-              if (w.id === targetWord.id) {
-                const existingHistory = w.history || [];
-                return {
-                  ...w,
-                  word: stealCandidate.newWordText,
-                  cards: correctlyOrderedStealCards, // 👈 Correctly ordered sequence of ALL cards
-                  playedBy: "computer" as const,
-                  scoreAwarded: pointsAwarded,
-                  history: [
-                    ...existingHistory,
-                    {
-                      action: "stolen" as const,
-                      player: "computer" as const,
-                      description: `${gameState.botName} stole "${targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
-                      timestamp: Date.now(),
-                    },
-                  ],
-                };
-              }
-              return w;
-            });
-
-            // 🧹 Bulletproof hand cleanup for steal plays:
-            const usedCardIds = new Set(
-              (stealCandidate.cardsFromHand || [])
-                .map((c) => c.id)
-                .filter(Boolean),
-            );
-
-            compHand = compHand.filter((c) => c.id && !usedCardIds.has(c.id));
-          } else {
-            // 2. FALLBACK TO STANDARD PLAY EVALUATION
-            const playResult = findMonicaPlay(
-              compHand,
-              newBoard,
-              gameState.aiDifficulty,
-            );
-
-            if (
-              playResult &&
-              playResult.cardsUsed &&
-              playResult.cardsUsed.length > 0
+              newBoard.push({
+                id: `word-ai-${Date.now()}-${Math.random()}`,
+                word: playResult.wordText,
+                cards: sanitizedNewCards,
+                playedBy: "computer",
+                scoreAwarded: playResult.score,
+                history: [
+                  {
+                    action: "created",
+                    player: "computer",
+                    description: `${gameState.botName} created "${playResult.wordText}" (+${playResult.score} pts)`,
+                    timestamp: Date.now(),
+                  },
+                ],
+              });
+            } else if (
+              !isFirstTurn &&
+              playResult.type === "extension" &&
+              playResult.targetWordId
             ) {
-              aiPlayedWord = true;
+              const existingWordObj = newBoard.find(
+                (w) => w.id === playResult.targetWordId,
+              );
+              const previousOwner = existingWordObj?.playedBy;
+              const previousScore = existingWordObj?.scoreAwarded || 0;
 
-              if (playResult.type === "new_word") {
-                compRoundScore += playResult.score;
+              const sanitizedExtensionCards = sanitizeAiCards(
+                playResult.cardsUsed,
+                playResult.wordText,
+                0,
+              );
 
-                const sanitizedNewCards = sanitizeAiCards(
-                  playResult.cardsUsed,
-                  playResult.wordText,
-                  0,
-                );
+              const correctlyOrderedExtensionCards = reorderCardsToMatchWord(
+                sanitizedExtensionCards,
+                playResult.wordText,
+              );
 
-                statusAnnouncement = `${gameState.botName} played "${playResult.wordText}" (+${playResult.score} pts)!`;
+              const originalCardIds = new Set(
+                existingWordObj?.cards.map((c) => c.id) || [],
+              );
+              const cardsAddedCount = correctlyOrderedExtensionCards.filter(
+                (c) => !originalCardIds.has(c.id),
+              ).length;
 
-                newBoard.push({
-                  id: `word-ai-${Date.now()}-${Math.random()}`,
-                  word: playResult.wordText,
-                  cards: sanitizedNewCards,
-                  playedBy: "computer",
-                  scoreAwarded: playResult.score,
-                  history: [
-                    {
-                      action: "created",
-                      player: "computer",
-                      description: `${gameState.botName} created "${playResult.wordText}" (+${playResult.score} pts)`,
-                      timestamp: Date.now(),
-                    },
-                  ],
-                });
-              } else if (
-                !isFirstTurn &&
-                playResult.type === "extension" &&
-                playResult.targetWordId
-              ) {
-                const existingWordObj = newBoard.find(
-                  (w) => w.id === playResult.targetWordId,
-                );
-                const previousOwner = existingWordObj?.playedBy;
-                const previousScore = existingWordObj?.scoreAwarded || 0;
+              const pointsAwarded = calculateStealScore(
+                correctlyOrderedExtensionCards,
+                cardsAddedCount,
+              );
 
-                const sanitizedExtensionCards = sanitizeAiCards(
-                  playResult.cardsUsed,
-                  playResult.wordText,
-                  0,
-                );
+              compMatchScore += pointsAwarded;
 
-                // 🔀 REORDER CARDS to match exact word sequence
-                const correctlyOrderedExtensionCards = reorderCardsToMatchWord(
-                  sanitizedExtensionCards,
-                  playResult.wordText,
-                );
-
-                // Calculate added count by finding cards NOT present in original board word
-                const originalCardIds = new Set(
-                  existingWordObj?.cards.map((c) => c.id) || [],
-                );
-                const cardsAddedCount = correctlyOrderedExtensionCards.filter(
-                  (c) => !originalCardIds.has(c.id),
-                ).length;
-
-                // ⚡ CALCULATE STEAL POINTS using unified calculateStealScore
-                const pointsAwarded = calculateStealScore(
-                  correctlyOrderedExtensionCards,
-                  cardsAddedCount,
-                );
-
-                compRoundScore += pointsAwarded;
-
-                if (previousOwner === "human") {
-                  if (gameState.scoringMode === "cutthroat") {
-                    humanRoundScore = Math.max(
-                      0,
-                      humanRoundScore - previousScore,
-                    );
-                    statusAnnouncement = `⚡ ${gameState.botName} stole your word and expanded it to "${playResult.wordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (-${previousScore} pts to you, +${pointsAwarded} pts to ${gameState.botName})`;
-                  } else {
-                    statusAnnouncement = `⚡ ${gameState.botName} stole your word and expanded it to "${playResult.wordText}" (${cardsAddedCount >= 2 ? "2x double points" : "base points"})! (+${pointsAwarded} pts to ${gameState.botName})`;
-                  }
+              if (previousOwner === "human") {
+                if (gameState.scoringMode === "cutthroat") {
+                  humanMatchScore = Math.max(
+                    0,
+                    humanMatchScore - previousScore,
+                  );
+                  statusAnnouncement = `⚡ ${gameState.botName} stole your word and expanded it to "${playResult.wordText}" (+${pointsAwarded} pts)!`;
                 } else {
-                  statusAnnouncement = `${gameState.botName} extended a word to "${playResult.wordText}" (+${pointsAwarded} pts)`;
+                  statusAnnouncement = `⚡ ${gameState.botName} stole your word and expanded it to "${playResult.wordText}" (+${pointsAwarded} pts)!`;
                 }
-
-                newBoard = newBoard.map((w): PlayedWord => {
-                  if (w.id === playResult.targetWordId) {
-                    const existingHistory = w.history || [];
-                    return {
-                      ...w,
-                      word: playResult.wordText,
-                      cards: correctlyOrderedExtensionCards,
-                      playedBy: "computer",
-                      scoreAwarded: pointsAwarded,
-                      history: [
-                        ...existingHistory,
-                        {
-                          action: "stolen",
-                          player: "computer",
-                          description: `${gameState.botName} stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`,
-                          timestamp: Date.now(),
-                        },
-                      ],
-                    };
-                  }
-                  return w;
-                });
+              } else {
+                statusAnnouncement = `${gameState.botName} extended a word to "${playResult.wordText}" (+${pointsAwarded} pts)`;
               }
 
-              // Filter out played cards from hand (only cards taken from computer hand)
-
-              // 🧹 Bulletproof hand cleanup for standard plays:
-              const usedHandCardIds = new Set(
-                playResult.cardsUsed.map((c) => c.id).filter(Boolean),
-              );
-
-              compHand = compHand.filter(
-                (c) => c.id && !usedHandCardIds.has(c.id),
-              );
+              newBoard = newBoard.map((w): PlayedWord => {
+                if (w.id === playResult.targetWordId) {
+                  const existingHistory = w.history || [];
+                  return {
+                    ...w,
+                    word: playResult.wordText,
+                    cards: correctlyOrderedExtensionCards,
+                    playedBy: "computer",
+                    scoreAwarded: pointsAwarded,
+                    history: [
+                      ...existingHistory,
+                      {
+                        action: "stolen",
+                        player: "computer",
+                        description: `${gameState.botName} stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`,
+                        timestamp: Date.now(),
+                      },
+                    ],
+                  };
+                }
+                return w;
+              });
             }
+
+            const usedHandCardIds = new Set(
+              playResult.cardsUsed.map((c) => c.id).filter(Boolean),
+            );
+
+            compHand = compHand.filter(
+              (c) => c.id && !usedHandCardIds.has(c.id),
+            );
           }
+        }
 
-          // 🔄 AUTO-REFILL HAND TO 8 CARDS IF A PLAY WAS MADE
-          if (aiPlayedWord) {
-            const cardsNeeded = 8 - compHand.length;
-            if (cardsNeeded > 0 && currentDeck.length > 0) {
-              const drawnCards = currentDeck.slice(0, cardsNeeded);
-              currentDeck = currentDeck.slice(cardsNeeded);
+        // 🔄 AUTO-REFILL HAND TO 8 CARDS IF A PLAY WAS MADE
+        if (aiPlayedWord) {
+          const cardsNeeded = 8 - compHand.length;
+          if (cardsNeeded > 0 && currentDeck.length > 0) {
+            const drawnCards = currentDeck.slice(0, cardsNeeded);
+            currentDeck = currentDeck.slice(cardsNeeded);
 
-              const existingHandIds = new Set(compHand.map((c) => c.id));
-              const uniqueDrawnCards = drawnCards.filter(
-                (c) => !existingHandIds.has(c.id),
-              );
+            const existingHandIds = new Set(compHand.map((c) => c.id));
+            const uniqueDrawnCards = drawnCards.filter(
+              (c) => !existingHandIds.has(c.id),
+            );
 
-              compHand = [...compHand, ...uniqueDrawnCards];
-            }
+            compHand = [...compHand, ...uniqueDrawnCards];
+          }
+        } else {
+          if (currentDeck.length >= 2) {
+            const cardsToTradeCount = Math.min(3, currentDeck.length);
+            const tradedCards = compHand.slice(0, cardsToTradeCount);
+            const remainingHand = compHand.slice(cardsToTradeCount);
+            const drawnCards = currentDeck.slice(0, cardsToTradeCount);
+
+            currentDeck = [
+              ...currentDeck.slice(cardsToTradeCount),
+              ...tradedCards,
+            ].sort(() => Math.random() - 0.5);
+
+            const existingRemainingIds = new Set(
+              remainingHand.map((c) => c.id),
+            );
+            const uniqueDrawnCards = drawnCards.filter(
+              (c) => !existingRemainingIds.has(c.id),
+            );
+
+            compHand = [...remainingHand, ...uniqueDrawnCards];
+            statusAnnouncement = `${gameState.botName} traded ${cardsToTradeCount} cards — your turn!`;
           } else {
-            if (currentDeck.length >= 2) {
-              const cardsToTradeCount = Math.min(3, currentDeck.length);
-              const tradedCards = compHand.slice(0, cardsToTradeCount);
-              const remainingHand = compHand.slice(cardsToTradeCount);
-              const drawnCards = currentDeck.slice(0, cardsToTradeCount);
-
-              currentDeck = [
-                ...currentDeck.slice(cardsToTradeCount),
-                ...tradedCards,
-              ].sort(() => Math.random() - 0.5);
-
-              const existingRemainingIds = new Set(
-                remainingHand.map((c) => c.id),
-              );
-              const uniqueDrawnCards = drawnCards.filter(
-                (c) => !existingRemainingIds.has(c.id),
-              );
-
-              compHand = [...remainingHand, ...uniqueDrawnCards];
-              statusAnnouncement = `${gameState.botName} traded ${cardsToTradeCount} cards — your turn!`;
-            } else {
-              statusAnnouncement = `${gameState.botName} passed — your turn!`;
-            }
+            statusAnnouncement = `${gameState.botName} passed — your turn!`;
           }
+        }
 
-          setAiStatusText(statusAnnouncement);
+        setAiStatusText(statusAnnouncement);
 
-          const timer3 = setTimeout(() => {
-            setGameState((prev) => ({
+        const timer3 = setTimeout(() => {
+          setGameState((prev) => {
+            const updatedMatchScores = {
+              human: humanMatchScore,
+              computer: compMatchScore,
+            };
+
+            // 🏁 Check if the 100-card deck is empty and Monica emptied her hand
+            const isMatchOver =
+              currentDeck.length === 0 && compHand.length === 0;
+            let matchWinner: PlayerId | "tie" | null = null;
+
+            if (isMatchOver) {
+              if (updatedMatchScores.human > updatedMatchScores.computer) {
+                matchWinner = "human";
+              } else if (
+                updatedMatchScores.computer > updatedMatchScores.human
+              ) {
+                matchWinner = "computer";
+              } else {
+                matchWinner = "tie";
+              }
+
+              // 📊 UPDATE CAREER STATS ON MATCH END
+              const didHumanWin = matchWinner === "human";
+              const wordsPlayedSnapshot = [...matchWordsRef.current];
+              matchWordsRef.current = [];
+
+              updateStats((currentStats: GameStatistics) =>
+                calculateUpdatedStats(currentStats, {
+                  didWin: didHumanWin,
+                  scoringMode: prev.scoringMode,
+                  wordsPlayedThisMatch: wordsPlayedSnapshot,
+                }),
+              );
+            }
+
+            return {
               ...prev,
               wordBoard: newBoard,
-              roundScores: {
-                human: humanRoundScore,
-                computer: compRoundScore,
-              },
+              matchScores: updatedMatchScores,
               computerHand: compHand,
               deck: currentDeck,
               isFirstTurn: false,
-              currentTurn: "human",
+              currentTurn: isMatchOver ? "computer" : "human",
               consecutivePasses: aiPlayedWord ? 0 : prev.consecutivePasses + 1,
-            }));
+              isGameOver: isMatchOver,
+              winner: matchWinner,
+            };
+          });
 
-            setIsAiThinking(false);
-
-            if (compHand.length === 0 && currentDeck.length === 0) {
-              handleEndRound("went_out");
-            }
-          }, 3500);
-
-          return () => clearTimeout(timer3);
+          setIsAiThinking(false);
         }, 3500);
 
-        return () => clearTimeout(timer2);
-      }, 4500);
+        return () => clearTimeout(timer3);
+      }, 3500);
 
-      return () => {
-        clearTimeout(timer0);
-        clearTimeout(timer1);
-      };
-    }
-  }, [gameState.currentTurn, gameState.isRoundOver]);
+      return () => clearTimeout(timer2);
+    }, 4500);
+
+    return () => {
+      clearTimeout(timer0);
+      clearTimeout(timer1);
+    };
+  }, [gameState.currentTurn]);
 
   const handleConfirmSwapOrSkip = (selectedCardIds: string[]) => {
     if (selectedCardIds.length === 0) {
       // ⏭️ SKIP TURN
-      setGameState((prev) => ({
-        ...prev,
-        currentTurn: "computer",
-        consecutivePasses: prev.consecutivePasses + 1,
-        hasPlayedThisTurn: false,
-      }));
+      setGameState((prev) => {
+        const nextPasses = prev.consecutivePasses + 1;
+
+        // 🏁 Check for Stalemate Game Over (4 passes with empty deck OR 8 consecutive passes)
+        const isStalemate =
+          nextPasses >= 8 || (prev.deck.length === 0 && nextPasses >= 4);
+
+        let matchWinner: "human" | "computer" | "tie" | null = prev.winner;
+
+        if (isStalemate) {
+          if (prev.matchScores.human > prev.matchScores.computer) {
+            matchWinner = "human";
+          } else if (prev.matchScores.computer > prev.matchScores.human) {
+            matchWinner = "computer";
+          } else {
+            matchWinner = "tie";
+          }
+
+          // 📊 Record match stats on stalemate game over
+          const didHumanWin = matchWinner === "human";
+          const wordsPlayedSnapshot = [...matchWordsRef.current];
+          matchWordsRef.current = [];
+
+          updateStats((currentStats: GameStatistics) =>
+            calculateUpdatedStats(currentStats, {
+              didWin: didHumanWin,
+              scoringMode: prev.scoringMode,
+              wordsPlayedThisMatch: wordsPlayedSnapshot,
+            }),
+          );
+        }
+
+        return {
+          ...prev,
+          currentTurn: isStalemate ? "human" : "computer",
+          consecutivePasses: nextPasses,
+          hasPlayedThisTurn: false,
+          isGameOver: isStalemate,
+          winner: matchWinner,
+        };
+      });
+
       setAiStatusText(`You skipped your turn. ${gameState.botName} is up...`);
     } else {
       // 🔀 SWAP TILES
@@ -1388,13 +1385,42 @@ export function App() {
       // 🔄 Compute replenishment using the latest previous state
       const { newHand, newDeck } = replenishHand(prev.humanHand, prev.deck, 8);
 
+      // 🏁 Match Over Condition: Deck is empty and hand is exhausted
+      const isMatchOver = newDeck.length === 0 && newHand.length === 0;
+      let matchWinner: "human" | "computer" | "tie" | null = prev.winner;
+
+      if (isMatchOver) {
+        if (prev.matchScores.human > prev.matchScores.computer) {
+          matchWinner = "human";
+        } else if (prev.matchScores.computer > prev.matchScores.human) {
+          matchWinner = "computer";
+        } else {
+          matchWinner = "tie";
+        }
+
+        // 📊 Record match stats
+        const didHumanWin = matchWinner === "human";
+        const wordsPlayedSnapshot = [...matchWordsRef.current];
+        matchWordsRef.current = [];
+
+        updateStats((currentStats: GameStatistics) =>
+          calculateUpdatedStats(currentStats, {
+            didWin: didHumanWin,
+            scoringMode: prev.scoringMode,
+            wordsPlayedThisMatch: wordsPlayedSnapshot,
+          }),
+        );
+      }
+
       return {
         ...prev,
         humanHand: newHand,
         deck: newDeck,
-        currentTurn: "computer",
+        currentTurn: isMatchOver ? "human" : "computer",
         hasPlayedThisTurn: false,
         consecutivePasses: 0,
+        isGameOver: isMatchOver,
+        winner: matchWinner,
       };
     });
 
@@ -1405,155 +1431,61 @@ export function App() {
     setTargetBoardWord(null);
   };
   // --- ROUND END HANDLER ---
-  const handleEndRound = (
-    endInput:
-      | "went_out"
-      | "stalemate"
-      | { reason: "went_out" | "stalemate"; winner?: string },
-  ): void => {
-    // 🛡️ ULTRA-STRONG GUARD: If round is already over, completely exit out!
-    if (gameState.isRoundOver) return;
+  const checkAndFinalizeMatch = (
+    currentDeck: Card[],
+    humanHand: Card[],
+    computerHand: Card[],
+  ) => {
+    if (
+      currentDeck.length === 0 &&
+      (humanHand.length === 0 || computerHand.length === 0)
+    ) {
+      const finalHumanScore = gameState.matchScores.human;
+      const finalComputerScore = gameState.matchScores.computer;
 
-    // Extract the reason string whether an object or string was passed
-    const reason = typeof endInput === "object" ? endInput.reason : endInput;
+      let matchWinner: "human" | "computer" | "tie" = "tie";
+      if (finalHumanScore > finalComputerScore) matchWinner = "human";
+      else if (finalComputerScore > finalHumanScore) matchWinner = "computer";
 
-    let matchEndedThisRound = false;
-    let didHumanWin = false;
-    let currentScoringMode: ScoringMode = "cutthroat";
-    let wordsPlayedSnapshot: any[] = [];
+      const didHumanWin = matchWinner === "human";
+      const wordsPlayedSnapshot = [...matchWordsRef.current];
+      matchWordsRef.current = [];
 
-    setGameState((prev) => {
-      // 🛡️ CRITICAL GUARD: Prevent running twice if round is already ended
-      if (prev.isRoundOver) return prev;
-
-      currentScoringMode = prev.scoringMode;
-
-      // 1. Determine penalties (0 penalty if a player's hand is completely empty)
-      const humanPenalty =
-        prev.humanHand.length === 0 ? 0 : calculateHandPenalty(prev.humanHand);
-
-      const computerPenalty =
-        prev.computerHand.length === 0
-          ? 0
-          : calculateHandPenalty(prev.computerHand);
-
-      // 2. Net round score (Gross minus Penalty)
-      const netHumanRoundScore = prev.roundScores.human - humanPenalty;
-      const netCompRoundScore = prev.roundScores.computer - computerPenalty;
-
-      // 3. Add net round score to cumulative match scores
-      const newMatchScores = {
-        human: prev.matchScores.human + netHumanRoundScore,
-        computer: prev.matchScores.computer + netCompRoundScore,
-      };
-      console.log("--- ROUND END DEBUG ---");
-      console.log(
-        "Previous Cumulative Match Score (Human):",
-        prev.matchScores.human,
-      );
-      console.log("Round Gross Score (Human):", prev.roundScores.human);
-      console.log("Round Penalty (Human):", humanPenalty);
-      console.log("Net Round Score (Human):", netHumanRoundScore);
-      console.log("New Total Match Score (Human):", newMatchScores.human);
-
-      // 4. Check Match Winner (500 pts)
-      const isMatchOver =
-        newMatchScores.human >= 100 || newMatchScores.computer >= 100;
-      let matchWinner: "human" | "computer" | "tie" | null = null;
-      console.log("Is Match Over?:", isMatchOver);
-
-      if (isMatchOver) {
-        matchEndedThisRound = true;
-        if (newMatchScores.human > newMatchScores.computer)
-          matchWinner = "human";
-        else if (newMatchScores.computer > newMatchScores.human)
-          matchWinner = "computer";
-        else matchWinner = "tie";
-
-        didHumanWin = matchWinner === "human";
-        wordsPlayedSnapshot = [...matchWordsRef.current];
-        matchWordsRef.current = [];
-      }
-
-      return {
+      setGameState((prev) => ({
         ...prev,
-        matchScores: newMatchScores,
-        isRoundOver: true,
-        roundEndReason: reason,
-        lastRoundPenalties: { human: humanPenalty, computer: computerPenalty },
-        isGameOver: isMatchOver,
+        isGameOver: true,
         winner: matchWinner,
-      };
-    });
+      }));
 
-    // 📊 Trigger persistent stats update immediately if the match ended
-    if (matchEndedThisRound) {
+      // Update career stats for the finished match
       updateStats((currentStats: GameStatistics) =>
         calculateUpdatedStats(currentStats, {
           didWin: didHumanWin,
-          scoringMode: currentScoringMode,
+          scoringMode: gameState.scoringMode,
           wordsPlayedThisMatch: wordsPlayedSnapshot,
         }),
       );
     }
   };
-  // --- START NEXT ROUND HANDLER ---
-  const handleStartNextRound = () => {
-    // Re-initialize fresh deck and 8-card hands
-    const deal = dealNewGame();
 
-    setGameState((prev) => {
-      const nextRoundNum = prev.roundNumber + 1;
-
-      // Alternate starting player each round
-      const nextTurn =
-        nextRoundNum % 2 !== 0
-          ? matchFirstStarter
-          : matchFirstStarter === "human"
-            ? "computer"
-            : "human";
-
-      return {
-        ...prev,
-        roundNumber: nextRoundNum,
-        roundScores: { human: 0, computer: 0 },
-        consecutivePasses: 0,
-        humanHand: deal.humanHand,
-        computerHand: deal.computerHand,
-        deck: deal.deck, // 👈 Unified 100-card deck
-        wordBoard: [],
-        currentTurn: nextTurn,
-        isFirstTurn: true, // 👈 Enforce Turn 1 rules for the new round
-        isRoundOver: false,
-        roundEndReason: null,
-      };
-    });
-
-    // Reset workspace staging state
-    setStagedCards([]);
-    setTargetBoardWord(null);
-  };
-
+  // --- START NEW MATCH HANDLER ---
   // --- START NEW MATCH HANDLER ---
   const handleStartNewMatch = () => {
     const deal = dealNewGame();
 
-    // 🎲 50/50 coin toss to decide who starts Round 1 of the new match
-    const openingTurn = Math.random() < 0.5 ? "human" : "computer";
-
-    // Remember who started Round 1 so future rounds alternate correctly
-    setMatchFirstStarter(openingTurn);
+    // 🎲 50/50 coin toss to decide who starts the new match
+    const openingTurn: PlayerId = Math.random() < 0.5 ? "human" : "computer";
 
     const starterDisplayName = openingTurn === "human" ? " You!" : " Monica!";
-    const tossMsg = `🎲 Coin Toss: Winner is${starterDisplayName} ${openingTurn === "human" ? "Make your move." : "Monica will start."}`;
+    const tossMsg = `🎲 Coin Toss: Winner is${starterDisplayName} ${
+      openingTurn === "human" ? "Make your move." : "Monica will start."
+    }`;
 
     // Set initial announcement message
     setAiStatusText(tossMsg);
 
     setGameState({
       matchScores: { human: 0, computer: 0 },
-      roundScores: { human: 0, computer: 0 },
-      roundNumber: 1,
       consecutivePasses: 0,
       botName: "Monica",
       aiDifficulty: "medium",
@@ -1565,8 +1497,6 @@ export function App() {
       currentTurn: openingTurn,
       isFirstTurn: true,
       hasPlayedThisTurn: false,
-      isRoundOver: false,
-      roundEndReason: null,
       isGameOver: false,
       winner: null,
     });
@@ -1575,6 +1505,12 @@ export function App() {
     setStagedCards([]);
     setTargetBoardWord(null);
   };
+
+  useEffect(() => {
+    if (gameState.isGameOver) {
+      setIsStatsModalOpen(true);
+    }
+  }, [gameState.isGameOver]);
 
   // -------------------------------------------------------------
   // 1. EARLY RETURN FOR MAIN MENU / LANDING VIEW
@@ -1617,10 +1553,10 @@ export function App() {
       <div className="flex flex-col gap-1 py-1.5 px-3 bg-neutral-900/90 rounded-xl border border-neutral-800 shadow-md">
         {/* Scoreboard Row */}
         <div className="flex justify-between items-center text-xs pb-0.5 border-b border-neutral-800/80">
-          {/* Round, Goal & Color-Coded Deck Badge */}
+          {/* Deck Remaining Badge / Score Indicator */}
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
-              R{gameState.roundNumber}
+              Deck: {gameState.deck.length}
             </span>
           </div>
 
@@ -1793,12 +1729,6 @@ export function App() {
         }}
       />
 
-      <RoundEndModal
-        gameState={gameState}
-        onNextRound={handleStartNextRound}
-        onNewMatch={handleStartNewMatch}
-      />
-
       <RulesModal isOpen={isRulesOpen} onClose={() => setIsRulesOpen(false)} />
 
       {pendingWildCard && (
@@ -1819,9 +1749,13 @@ export function App() {
       <StatsModal
         isOpen={isStatsModalOpen}
         stats={stats}
-        onClose={() => {
-          console.log("❌ CLOSING MODAL: Setting isStatsModalOpen to FALSE");
+        isGameOver={gameState.isGameOver}
+        winner={gameState.winner}
+        matchScores={gameState.matchScores}
+        onClose={() => setIsStatsModalOpen(false)}
+        onNewMatch={() => {
           setIsStatsModalOpen(false);
+          handleStartNewMatch();
         }}
       />
     </div>

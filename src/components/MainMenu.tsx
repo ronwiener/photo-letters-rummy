@@ -42,17 +42,18 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         <span className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-3">
           Word Card Game
         </span>
-        <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
+        <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
           PHOTO LETTER RUMMY
         </h1>
         <h2 className="text-base text-neutral-400 mt-2 max-w-xs leading-relaxed">
-          Form words, extend board plays, and race against {botName} to reach
-          1000 points!
+          Colorful and fun word building card game. Create your own word or
+          steal your opponent's word by rearranging or adding on. Highest point
+          total at the end of the game is the winner!
         </h2>
       </div>
 
       {/* Main Options Card */}
-      <div className="w-full max-w-xs flex flex-col gap-4 z-10 bg-neutral-900/80 p-6 rounded-3xl border border-neutral-800 backdrop-blur-md shadow-2xl">
+      <div className="w-full max-w-xs flex flex-col gap-5 z-10 bg-neutral-900/80 p-6 rounded-3xl border border-neutral-800 backdrop-blur-md shadow-2xl">
         {/* Play Button */}
         <button
           onClick={onStartMatch}
