@@ -4,13 +4,11 @@ import type { GameStatistics, PlayerId } from "../types/game";
 interface StatsModalProps {
   isOpen: boolean;
   stats: GameStatistics;
-  isGameOver?: boolean;
-  winner?: "human" | "computer" | "tie" | "draw" | PlayerId | null;
-  matchScores?: { human: number; computer: number };
   onClose: () => void;
-  onNewMatch?: () => void;
-  wins: number;
-  losses: number;
+  isGameOver?: boolean; // 👈 Must be optional
+  winner?: "human" | "computer" | "tie" | "draw" | PlayerId | null; // 👈 Must be optional
+  matchScores?: { human: number; computer: number }; // 👈 Must be optional
+  onNewMatch?: () => void; // 👈 Must be optional
 }
 
 export const StatsModal: React.FC<StatsModalProps> = ({
