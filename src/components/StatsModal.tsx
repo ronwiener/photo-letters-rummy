@@ -4,11 +4,11 @@ import type { GameStatistics, PlayerId } from "../types/game";
 interface StatsModalProps {
   isOpen: boolean;
   stats: GameStatistics;
+  isGameOver?: boolean;
+  winner?: "human" | "computer" | "tie" | "draw" | PlayerId | null;
+  matchScores?: { human: number; computer: number };
   onClose: () => void;
-  isGameOver?: boolean; // 👈 Must be optional
-  winner?: "human" | "computer" | "tie" | "draw" | PlayerId | null; // 👈 Must be optional
-  matchScores?: { human: number; computer: number }; // 👈 Must be optional
-  onNewMatch?: () => void; // 👈 Must be optional
+  onNewMatch?: () => void;
 }
 
 export const StatsModal: React.FC<StatsModalProps> = ({
@@ -19,15 +19,13 @@ export const StatsModal: React.FC<StatsModalProps> = ({
   matchScores,
   onClose,
   onNewMatch,
-  wins,
-  losses,
 }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl text-white flex flex-col gap-4">
-        {/* Game Over Banner (Renders if open via Game Over) */}
+        {/* Game Over Banner */}
         {isGameOver && (
           <div className="text-center bg-neutral-800/80 p-3 rounded-xl border border-amber-500/30">
             <h2 className="text-xl font-black tracking-wide text-amber-400">
@@ -59,7 +57,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </button>
         </div>
 
-        {/* Existing Stats Display (Wins, Losses, High Scores, Words) */}
+        {/* Stats Display */}
         <div className="flex flex-col gap-2 text-xs">
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Matches Played:</span>
@@ -67,13 +65,11 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Wins:</span>
-            <span className="font-bold text-emerald-400">{wins}</span>{" "}
-            {/* 👈 Use prop */}
+            <span className="font-bold text-emerald-400">{stats.wins}</span>
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Losses:</span>
-            <span className="font-bold text-rose-400">{losses}</span>{" "}
-            {/* 👈 Use prop */}
+            <span className="font-bold text-rose-400">{stats.losses}</span>
           </div>
         </div>
 
