@@ -3,8 +3,8 @@ import type { ScoringMode } from "../types/game";
 
 interface MatchResultArgs {
   didWin: boolean;
-  scoringMode: ScoringMode; // e.g., 'cutthroat' | 'accumulator'
-  wordsPlayedThisMatch: { word: string; score: number }[];
+  scoringMode: ScoringMode;
+  wordsPlayedThisMatch: { word: string; score: number; playerId: string }[]; // 👈 Add playerId
 }
 
 export const calculateUpdatedStats = (

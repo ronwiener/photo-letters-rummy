@@ -132,8 +132,9 @@ export function App() {
     });
   };
 
-  // ✅ Declare matchWordsRef at the top level
-  const matchWordsRef = useRef<{ word: string; score: number }[]>([]);
+  const matchWordsRef = useRef<
+    { word: string; score: number; playerId: "human" | "computer" }[]
+  >([]);
 
   const stagedWordText = getConstructedWord(stagedCards);
   const wordValid = isValidWord(stagedWordText);
@@ -646,6 +647,7 @@ export function App() {
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
+        playerId: "human", // 👈 Mark as human
       });
 
       const existingHistory = targetBoardWord.history || [];
@@ -735,7 +737,10 @@ export function App() {
           calculateUpdatedStats(currentStats, {
             didWin: didHumanWin,
             scoringMode: gameState.scoringMode,
-            wordsPlayedThisMatch: wordsPlayedSnapshot,
+            // 👈 Filter to only include words played by the human player
+            wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+              (word) => word.playerId === "human", // (or word.player === "human" depending on your property name)
+            ),
           }),
         );
       }
@@ -758,6 +763,7 @@ export function App() {
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
+        playerId: "human",
       });
 
       const newPlayedWord: PlayedWord = {
@@ -821,7 +827,10 @@ export function App() {
           calculateUpdatedStats(currentStats, {
             didWin: didHumanWin,
             scoringMode: gameState.scoringMode,
-            wordsPlayedThisMatch: wordsPlayedSnapshot,
+            // 👈 Filter to only include human words
+            wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+              (word) => word.playerId === "human",
+            ),
           }),
         );
       }
@@ -1094,6 +1103,13 @@ export function App() {
 
           compMatchScore += pointsAwarded;
 
+          // 📊 RECORD MONICA'S STEAL FOR MATCH HISTORY
+          matchWordsRef.current.push({
+            word: stealCandidate.newWordText,
+            score: pointsAwarded,
+            playerId: "computer",
+          });
+
           if (previousOwner === "human") {
             const stolenWordText =
               targetWord?.word || targetWord?.originalWord || "your word";
@@ -1182,6 +1198,12 @@ export function App() {
                   },
                 ],
               });
+              // 📊 RECORD MONICA'S PLAY FOR MATCH HISTORY
+              matchWordsRef.current.push({
+                word: playResult.wordText,
+                score: playResult.score,
+                playerId: "computer", // 👈 Mark as computer
+              });
             } else if (
               !isFirstTurn &&
               playResult.type === "extension" &&
@@ -1217,6 +1239,13 @@ export function App() {
               );
 
               compMatchScore += pointsAwarded;
+
+              // 📊 RECORD MONICA'S EXTENSION FOR MATCH HISTORY
+              matchWordsRef.current.push({
+                word: playResult.wordText,
+                score: pointsAwarded,
+                playerId: "computer",
+              });
 
               if (previousOwner === "human") {
                 if (gameState.scoringMode === "cutthroat") {
@@ -1349,7 +1378,9 @@ export function App() {
                 calculateUpdatedStats(currentStats, {
                   didWin: didHumanWin,
                   scoringMode: prev.scoringMode,
-                  wordsPlayedThisMatch: wordsPlayedSnapshot,
+                  wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+                    (word) => word.playerId === "human",
+                  ),
                 }),
               );
             }
