@@ -104,6 +104,8 @@ export function App() {
       : {
           gamesPlayed: 0,
           gamesWon: 0,
+          wins: 0,
+          losses: 0,
           totalWordsPlayed: 0,
           highestScoringWord: { word: "", score: 0 },
           longestWord: "",
@@ -1592,8 +1594,6 @@ export function App() {
         <StatsModal
           isOpen={isStatsModalOpen}
           stats={stats}
-          wins={stats.wins}
-          losses={stats.losses}
           onClose={() => setIsStatsModalOpen(false)}
         />
       </>
