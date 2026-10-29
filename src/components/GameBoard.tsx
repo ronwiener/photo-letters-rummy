@@ -42,7 +42,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             You
           </span>
           <span className="text-base font-extrabold text-cyan-400">
-            {gameState?.roundScores?.human ?? 0}{" "}
+            {gameState?.matchScores?.human ?? 0}{" "}
             <span className="text-[10px] font-semibold text-neutral-500">
               pts
             </span>
@@ -54,7 +54,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         {/* Monica Score & Hand Count */}
         <div className="flex items-baseline gap-1.5">
           <span className="text-base font-extrabold text-pink-400">
-            {gameState?.roundScores?.computer ?? 0}{" "}
+            {gameState?.matchScores?.computer ?? 0}{" "}
             <span className="text-[10px] font-semibold text-neutral-500">
               pts
             </span>

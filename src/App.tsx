@@ -88,9 +88,7 @@ export function App() {
   const [isGameActive, setIsGameActive] = useState<boolean>(false);
   const [isRulesOpen, setIsRulesOpen] = useState<boolean>(false);
   const [pendingWildCard, setPendingWildCard] = useState<Card | null>(null);
-  const [matchFirstStarter, setMatchFirstStarter] = useState<
-    "human" | "computer"
-  >("human");
+
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
   const [selectedTradeCardIds, setSelectedTradeCardIds] = useState<string[]>(
     [],
@@ -682,33 +680,74 @@ export function App() {
       const previousOwner = targetBoardWord.playedBy;
       const previousScore = targetBoardWord.scoreAwarded || 0;
 
-      setGameState((prev) => {
-        const updatedMatchScores = { ...prev.matchScores };
+      // 🏁 Check if match ends right here (deck empty and hand fully played out)
+      const isMatchOver =
+        updatedDeck.length === 0 && remainingHand.length === 0;
 
-        // 🗡️ CUTTHROAT MODE: Deduct stolen word's score from opponent
-        if (
-          prev.scoringMode === "cutthroat" &&
-          isOpponentWord &&
-          previousOwner &&
-          previousOwner !== "human"
-        ) {
-          updatedMatchScores[previousOwner] = Math.max(
-            0,
-            updatedMatchScores[previousOwner] - previousScore,
-          );
+      let finalMatchScores = {
+        human: gameState.matchScores.human + pointsAwarded,
+        computer: gameState.matchScores.computer,
+      };
+
+      // 🗡️ CUTTHROAT MODE: Deduct stolen word's score from opponent
+      if (
+        gameState.scoringMode === "cutthroat" &&
+        isOpponentWord &&
+        previousOwner &&
+        previousOwner !== "human"
+      ) {
+        finalMatchScores[previousOwner] = Math.max(
+          0,
+          finalMatchScores[previousOwner] - previousScore,
+        );
+      }
+
+      let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
+
+      if (isMatchOver) {
+        const humanPenalty = calculateHandPenalty(remainingHand);
+        const compPenalty = calculateHandPenalty(gameState.computerHand);
+
+        finalMatchScores.human = Math.max(
+          0,
+          finalMatchScores.human - humanPenalty,
+        );
+        finalMatchScores.computer = Math.max(
+          0,
+          finalMatchScores.computer - compPenalty,
+        );
+
+        if (finalMatchScores.human > finalMatchScores.computer) {
+          matchWinner = "human";
+        } else if (finalMatchScores.computer > finalMatchScores.human) {
+          matchWinner = "computer";
+        } else {
+          matchWinner = "tie";
         }
 
-        updatedMatchScores.human += pointsAwarded;
+        const didHumanWin = matchWinner === "human";
+        const wordsPlayedSnapshot = [...matchWordsRef.current];
+        matchWordsRef.current = [];
 
-        return {
-          ...prev,
-          wordBoard: updatedWordBoard,
-          matchScores: updatedMatchScores,
-          humanHand: remainingHand,
-          hasPlayedThisTurn: true,
-          consecutivePasses: 0,
-        };
-      });
+        updateStats((currentStats: GameStatistics) =>
+          calculateUpdatedStats(currentStats, {
+            didWin: didHumanWin,
+            scoringMode: gameState.scoringMode,
+            wordsPlayedThisMatch: wordsPlayedSnapshot,
+          }),
+        );
+      }
+
+      setGameState((prev) => ({
+        ...prev,
+        wordBoard: updatedWordBoard,
+        matchScores: finalMatchScores,
+        humanHand: remainingHand,
+        hasPlayedThisTurn: !isMatchOver,
+        consecutivePasses: 0,
+        isGameOver: isMatchOver,
+        winner: matchWinner,
+      }));
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
       const pointsAwarded = calculateWordPoints(stagedCards);
@@ -741,15 +780,51 @@ export function App() {
       );
 
       // 🏁 Check if deck is empty and hand is empty
-      if (updatedDeck.length === 0 && remainingHand.length === 0) {
-        checkAndFinalizeMatch(
-          updatedDeck,
-          remainingHand,
-          gameState.computerHand,
+      const isMatchOver =
+        updatedDeck.length === 0 && remainingHand.length === 0;
+
+      let finalMatchScores = {
+        human: gameState.matchScores.human + pointsAwarded,
+        computer: gameState.matchScores.computer,
+      };
+
+      let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
+
+      if (isMatchOver) {
+        const humanPenalty = calculateHandPenalty(remainingHand);
+        const compPenalty = calculateHandPenalty(gameState.computerHand);
+
+        finalMatchScores.human = Math.max(
+          0,
+          finalMatchScores.human - humanPenalty,
+        );
+        finalMatchScores.computer = Math.max(
+          0,
+          finalMatchScores.computer - compPenalty,
+        );
+
+        if (finalMatchScores.human > finalMatchScores.computer) {
+          matchWinner = "human";
+        } else if (finalMatchScores.computer > finalMatchScores.human) {
+          matchWinner = "computer";
+        } else {
+          matchWinner = "tie";
+        }
+
+        const didHumanWin = matchWinner === "human";
+        const wordsPlayedSnapshot = [...matchWordsRef.current];
+        matchWordsRef.current = [];
+
+        updateStats((currentStats: GameStatistics) =>
+          calculateUpdatedStats(currentStats, {
+            didWin: didHumanWin,
+            scoringMode: gameState.scoringMode,
+            wordsPlayedThisMatch: wordsPlayedSnapshot,
+          }),
         );
       }
 
-      if (gameState.isFirstTurn) {
+      if (gameState.isFirstTurn && !isMatchOver) {
         // 🔄 TURN 1 END OF TURN: Refill hand to 8 cards & PASS TURN TO MONICA
         const cardsNeeded = 8 - remainingHand.length;
         const drawnCards = updatedDeck.slice(0, cardsNeeded);
@@ -761,10 +836,7 @@ export function App() {
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
-          matchScores: {
-            ...prev.matchScores,
-            human: prev.matchScores.human + pointsAwarded,
-          },
+          matchScores: finalMatchScores,
           humanHand: refilledHand,
           deck: updatedDeck,
           isFirstTurn: false,
@@ -776,13 +848,12 @@ export function App() {
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
-          matchScores: {
-            ...prev.matchScores,
-            human: prev.matchScores.human + pointsAwarded,
-          },
+          matchScores: finalMatchScores,
           humanHand: remainingHand,
-          hasPlayedThisTurn: true,
+          hasPlayedThisTurn: !isMatchOver,
           consecutivePasses: 0,
+          isGameOver: isMatchOver,
+          winner: matchWinner,
         }));
       }
     }
@@ -1237,15 +1308,24 @@ export function App() {
 
         const timer3 = setTimeout(() => {
           setGameState((prev) => {
+            // 🏁 Check if the 100-card deck is empty and Monica emptied her hand (or human hand is empty)
+            const isMatchOver =
+              currentDeck.length === 0 &&
+              (compHand.length === 0 || prev.humanHand.length === 0);
+
+            // Calculate final hand penalties
+            const humanPenalty = calculateHandPenalty(prev.humanHand);
+            const compPenalty = calculateHandPenalty(compHand);
+
+            const finalHumanScore = Math.max(0, humanMatchScore - humanPenalty);
+            const finalCompScore = Math.max(0, compMatchScore - compPenalty);
+
             const updatedMatchScores = {
-              human: humanMatchScore,
-              computer: compMatchScore,
+              human: finalHumanScore,
+              computer: finalCompScore,
             };
 
-            // 🏁 Check if the 100-card deck is empty and Monica emptied her hand
-            const isMatchOver =
-              currentDeck.length === 0 && compHand.length === 0;
-            let matchWinner: PlayerId | "tie" | null = null;
+            let matchWinner: PlayerId | "tie" | "draw" | null = null;
 
             if (isMatchOver) {
               if (updatedMatchScores.human > updatedMatchScores.computer) {
@@ -1275,7 +1355,9 @@ export function App() {
             return {
               ...prev,
               wordBoard: newBoard,
-              matchScores: updatedMatchScores,
+              matchScores: isMatchOver
+                ? updatedMatchScores
+                : { human: humanMatchScore, computer: compMatchScore },
               computerHand: compHand,
               deck: currentDeck,
               isFirstTurn: false,
@@ -1311,7 +1393,13 @@ export function App() {
         const isStalemate =
           nextPasses >= 8 || (prev.deck.length === 0 && nextPasses >= 4);
 
-        let matchWinner: "human" | "computer" | "tie" | null = prev.winner;
+        let matchWinner:
+          | "human"
+          | "computer"
+          | "tie"
+          | "draw"
+          | PlayerId
+          | null = prev.winner;
 
         if (isStalemate) {
           if (prev.matchScores.human > prev.matchScores.computer) {
@@ -1430,45 +1518,7 @@ export function App() {
     setStagedCards([]);
     setTargetBoardWord(null);
   };
-  // --- ROUND END HANDLER ---
-  const checkAndFinalizeMatch = (
-    currentDeck: Card[],
-    humanHand: Card[],
-    computerHand: Card[],
-  ) => {
-    if (
-      currentDeck.length === 0 &&
-      (humanHand.length === 0 || computerHand.length === 0)
-    ) {
-      const finalHumanScore = gameState.matchScores.human;
-      const finalComputerScore = gameState.matchScores.computer;
 
-      let matchWinner: "human" | "computer" | "tie" = "tie";
-      if (finalHumanScore > finalComputerScore) matchWinner = "human";
-      else if (finalComputerScore > finalHumanScore) matchWinner = "computer";
-
-      const didHumanWin = matchWinner === "human";
-      const wordsPlayedSnapshot = [...matchWordsRef.current];
-      matchWordsRef.current = [];
-
-      setGameState((prev) => ({
-        ...prev,
-        isGameOver: true,
-        winner: matchWinner,
-      }));
-
-      // Update career stats for the finished match
-      updateStats((currentStats: GameStatistics) =>
-        calculateUpdatedStats(currentStats, {
-          didWin: didHumanWin,
-          scoringMode: gameState.scoringMode,
-          wordsPlayedThisMatch: wordsPlayedSnapshot,
-        }),
-      );
-    }
-  };
-
-  // --- START NEW MATCH HANDLER ---
   // --- START NEW MATCH HANDLER ---
   const handleStartNewMatch = () => {
     const deal = dealNewGame();
@@ -1541,6 +1591,8 @@ export function App() {
         <StatsModal
           isOpen={isStatsModalOpen}
           stats={stats}
+          wins={stats.wins}
+          losses={stats.losses}
           onClose={() => setIsStatsModalOpen(false)}
         />
       </>

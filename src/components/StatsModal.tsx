@@ -65,11 +65,15 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Wins:</span>
-            <span className="font-bold text-emerald-400">{stats.wins}</span>
+            <span className="font-bold text-emerald-400">
+              {stats.wins}
+            </span>{" "}
+            {/* 👈 Use prop */}
           </div>
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Losses:</span>
-            <span className="font-bold text-rose-400">{stats.losses}</span>
+            <span className="font-bold text-rose-400">{stats.losses}</span>{" "}
+            {/* 👈 Use prop */}
           </div>
         </div>
 
