@@ -57,7 +57,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </button>
         </div>
 
-        {/* Stats Display */}
+        {/* Expanded Career Statistics Display */}
         <div className="flex flex-col gap-2 text-xs">
           <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
             <span className="text-neutral-400">Matches Played:</span>
@@ -71,6 +71,29 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             <span className="text-neutral-400">Losses:</span>
             <span className="font-bold text-rose-400">{stats.losses}</span>
           </div>
+          <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
+            <span className="text-neutral-400">Total Words Played:</span>
+            <span className="font-bold text-white">
+              {stats.totalWordsPlayed}
+            </span>
+          </div>
+          {stats.longestWord && (
+            <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
+              <span className="text-neutral-400">Longest Word:</span>
+              <span className="font-bold text-amber-300">
+                {stats.longestWord}
+              </span>
+            </div>
+          )}
+          {stats.highestScoringWord?.word && (
+            <div className="flex justify-between bg-neutral-800/50 p-2 rounded">
+              <span className="text-neutral-400">Highest Scoring Word:</span>
+              <span className="font-bold text-amber-300">
+                {stats.highestScoringWord.word} (
+                {stats.highestScoringWord.score} pts)
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons Footer */}
