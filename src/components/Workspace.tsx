@@ -12,18 +12,16 @@ interface WorkspaceProps {
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
   isValidWord: boolean;
+  potentialScore: number;
 }
 
 export const Workspace: React.FC<WorkspaceProps> = ({
   stagedCards,
   onRemoveCard,
   onClearWorkspace,
+  potentialScore,
   onSubmitWord,
 }) => {
-  // 🎯 Calculate potential score using individual card letter values + length bonus (2+ letters supported)
-  const potentialScore =
-    stagedCards.length >= 2 ? calculateWordPoints(stagedCards) : 0;
-
   // 🛡️ Compute the resolved word string and dictionary validation boolean locally
   const stagedWordText = stagedCards
     .map((c) =>
@@ -55,13 +53,10 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           disabled={stagedCards.length < 2 || !isValidWord}
           className={`px-3 py-1 text-[11px] font-black rounded-lg transition-all shadow-md ${
             stagedCards.length < 2
-              ? /* State 1: Need 2+ Letters */
-                "bg-neutral-800 text-amber-300 border-2 border-amber-500/70 opacity-100 cursor-not-allowed"
+              ? "bg-neutral-800 text-amber-300 border-2 border-amber-500/70 opacity-100 cursor-not-allowed"
               : !isValidWord
-                ? /* State 2: Invalid Word */
-                  "bg-rose-950 text-rose-200 border-2 border-rose-500 opacity-100 cursor-not-allowed"
-                : /* State 3: Valid Word */
-                  "bg-linear-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:to-cyan-400 text-slate-950 font-black border-2 border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)] active:scale-95 cursor-pointer"
+                ? "bg-rose-950 text-rose-200 border-2 border-rose-500 opacity-100 cursor-not-allowed"
+                : "bg-linear-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:to-cyan-400 text-slate-950 font-black border-2 border-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.5)] active:scale-95 cursor-pointer"
           }`}
         >
           {stagedCards.length < 2 ? (
@@ -74,7 +69,8 @@ export const Workspace: React.FC<WorkspaceProps> = ({
             </span>
           ) : (
             <span className="flex items-center gap-1 tracking-wide">
-              <span>✨</span> Play Word (+{potentialScore} pts)
+              <span>✨</span> Play Word (+{potentialScore} pts){" "}
+              {/* 👈 Displays exact calculated score */}
             </span>
           )}
         </button>

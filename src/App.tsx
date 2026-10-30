@@ -636,11 +636,13 @@ export function App() {
       const isOpponentWord = targetBoardWord.playedBy !== "human";
       const cardsAddedCount = newCardsFromHand.length;
 
+      // 🧮 EXACT SCORING USING scoreUtils
       let pointsAwarded = 0;
       if (isOpponentWord) {
         pointsAwarded = calculateStealScore(stagedCards, cardsAddedCount);
       } else {
-        pointsAwarded = calculateWordPoints(newCardsFromHand);
+        // For friendly extensions, score is calculated based on full staged word + length bonus rules via calculateWordPoints
+        pointsAwarded = calculateWordPoints(stagedCards);
       }
 
       // 📊 RECORD PLAYED WORD FOR CAREER STATS
@@ -675,10 +677,10 @@ export function App() {
         w.id === targetBoardWord.id ? updatedPlayedWord : w,
       );
 
-      // Remaining cards in hand after playing
+      // 🛡️ SAFE HAND CALCULATION: Filter out ONLY cards actively submitted from hand
+      const usedHandCardIds = new Set(newCardsFromHand.map((c) => c.id));
       const remainingHand = gameState.humanHand.filter(
-        (handCard) =>
-          !newCardsFromHand.some((played) => played.id === handCard.id),
+        (handCard) => !usedHandCardIds.has(handCard.id),
       );
 
       const previousOwner = targetBoardWord.playedBy;
@@ -737,9 +739,8 @@ export function App() {
           calculateUpdatedStats(currentStats, {
             didWin: didHumanWin,
             scoringMode: gameState.scoringMode,
-            // 👈 Filter to only include words played by the human player
             wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-              (word) => word.playerId === "human", // (or word.player === "human" depending on your property name)
+              (word) => word.playerId === "human",
             ),
           }),
         );
@@ -757,6 +758,7 @@ export function App() {
       }));
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
+      // 🧮 EXACT SCORING USING scoreUtils (includes letter sum + length bonus)
       const pointsAwarded = calculateWordPoints(stagedCards);
 
       // 📊 RECORD PLAYED WORD FOR CAREER STATS
@@ -782,9 +784,10 @@ export function App() {
         ],
       };
 
-      // Remaining cards in hand after playing
+      // 🛡️ SAFE HAND CALCULATION: Filter out ONLY cards actively submitted from hand
+      const usedHandCardIds = new Set(stagedCards.map((c) => c.id));
       const remainingHand = gameState.humanHand.filter(
-        (handCard) => !stagedCards.some((staged) => staged.id === handCard.id),
+        (handCard) => !usedHandCardIds.has(handCard.id),
       );
 
       // 🏁 Check if deck is empty and hand is empty
@@ -827,7 +830,6 @@ export function App() {
           calculateUpdatedStats(currentStats, {
             didWin: didHumanWin,
             scoringMode: gameState.scoringMode,
-            // 👈 Filter to only include human words
             wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
               (word) => word.playerId === "human",
             ),
@@ -1111,9 +1113,14 @@ export function App() {
           });
 
           if (previousOwner === "human") {
+            // 🛡️ Explicitly resolve the stolen word string with fallbacks
             const stolenWordText =
-              targetWord?.word || targetWord?.originalWord || "your word";
-            const newWordText = stealCandidate?.newWordText || "a new word";
+              targetWord.word ||
+              targetWord.originalWord ||
+              getConstructedWord(targetWord.cards) ||
+              "word";
+
+            const newWordText = stealCandidate.newWordText || "a new word";
 
             if (gameState.scoringMode === "cutthroat") {
               humanMatchScore = Math.max(0, humanMatchScore - previousScore);
@@ -1596,6 +1603,28 @@ export function App() {
     }
   }, [gameState.isGameOver]);
 
+  // 🧮 Compute exact potential score for the submit button preview
+  let potentialScore = 0;
+  if (stagedCards.length >= 2) {
+    const proposedWordText = getConstructedWord(stagedCards);
+    if (isValidWord(proposedWordText)) {
+      if (targetBoardWord !== null) {
+        const originalCardIds = new Set(targetBoardWord.cards.map((c) => c.id));
+        const newCardsFromHand = stagedCards.filter(
+          (c) => !originalCardIds.has(c.id),
+        );
+        const isOpponentWord = targetBoardWord.playedBy !== "human";
+        const cardsAddedCount = newCardsFromHand.length;
+
+        potentialScore = isOpponentWord
+          ? calculateStealScore(stagedCards, cardsAddedCount)
+          : calculateWordPoints(stagedCards);
+      } else {
+        potentialScore = calculateWordPoints(stagedCards);
+      }
+    }
+  }
+
   // -------------------------------------------------------------
   // 1. EARLY RETURN FOR MAIN MENU / LANDING VIEW
   // -------------------------------------------------------------
@@ -1757,6 +1786,7 @@ export function App() {
             onRemoveCard={handleUnstageCard}
             onStageCard={handleStageCard}
             onClearWorkspace={handleClearWorkspace}
+            potentialScore={potentialScore}
             onSubmitWord={handleSubmitWord}
             isValidWord={wordValid}
             onReorderCards={setStagedCards}
