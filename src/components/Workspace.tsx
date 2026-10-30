@@ -1,7 +1,6 @@
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import type { Card } from "../types/game";
 import { CardComponent } from "./CardComponent";
-import { calculateWordPoints } from "../utils/scoreUtils";
 import { isValidWord as checkDictionaryWord } from "../utils/wordChecker";
 
 interface WorkspaceProps {
