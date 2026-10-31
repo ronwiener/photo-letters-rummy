@@ -1805,14 +1805,15 @@ export function App() {
         <div className="mt-0.5">
           <Workspace
             stagedCards={stagedCards}
-            onRemoveCard={handleUnstageCard}
-            onStageCard={handleStageCard}
+            onRemoveCard={handleRemoveFromWorkspace}
+            onReorderCards={handleReorderWorkspace}
             onClearWorkspace={handleClearWorkspace}
-            potentialScore={potentialScore}
             onSubmitWord={handleSubmitWord}
             onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
-            isValidWord={wordValid}
-            onReorderCards={setStagedCards}
+            isHumanTurn={gameState.currentTurn === "human"}
+            isAiThinking={isAiThinking}
+            isValidWord={isValidWord}
+            potentialScore={potentialScore}
           />
         </div>
       </DragDropContext>
