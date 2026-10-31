@@ -72,7 +72,7 @@ export function App() {
       deck: deal.deck,
       wordBoard: [],
       currentTurn: initialStarter, // 🎲 Toss-up: 50/50 chance for Human or Monica to start
-      scoringMode: "cutthroat",
+      scoringMode: "accumulator",
       isGameOver: false,
       winner: null,
       isFirstTurn: true,
