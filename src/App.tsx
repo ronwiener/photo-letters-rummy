@@ -265,8 +265,21 @@ export function App() {
       const removedCard = stagedCards[source.index];
       if (!removedCard) return;
 
-      // Remove from staged cards so it becomes active in the hand rack again
+      // 1. Remove from staged cards
       setStagedCards((prev) => prev.filter((c) => c.id !== removedCard.id));
+
+      // 2. Add back to player hand at the destination index
+      setGameState((prev) => {
+        const updatedHand = Array.from(prev.humanHand);
+        // Prevent duplicate IDs just in case
+        if (!updatedHand.some((c) => c.id === removedCard.id)) {
+          updatedHand.splice(destination.index, 0, removedCard);
+        }
+        return {
+          ...prev,
+          humanHand: updatedHand,
+        };
+      });
       return;
     }
   };
