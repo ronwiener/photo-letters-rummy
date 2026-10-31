@@ -692,7 +692,7 @@ export function App() {
         (handCard) => !usedHandCardIds.has(handCard.id),
       );
 
-      // 🛡️ Replenish hand and update updatedDeck directly to prevent unused variable errors
+      // 🛡️ Replenish hand using helper function
       const { newHand: remainingHand, newDeck } = replenishHand(
         remainingHandRaw,
         updatedDeck,
@@ -778,7 +778,7 @@ export function App() {
         consecutivePasses: 0,
         isGameOver: isMatchOver,
         winner: matchWinner,
-        currentTurn: isMatchOver ? "human" : "computer", // 👈 Hand over turn directly
+        currentTurn: isMatchOver ? "human" : "computer",
       }));
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
@@ -807,9 +807,17 @@ export function App() {
       };
 
       const usedHandCardIds = new Set(stagedCards.map((c) => c.id));
-      const remainingHand = gameState.humanHand.filter(
+      const remainingHandRaw = gameState.humanHand.filter(
         (handCard) => !usedHandCardIds.has(handCard.id),
       );
+
+      // 🛡️ FIX: Use replenishHand consistently for both Turn 1 and later turns!
+      const { newHand: remainingHand, newDeck } = replenishHand(
+        remainingHandRaw,
+        updatedDeck,
+        8,
+      );
+      updatedDeck = newDeck;
 
       const isMatchOver =
         updatedDeck.length === 0 && remainingHand.length === 0;
@@ -857,31 +865,18 @@ export function App() {
         );
       }
 
-      // 🤖 TRIGGER COMPUTER TURN AUTOMATICALLY (Handles both Turn 1 and Turn 2+)
+      // 🤖 TRIGGER COMPUTER TURN AUTOMATICALLY
       if (!isMatchOver) {
-        const cardsNeeded = gameState.isFirstTurn
-          ? 8 - remainingHand.length
-          : 0;
-        const drawnCards = gameState.isFirstTurn
-          ? updatedDeck.slice(0, cardsNeeded)
-          : [];
-        if (gameState.isFirstTurn) {
-          updatedDeck = updatedDeck.slice(cardsNeeded);
-        }
-        const refilledHand = gameState.isFirstTurn
-          ? [...remainingHand, ...drawnCards]
-          : remainingHand;
-
         setAiStatusText(`${gameState.botName} is taking her turn...`);
 
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
           matchScores: finalMatchScores,
-          humanHand: refilledHand,
+          humanHand: remainingHand,
           deck: updatedDeck,
           isFirstTurn: false,
-          currentTurn: "computer", // 👈 Hands turn straight to Monica
+          currentTurn: "computer",
           consecutivePasses: 0,
           isGameOver: isMatchOver,
           winner: matchWinner,
@@ -892,6 +887,8 @@ export function App() {
           wordBoard: [...prev.wordBoard, newPlayedWord],
           matchScores: finalMatchScores,
           humanHand: remainingHand,
+          deck: updatedDeck,
+          isFirstTurn: false,
           isGameOver: true,
           winner: matchWinner,
         }));
