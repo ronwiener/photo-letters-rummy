@@ -8,13 +8,12 @@ interface WorkspaceProps {
   stagedCards: Card[];
   onStageCard?: (card: Card) => void;
   onRemoveCard: (card: Card) => void;
-  onReorderCards: (newCards: Card[]) => void;
+  onReorderCards?: (newCards: Card[]) => void;
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
   onOpenSwapSkip: () => void;
   isHumanTurn: boolean;
   isAiThinking: boolean;
-  isValidWord: boolean;
   potentialScore: number;
 }
 
@@ -28,7 +27,6 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   isHumanTurn,
   isAiThinking,
 }) => {
-  // 🛡️ Compute the resolved word string and dictionary validation boolean locally
   const stagedWordText = stagedCards
     .map((c) =>
       c.isWild || c.letter === "WILD" ? c.assignedLetter || "" : c.letter,

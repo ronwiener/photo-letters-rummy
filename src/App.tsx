@@ -136,9 +136,6 @@ export function App() {
     { word: string; score: number; playerId: "human" | "computer" }[]
   >([]);
 
-  const stagedWordText = getConstructedWord(stagedCards);
-  const wordValid = isValidWord(stagedWordText);
-
   const handleScoringModeChange = (mode: ScoringMode) => {
     setScoringMode(mode); // Updates local state
     setGameState((prev) => ({ ...prev, scoringMode: mode })); // Updates gameState rule
@@ -1805,14 +1802,12 @@ export function App() {
         <div className="mt-0.5">
           <Workspace
             stagedCards={stagedCards}
-            onRemoveCard={handleRemoveFromWorkspace}
-            onReorderCards={handleReorderWorkspace}
+            onRemoveCard={handleUnstageCard}
             onClearWorkspace={handleClearWorkspace}
             onSubmitWord={handleSubmitWord}
             onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
             isHumanTurn={gameState.currentTurn === "human"}
             isAiThinking={isAiThinking}
-            isValidWord={isValidWord}
             potentialScore={potentialScore}
           />
         </div>
