@@ -1,3 +1,4 @@
+import React from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import type { Card } from "../types/game";
 import { CardComponent } from "./CardComponent";
@@ -11,6 +12,8 @@ interface WorkspaceProps {
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
   onOpenSwapSkip: () => void;
+  isHumanTurn: boolean;
+  isAiThinking: boolean;
   isValidWord: boolean;
   potentialScore: number;
 }
@@ -20,8 +23,10 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   onRemoveCard,
   onClearWorkspace,
   potentialScore,
-  onOpenSwapSkip,
   onSubmitWord,
+  onOpenSwapSkip,
+  isHumanTurn,
+  isAiThinking,
 }) => {
   // 🛡️ Compute the resolved word string and dictionary validation boolean locally
   const stagedWordText = stagedCards
@@ -48,7 +53,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
             </button>
           )}
 
-          {/* 🔀 3. Swap / Skip Button moved right here into the Workspace header! */}
+          {/* 🔀 Swap / Skip Button */}
           <button
             onClick={onOpenSwapSkip}
             disabled={!isHumanTurn || isAiThinking}
@@ -58,7 +63,6 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           </button>
         </div>
 
-        {/* Submit Word Button */}
         <button
           onClick={onSubmitWord}
           disabled={stagedCards.length < 2 || !isValidWord}
