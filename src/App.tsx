@@ -704,7 +704,8 @@ export function App() {
       const previousScore = targetBoardWord.scoreAwarded || 0;
 
       const isMatchOver =
-        updatedDeck.length === 0 && remainingHand.length === 0;
+        updatedDeck.length === 0 &&
+        (remainingHand.length === 0 || gameState.consecutivePasses >= 1);
 
       let finalMatchScores = {
         human: gameState.matchScores.human + pointsAwarded,
@@ -820,7 +821,8 @@ export function App() {
       updatedDeck = newDeck;
 
       const isMatchOver =
-        updatedDeck.length === 0 && remainingHand.length === 0;
+        updatedDeck.length === 0 &&
+        (remainingHand.length === 0 || gameState.consecutivePasses >= 1);
 
       let finalMatchScores = {
         human: gameState.matchScores.human + pointsAwarded,
@@ -974,21 +976,47 @@ export function App() {
   // STALEMATE & ENDGAME MONITORING
   // -------------------------------------------------------------
   useEffect(() => {
-    // If the game is already over, don't keep checking
     if (gameState.isGameOver) return;
 
-    // 🏁 Match Over Condition: The 100-card deck is completely empty
-    // and both players have passed consecutively or have no moves left.
     if (gameState.deck.length === 0 && gameState.consecutivePasses >= 4) {
-      const finalHumanScore = gameState.matchScores.human;
-      const finalComputerScore = gameState.matchScores.computer;
+      // 🛡️ 1. CALCULATE HAND PENALTIES FOR BOTH PLAYERS
+      const humanPenalty = calculateHandPenalty(gameState.humanHand);
+      const compPenalty = calculateHandPenalty(gameState.computerHand); // Or botHand / aiHand
+
+      let adjustedHumanScore = Math.max(
+        0,
+        gameState.matchScores.human - humanPenalty,
+      );
+      let adjustedCompScore = Math.max(
+        0,
+        gameState.matchScores.computer - compPenalty,
+      );
 
       let matchWinner: PlayerId | "tie" = "tie";
-      if (finalHumanScore > finalComputerScore) matchWinner = "human";
-      else if (finalComputerScore > finalHumanScore) matchWinner = "computer";
+      if (adjustedHumanScore > adjustedCompScore) matchWinner = "human";
+      else if (adjustedCompScore > adjustedHumanScore) matchWinner = "computer";
+
+      // 📊 2. RECORD CAREER STATS
+      const didHumanWin = matchWinner === "human";
+      const wordsPlayedSnapshot = [...matchWordsRef.current];
+      matchWordsRef.current = [];
+
+      updateStats((currentStats: GameStatistics) =>
+        calculateUpdatedStats(currentStats, {
+          didWin: didHumanWin,
+          scoringMode: gameState.scoringMode,
+          wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+            (word) => word.playerId === "human",
+          ),
+        }),
+      );
 
       setGameState((prev) => ({
         ...prev,
+        matchScores: {
+          human: adjustedHumanScore,
+          computer: adjustedCompScore,
+        },
         isGameOver: true,
         winner: matchWinner,
       }));
@@ -998,6 +1026,9 @@ export function App() {
     gameState.consecutivePasses,
     gameState.isGameOver,
     gameState.matchScores,
+    gameState.humanHand,
+    gameState.computerHand,
+    gameState.scoringMode,
   ]);
   // -------------------------------------------------------------
   // MONICA AI TURN ENGINE (Continuous Phase-Less Flow & Steal Mechanics)
@@ -1372,8 +1403,9 @@ export function App() {
           setGameState((prev) => {
             // 🏁 Check if the 100-card deck is empty and Monica emptied her hand (or human hand is empty)
             const isMatchOver =
-              currentDeck.length === 0 &&
-              (compHand.length === 0 || prev.humanHand.length === 0);
+              (currentDeck.length === 0 &&
+                (compHand.length === 0 || prev.humanHand.length === 0)) ||
+              (currentDeck.length === 0 && (prev.consecutivePasses ?? 0) >= 1);
 
             // Calculate final hand penalties
             const humanPenalty = calculateHandPenalty(prev.humanHand);
@@ -1465,16 +1497,29 @@ export function App() {
           | PlayerId
           | null = prev.winner;
 
+        let finalMatchScores = { ...prev.matchScores };
+
         if (isStalemate) {
-          if (prev.matchScores.human > prev.matchScores.computer) {
+          // 🛡️ 1. CALCULATE PENALTIES FOR UNPLAYED TILES
+          const humanPenalty = calculateHandPenalty(prev.humanHand);
+          const compPenalty = calculateHandPenalty(prev.computerHand);
+
+          // 🛡️ 2. SUBTRACT PENALTIES FROM SCORES
+          finalMatchScores = {
+            human: Math.max(0, prev.matchScores.human - humanPenalty),
+            computer: Math.max(0, prev.matchScores.computer - compPenalty),
+          };
+
+          // 🛡️ 3. DETERMINE WINNER FROM PENALIZED SCORES
+          if (finalMatchScores.human > finalMatchScores.computer) {
             matchWinner = "human";
-          } else if (prev.matchScores.computer > prev.matchScores.human) {
+          } else if (finalMatchScores.computer > finalMatchScores.human) {
             matchWinner = "computer";
           } else {
             matchWinner = "tie";
           }
 
-          // 📊 Record match stats on stalemate game over
+          // 📊 4. RECORD MATCH STATS ON STALEMATE GAME OVER
           const didHumanWin = matchWinner === "human";
           const wordsPlayedSnapshot = [...matchWordsRef.current];
           matchWordsRef.current = [];
@@ -1492,6 +1537,7 @@ export function App() {
 
         return {
           ...prev,
+          matchScores: finalMatchScores, // 👈 Update with penalized scores
           currentTurn: isStalemate ? "human" : "computer",
           consecutivePasses: nextPasses,
           hasPlayedThisTurn: false,
@@ -1764,21 +1810,12 @@ export function App() {
             onClearWorkspace={handleClearWorkspace}
             potentialScore={potentialScore}
             onSubmitWord={handleSubmitWord}
+            onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
             isValidWord={wordValid}
             onReorderCards={setStagedCards}
           />
         </div>
       </DragDropContext>
-      {/* Turn Action Controls Bar */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => setIsSwapSkipModalOpen(true)}
-          disabled={gameState.currentTurn !== "human" || isAiThinking}
-          className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl border border-slate-500 transition-all text-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          🔀 Swap / Skip
-        </button>
-      </div>
 
       {/* Modals & Overlays */}
       <WordsPlayedModal

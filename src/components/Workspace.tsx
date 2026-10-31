@@ -10,6 +10,7 @@ interface WorkspaceProps {
   onReorderCards: (newCards: Card[]) => void;
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
+  onOpenSwapSkip: () => void;
   isValidWord: boolean;
   potentialScore: number;
 }
@@ -19,6 +20,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   onRemoveCard,
   onClearWorkspace,
   potentialScore,
+  onOpenSwapSkip,
   onSubmitWord,
 }) => {
   // 🛡️ Compute the resolved word string and dictionary validation boolean locally
@@ -36,7 +38,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
     <div className="flex flex-col gap-1 p-1.5 bg-neutral-900/95 rounded-xl border border-neutral-800 shadow-2xl">
       {/* Action Header */}
       <div className="flex items-center justify-between px-0.5">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           {stagedCards.length > 0 && (
             <button
               onClick={onClearWorkspace}
@@ -45,8 +47,18 @@ export const Workspace: React.FC<WorkspaceProps> = ({
               Clear
             </button>
           )}
+
+          {/* 🔀 3. Swap / Skip Button moved right here into the Workspace header! */}
+          <button
+            onClick={onOpenSwapSkip}
+            disabled={!isHumanTurn || isAiThinking}
+            className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+          >
+            <span>🔀</span> Swap / Skip
+          </button>
         </div>
 
+        {/* Submit Word Button */}
         <button
           onClick={onSubmitWord}
           disabled={stagedCards.length < 2 || !isValidWord}
@@ -68,8 +80,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
             </span>
           ) : (
             <span className="flex items-center gap-1 tracking-wide">
-              <span>✨</span> Play Word (+{potentialScore} pts){" "}
-              {/* 👈 Displays exact calculated score */}
+              <span>✨</span> Play Word (+{potentialScore} pts)
             </span>
           )}
         </button>
