@@ -11,15 +11,15 @@ export const calculateUpdatedStats = (
   prevStats: GameStatistics,
   result: MatchResultArgs,
 ): GameStatistics => {
-  let highestWord = prevStats.highestScoringWord;
-  let longestWord = prevStats.longestWord;
-  let totalWordsCount = prevStats.totalWordsPlayed;
+  let highestWord = prevStats.highestScoringWord || { word: "", score: 0 };
+  // 🛡️ Default to an empty string matching GameStatistics type
+  let longestWord = prevStats.longestWord || "";
+  let totalWordsCount = prevStats.totalWordsPlayed || 0;
 
-  // Evaluate every word played in this match against current records
   for (const wp of result.wordsPlayedThisMatch) {
     totalWordsCount += 1;
 
-    // Check longest word
+    // 🛡️ Compare lengths, store the winning word string
     if (wp.word.length > longestWord.length) {
       longestWord = wp.word;
     }
@@ -33,18 +33,19 @@ export const calculateUpdatedStats = (
   const didWin = result.didWin;
 
   return {
+    ...prevStats,
     gamesPlayed: prevStats.gamesPlayed + 1,
     gamesWon: (prevStats.gamesWon || 0) + (didWin ? 1 : 0),
     wins: (prevStats.wins || 0) + (didWin ? 1 : 0),
     losses: (prevStats.losses || 0) + (!didWin ? 1 : 0),
     totalWordsPlayed: totalWordsCount,
     highestScoringWord: highestWord,
-    longestWord: longestWord,
+    longestWord: longestWord, // 👈 Assigned as a string correctly
     cutthroatWins:
-      prevStats.cutthroatWins +
+      (prevStats.cutthroatWins || 0) +
       (didWin && result.scoringMode === "cutthroat" ? 1 : 0),
     accumulatorWins:
-      prevStats.accumulatorWins +
+      (prevStats.accumulatorWins || 0) +
       (didWin && result.scoringMode === "accumulator" ? 1 : 0),
   };
 };

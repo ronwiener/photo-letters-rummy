@@ -562,11 +562,9 @@ export function App() {
   const handleSubmitWord = () => {
     const isStandaloneWord = targetBoardWord === null;
 
-    // 🛡️ Guard: Only 1 action allowed per turn on Turn 2+
+    // 🛡️ Guard: Only 1 action allowed per turn on Turn 2+ (optional safeguard now that turn auto-ends)
     if (!gameState.isFirstTurn && gameState.hasPlayedThisTurn) {
-      setAiStatusText(
-        "⚠️ You have already taken an action this turn. Click 'Finish Turn' to hand control to Monica!",
-      );
+      setAiStatusText("⚠️ You have already taken an action this turn.");
       return;
     }
 
@@ -621,7 +619,7 @@ export function App() {
         return;
       }
 
-      // 2. Must keep all letters from the original board word (or fulfill anagram rules)
+      // 2. Must keep all letters from the original board word
       const missingOriginalCards = targetBoardWord.cards.some(
         (c) => !currentStagedIds.has(c.id),
       );
@@ -641,7 +639,6 @@ export function App() {
       if (isOpponentWord) {
         pointsAwarded = calculateStealScore(stagedCards, cardsAddedCount);
       } else {
-        // For friendly extensions, score is calculated based on full staged word + length bonus rules via calculateWordPoints
         pointsAwarded = calculateWordPoints(stagedCards);
       }
 
@@ -649,7 +646,7 @@ export function App() {
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
-        playerId: "human", // 👈 Mark as human
+        playerId: "human",
       });
 
       const existingHistory = targetBoardWord.history || [];
@@ -657,7 +654,7 @@ export function App() {
         id: targetBoardWord.id,
         word: proposedWordText,
         cards: [...stagedCards],
-        playedBy: "human", // Transfer ownership to human
+        playedBy: "human",
         originalWord: targetBoardWord.word,
         scoreAwarded: (targetBoardWord.scoreAwarded || 0) + pointsAwarded,
         history: [
@@ -677,16 +674,22 @@ export function App() {
         w.id === targetBoardWord.id ? updatedPlayedWord : w,
       );
 
-      // 🛡️ SAFE HAND CALCULATION: Filter out ONLY cards actively submitted from hand
       const usedHandCardIds = new Set(newCardsFromHand.map((c) => c.id));
-      const remainingHand = gameState.humanHand.filter(
+      const remainingHandRaw = gameState.humanHand.filter(
         (handCard) => !usedHandCardIds.has(handCard.id),
       );
+
+      // 🛡️ Replenish hand and update updatedDeck directly to prevent unused variable errors
+      const { newHand: remainingHand, newDeck } = replenishHand(
+        remainingHandRaw,
+        updatedDeck,
+        8,
+      );
+      updatedDeck = newDeck;
 
       const previousOwner = targetBoardWord.playedBy;
       const previousScore = targetBoardWord.scoreAwarded || 0;
 
-      // 🏁 Check if match ends right here (deck empty and hand fully played out)
       const isMatchOver =
         updatedDeck.length === 0 && remainingHand.length === 0;
 
@@ -695,7 +698,6 @@ export function App() {
         computer: gameState.matchScores.computer,
       };
 
-      // 🗡️ CUTTHROAT MODE: Deduct stolen word's score from opponent
       if (
         gameState.scoringMode === "cutthroat" &&
         isOpponentWord &&
@@ -746,22 +748,29 @@ export function App() {
         );
       }
 
+      // 🤖 TRIGGER COMPUTER TURN AUTOMATICALLY
+      if (!isMatchOver) {
+        setAiStatusText(
+          `${gameState.botName} is taking her turn after your word play...`,
+        );
+      }
+
       setGameState((prev) => ({
         ...prev,
         wordBoard: updatedWordBoard,
         matchScores: finalMatchScores,
         humanHand: remainingHand,
-        hasPlayedThisTurn: !isMatchOver,
+        deck: updatedDeck,
+        hasPlayedThisTurn: false,
         consecutivePasses: 0,
         isGameOver: isMatchOver,
         winner: matchWinner,
+        currentTurn: isMatchOver ? "human" : "computer", // 👈 Hand over turn directly
       }));
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
-      // 🧮 EXACT SCORING USING scoreUtils (includes letter sum + length bonus)
       const pointsAwarded = calculateWordPoints(stagedCards);
 
-      // 📊 RECORD PLAYED WORD FOR CAREER STATS
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
@@ -784,13 +793,11 @@ export function App() {
         ],
       };
 
-      // 🛡️ SAFE HAND CALCULATION: Filter out ONLY cards actively submitted from hand
       const usedHandCardIds = new Set(stagedCards.map((c) => c.id));
       const remainingHand = gameState.humanHand.filter(
         (handCard) => !usedHandCardIds.has(handCard.id),
       );
 
-      // 🏁 Check if deck is empty and hand is empty
       const isMatchOver =
         updatedDeck.length === 0 && remainingHand.length === 0;
 
@@ -837,12 +844,20 @@ export function App() {
         );
       }
 
-      if (gameState.isFirstTurn && !isMatchOver) {
-        // 🔄 TURN 1 END OF TURN: Refill hand to 8 cards & PASS TURN TO MONICA
-        const cardsNeeded = 8 - remainingHand.length;
-        const drawnCards = updatedDeck.slice(0, cardsNeeded);
-        updatedDeck = updatedDeck.slice(cardsNeeded);
-        const refilledHand = [...remainingHand, ...drawnCards];
+      // 🤖 TRIGGER COMPUTER TURN AUTOMATICALLY (Handles both Turn 1 and Turn 2+)
+      if (!isMatchOver) {
+        const cardsNeeded = gameState.isFirstTurn
+          ? 8 - remainingHand.length
+          : 0;
+        const drawnCards = gameState.isFirstTurn
+          ? updatedDeck.slice(0, cardsNeeded)
+          : [];
+        if (gameState.isFirstTurn) {
+          updatedDeck = updatedDeck.slice(cardsNeeded);
+        }
+        const refilledHand = gameState.isFirstTurn
+          ? [...remainingHand, ...drawnCards]
+          : remainingHand;
 
         setAiStatusText(`${gameState.botName} is taking her turn...`);
 
@@ -853,19 +868,18 @@ export function App() {
           humanHand: refilledHand,
           deck: updatedDeck,
           isFirstTurn: false,
-          currentTurn: "computer",
+          currentTurn: "computer", // 👈 Hands turn straight to Monica
           consecutivePasses: 0,
+          isGameOver: isMatchOver,
+          winner: matchWinner,
         }));
       } else {
-        // TURN 2+: Keep hand reduced and enforce 'Finish Turn' action requirement
         setGameState((prev) => ({
           ...prev,
           wordBoard: [...prev.wordBoard, newPlayedWord],
           matchScores: finalMatchScores,
           humanHand: remainingHand,
-          hasPlayedThisTurn: !isMatchOver,
-          consecutivePasses: 0,
-          isGameOver: isMatchOver,
+          isGameOver: true,
           winner: matchWinner,
         }));
       }
@@ -1459,7 +1473,9 @@ export function App() {
             calculateUpdatedStats(currentStats, {
               didWin: didHumanWin,
               scoringMode: prev.scoringMode,
-              wordsPlayedThisMatch: wordsPlayedSnapshot,
+              wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+                (word) => word.playerId === "human",
+              ),
             }),
           );
         }
@@ -1506,58 +1522,6 @@ export function App() {
         `You swapped ${selectedCardIds.length} letters. ${gameState.botName} is up...`,
       );
     }
-  };
-
-  const handleFinishTurn = () => {
-    setGameState((prev) => {
-      // 🔄 Compute replenishment using the latest previous state
-      const { newHand, newDeck } = replenishHand(prev.humanHand, prev.deck, 8);
-
-      // 🏁 Match Over Condition: Deck is empty and hand is exhausted
-      const isMatchOver = newDeck.length === 0 && newHand.length === 0;
-      let matchWinner: "human" | "computer" | "tie" | "draw" | PlayerId | null =
-        prev.winner;
-
-      if (isMatchOver) {
-        if (prev.matchScores.human > prev.matchScores.computer) {
-          matchWinner = "human";
-        } else if (prev.matchScores.computer > prev.matchScores.human) {
-          matchWinner = "computer";
-        } else {
-          matchWinner = "tie";
-        }
-
-        // 📊 Record match stats
-        const didHumanWin = matchWinner === "human";
-        const wordsPlayedSnapshot = [...matchWordsRef.current];
-        matchWordsRef.current = [];
-
-        updateStats((currentStats: GameStatistics) =>
-          calculateUpdatedStats(currentStats, {
-            didWin: didHumanWin,
-            scoringMode: prev.scoringMode,
-            wordsPlayedThisMatch: wordsPlayedSnapshot,
-          }),
-        );
-      }
-
-      return {
-        ...prev,
-        humanHand: newHand,
-        deck: newDeck,
-        currentTurn: isMatchOver ? "human" : "computer",
-        hasPlayedThisTurn: false,
-        consecutivePasses: 0,
-        isGameOver: isMatchOver,
-        winner: matchWinner,
-      };
-    });
-
-    setAiStatusText(`${gameState.botName} is taking her turn...`);
-
-    // Clear workspace
-    setStagedCards([]);
-    setTargetBoardWord(null);
   };
 
   // --- START NEW MATCH HANDLER ---
@@ -1700,52 +1664,54 @@ export function App() {
           </div>
         </div>
 
-        {/* Turn Status Banner (Tightened Margins & Padding) */}
-        <div className="text-center mt-0.5">
-          <div
-            className={`w-full max-w-xl mx-auto p-1.5 rounded-xl text-center transition-all duration-300 shadow-md ${
-              gameState.currentTurn === "computer"
-                ? "bg-amber-100 border border-amber-400 text-amber-900"
-                : "bg-emerald-950/80 border border-emerald-500/50 text-emerald-100"
-            }`}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span
-                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    gameState.currentTurn === "computer"
-                      ? "bg-amber-400"
-                      : "bg-emerald-400"
-                  }`}
-                ></span>
-                <span
-                  className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                    gameState.currentTurn === "computer"
-                      ? "bg-amber-500"
-                      : "bg-emerald-500"
-                  }`}
-                ></span>
-              </span>
+        {/* Sticky Banner Wrapper */}
+        <div className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-800/80 shadow-lg">
+          <div className="text-center">
+            <div
+              className={`w-full max-w-xl mx-auto p-1.5 rounded-xl text-center transition-all duration-300 shadow-md ${
+                gameState.currentTurn === "computer"
+                  ? "bg-amber-100 border border-amber-400 text-amber-900"
+                  : "bg-emerald-950/80 border border-emerald-500/50 text-emerald-100"
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span
+                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                      gameState.currentTurn === "computer"
+                        ? "bg-amber-400"
+                        : "bg-emerald-400"
+                    }`}
+                  ></span>
+                  <span
+                    className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                      gameState.currentTurn === "computer"
+                        ? "bg-amber-500"
+                        : "bg-emerald-500"
+                    }`}
+                  ></span>
+                </span>
 
-              <h2 className="text-xs font-extrabold tracking-wide">
-                {gameState.currentTurn === "computer"
-                  ? isAiThinking
-                    ? aiStatusText
-                    : `${gameState.botName}'s Turn...`
-                  : gameState.isFirstTurn && aiStatusText
-                    ? aiStatusText
-                    : "👉 YOUR TURN!"}
-              </h2>
+                <h2 className="text-xs font-extrabold tracking-wide">
+                  {gameState.currentTurn === "computer"
+                    ? isAiThinking
+                      ? aiStatusText
+                      : `${gameState.botName}'s Turn...`
+                    : gameState.isFirstTurn && aiStatusText
+                      ? aiStatusText
+                      : "👉 YOUR TURN!"}
+                </h2>
+              </div>
+
+              {/* Dynamic Sub-message based on turn rules */}
+              {gameState.currentTurn === "human" && (
+                <p className="text-[10px] text-emerald-400/90 font-medium mt-0.5">
+                  {gameState.isFirstTurn
+                    ? "Turn 1: Play 1 word, trade letters, or pass."
+                    : "Play 1 word, steal, trade letters, or end turn."}
+                </p>
+              )}
             </div>
-
-            {/* Dynamic Sub-message based on turn rules */}
-            {gameState.currentTurn === "human" && (
-              <p className="text-[10px] text-emerald-400/90 font-medium mt-0.5">
-                {gameState.isFirstTurn
-                  ? "Turn 1: Play 1 word, trade letters, or pass."
-                  : "Play 1 word, steal, trade letters, or end turn."}
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -1795,22 +1761,13 @@ export function App() {
       </DragDropContext>
       {/* Turn Action Controls Bar */}
       <div className="flex items-center gap-2">
-        {!gameState.hasPlayedThisTurn ? (
-          <button
-            onClick={() => setIsSwapSkipModalOpen(true)}
-            className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl border border-slate-500 transition-all text-xs"
-          >
-            Swap / Skip
-          </button>
-        ) : (
-          <button
-            onClick={handleFinishTurn}
-            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl border border-emerald-400 shadow-lg animate-pulse transition-all flex items-center gap-2 text-xs"
-          >
-            <span>Finish Turn</span>
-            <span className="text-base">➔</span>
-          </button>
-        )}
+        <button
+          onClick={() => setIsSwapSkipModalOpen(true)}
+          disabled={gameState.currentTurn !== "human" || isAiThinking}
+          className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl border border-slate-500 transition-all text-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          🔀 Swap / Skip
+        </button>
       </div>
 
       {/* Modals & Overlays */}
