@@ -94,6 +94,8 @@ export interface GameState {
   computerHand: Card[];
   deck: Card[]; // 👈 Unified 100-card pool (replaces drawPile & discardPile)
 
+  humanLeftoverHand?: Card[];
+  computerLeftoverHand?: Card[];
   // Board & Turn state
   wordBoard: PlayedWord[];
   currentTurn: PlayerId;

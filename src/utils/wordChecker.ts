@@ -1,13 +1,12 @@
 import wordsDictionary from "../constants/words_dictionary.json";
 
-// Convert flat JSON array into a Set for ultra-fast O(1) lookups
+const safeWords = Array.isArray(wordsDictionary) ? wordsDictionary : [];
+
 const DICTIONARY_SET = new Set<string>(
-  Array.isArray(wordsDictionary)
-    ? wordsDictionary.map((w: string) => w.toLowerCase().trim())
-    : [],
+  safeWords.map((w: string) => String(w).toLowerCase().trim()),
 );
 
-// 🚫 ALLOWED 2-LETTER WORDS (Strict whitelist of common English 2-letter words)
+// 🚫 ALLOWED 2-LETTER WORDS (Expanded to include QI, JO, etc.)
 const ALLOWED_TWO_LETTER_WORDS = new Set<string>([
   "am",
   "an",
@@ -34,9 +33,16 @@ const ALLOWED_TWO_LETTER_WORDS = new Set<string>([
   "up",
   "us",
   "we",
+  "qi",
+  "jo",
+  "ox",
+  "pi",
+  "ex",
+  "ax",
+  "qi",
+  "za",
 ]);
 
-// 🚫 BLOCKED ACRONYMS LIST
 export const BLOCKED_ACRONYMS = new Set<string>([
   "tba",
   "eta",
@@ -50,13 +56,8 @@ export const BLOCKED_ACRONYMS = new Set<string>([
   "dob",
   "rsvp",
   "vip",
-  "aka",
-  "atm",
-  "pms",
-  "gmo",
 ]);
 
-// 🚫 BLOCKED OBSOLETE / UNCOMMON WORDS
 const BLOCKED_WORDS = new Set<string>([
   "esere",
   "danli",
@@ -68,37 +69,60 @@ const BLOCKED_WORDS = new Set<string>([
   "cwm",
 ]);
 
+// 🛡️ Whitelist for common inflections/words missing from base dictionary
+const CUSTOM_ALLOWED_WORDS = new Set([
+  "forage",
+  "foraged",
+  "foraging",
+  "forager",
+  "foragers",
+  "forages",
+]);
+
 export function isValidWord(word: string): boolean {
   if (!word) return false;
 
   const lowerWord = word.trim().toLowerCase();
 
-  // 1. Minimum word length rule
   if (lowerWord.length < 2) return false;
+  if (!/^[a-z]+$/.test(lowerWord)) return false;
 
-  // 2. Reject if string contains non-alphabetic characters
-  if (!/^[a-z]+$/.test(lowerWord)) {
-    return false;
-  }
-
-  // 3. Strict 2-letter validation: Only allow standard, recognizable 2-letter words
   if (lowerWord.length === 2) {
     return ALLOWED_TWO_LETTER_WORDS.has(lowerWord);
   }
 
-  // 4. Reject blocked words / non-word acronyms
   if (BLOCKED_WORDS.has(lowerWord) || BLOCKED_ACRONYMS.has(lowerWord)) {
     return false;
   }
 
-  // 5. Reject consonant clusters without a vowel or 'y' (e.g., "rwd", "tsi")
-  const hasVowel = /[aeiouy]/.test(lowerWord);
-  if (!hasVowel) return false;
+  if (!/[aeiouy]/.test(lowerWord)) return false;
+  if (/[^aeiouy]{4,}/.test(lowerWord)) return false;
 
-  // 6. Reject words with 4 or more consecutive consonants
-  const hasExcessiveConsonants = /[^aeiouy]{4,}/.test(lowerWord);
-  if (hasExcessiveConsonants) return false;
+  if (CUSTOM_ALLOWED_WORDS.has(lowerWord)) return true;
+  if (DICTIONARY_SET.has(lowerWord)) return true;
 
-  // 7. Check dictionary lookup using Set.has()
-  return DICTIONARY_SET.has(lowerWord);
+  // Stricter Inflection & Suffix Fallback (Removed loose -er rule to prevent 'aliver')
+  const inflections = [
+    { ending: "ed", strips: 2 },
+    { ending: "ing", strips: 3 },
+    { ending: "es", strips: 2 },
+    { ending: "s", strips: 1 },
+  ];
+
+  for (const { ending, strips } of inflections) {
+    if (lowerWord.endsWith(ending) && lowerWord.length - strips >= 2) {
+      const stem = lowerWord.slice(0, -strips);
+
+      if (
+        CUSTOM_ALLOWED_WORDS.has(stem) ||
+        CUSTOM_ALLOWED_WORDS.has(stem + "e") ||
+        DICTIONARY_SET.has(stem) ||
+        DICTIONARY_SET.has(stem + "e")
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }

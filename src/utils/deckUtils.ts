@@ -28,18 +28,25 @@ function antiClumpDeck(deck: Card[], maxPerHand: number = 2): Card[] {
 
     for (let j = 0; j < windowSize; j++) {
       const idx = i + j;
-      const letter = result[idx].letter;
-      counts[letter] = (counts[letter] || 0) + 1;
+      let letter = result[idx].letter;
 
-      // If a letter exceeds our limit in this 8-card slice, swap it down
-      if (counts[letter] > maxPerHand) {
-        const remainingLength = result.length - (i + windowSize);
-        if (remainingLength > 0) {
-          const swapIndex =
-            i + windowSize + Math.floor(Math.random() * remainingLength);
-          [result[idx], result[swapIndex]] = [result[swapIndex], result[idx]];
-        }
+      // Keep swapping out result[idx] until its letter is within maxPerHand
+      let attempts = 0;
+      const remainingLength = result.length - (i + windowSize);
+
+      while (
+        (counts[letter] || 0) >= maxPerHand &&
+        remainingLength > 0 &&
+        attempts < 20
+      ) {
+        const swapIndex =
+          i + windowSize + Math.floor(Math.random() * remainingLength);
+        [result[idx], result[swapIndex]] = [result[swapIndex], result[idx]];
+        letter = result[idx].letter; // Re-read the new letter at this index
+        attempts++;
       }
+
+      counts[letter] = (counts[letter] || 0) + 1;
     }
   }
 

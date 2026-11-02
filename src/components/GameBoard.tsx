@@ -107,7 +107,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Shared Neon Word Board */}
-      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-24 max-h-64 sm:max-h-80 overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
+
+      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
         {wordBoard.length === 0 ? (
           <p className="text-[11px] text-neutral-500 italic my-auto">
             No words played yet. Be the first to build one!
@@ -167,7 +168,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`max-w-2xl mx-auto flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 rounded-xl border overflow-x-auto transition-all ${
+            className={`max-w-2xl mx-auto shrink-0 flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 rounded-xl border overflow-x-auto transition-all ${
               snapshot.isDraggingOver
                 ? "bg-neutral-900 border-amber-400/60"
                 : "bg-neutral-900/60 border-neutral-800"

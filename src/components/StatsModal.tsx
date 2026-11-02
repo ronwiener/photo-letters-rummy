@@ -1,5 +1,6 @@
 import React from "react";
-import type { GameStatistics, PlayerId } from "../types/game";
+import type { Card, GameStatistics, PlayerId } from "../types/game";
+import { calculateHandPenalty } from "../utils/scoreUtils";
 
 interface StatsModalProps {
   isOpen: boolean;
@@ -7,6 +8,9 @@ interface StatsModalProps {
   isGameOver?: boolean;
   winner?: "human" | "computer" | "tie" | "draw" | PlayerId | null;
   matchScores?: { human: number; computer: number };
+  humanLeftoverHand?: Card[];
+  computerLeftoverHand?: Card[];
+  botName?: string;
   onClose: () => void;
   onNewMatch?: () => void;
 }
@@ -17,10 +21,16 @@ export const StatsModal: React.FC<StatsModalProps> = ({
   isGameOver,
   winner,
   matchScores,
+  humanLeftoverHand = [],
+  computerLeftoverHand = [],
+  botName = "Monica",
   onClose,
   onNewMatch,
 }) => {
   if (!isOpen) return null;
+
+  const humanPenalty = calculateHandPenalty(humanLeftoverHand);
+  const compPenalty = calculateHandPenalty(computerLeftoverHand);
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -32,12 +42,12 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               {winner === "human"
                 ? "🏆 VICTORY!"
                 : winner === "computer"
-                  ? "🤖 MONICA WINS!"
+                  ? `🤖 ${botName.toUpperCase()} WINS!`
                   : "🤝 TIE MATCH!"}
             </h2>
             {matchScores && (
               <p className="text-xs text-neutral-300 font-bold mt-1">
-                Final Score — You: {matchScores.human} | Monica:{" "}
+                Final Score — You: {matchScores.human} | {botName}:{" "}
                 {matchScores.computer}
               </p>
             )}
@@ -56,6 +66,75 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             ✕
           </button>
         </div>
+
+        {/* End of Match Leftover Tile Penalties */}
+        {isGameOver && (
+          <div className="flex flex-col gap-2 bg-neutral-850/80 p-3 rounded-xl border border-neutral-800 text-xs">
+            <h4 className="font-bold text-amber-400 uppercase tracking-wider text-[10px]">
+              Leftover Hand Penalties
+            </h4>
+
+            {/* Human Leftover Tiles */}
+            <div className="flex flex-col gap-1 bg-neutral-800/60 p-2 rounded border border-neutral-700/50">
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-300 font-semibold">
+                  Your Hand
+                </span>
+                <span className="text-rose-400 font-bold">
+                  -{humanPenalty} pts
+                </span>
+              </div>
+              <div className="flex gap-1 flex-wrap mt-0.5">
+                {humanLeftoverHand.length > 0 ? (
+                  humanLeftoverHand.map((card) => (
+                    <div
+                      key={card.id}
+                      className="w-6 h-7 bg-neutral-700 border border-neutral-500 rounded flex items-center justify-center font-black text-xs text-amber-300 shadow-sm"
+                    >
+                      {card.isWild || card.letter === "WILD"
+                        ? "★"
+                        : card.letter}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-[10px] text-emerald-400 italic">
+                    None! Clean finish 🎉
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Computer Leftover Tiles */}
+            <div className="flex flex-col gap-1 bg-neutral-800/60 p-2 rounded border border-neutral-700/50">
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-300 font-semibold">
+                  {botName}'s Hand
+                </span>
+                <span className="text-rose-400 font-bold">
+                  -{compPenalty} pts
+                </span>
+              </div>
+              <div className="flex gap-1 flex-wrap mt-0.5">
+                {computerLeftoverHand.length > 0 ? (
+                  computerLeftoverHand.map((card) => (
+                    <div
+                      key={card.id}
+                      className="w-6 h-7 bg-neutral-700 border border-neutral-500 rounded flex items-center justify-center font-black text-xs text-amber-300 shadow-sm"
+                    >
+                      {card.isWild || card.letter === "WILD"
+                        ? "★"
+                        : card.letter}
+                    </div>
+                  ))
+                ) : (
+                  <span className="text-[10px] text-emerald-400 italic">
+                    None! Clean finish
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Expanded Career Statistics Display */}
         <div className="flex flex-col gap-2 text-xs">
