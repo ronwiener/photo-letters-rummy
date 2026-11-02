@@ -123,6 +123,46 @@ export function App() {
     });
   };
 
+  const triggerGameOver = (
+    winner: "human" | "computer" | "tie",
+    finalHumanScore: number,
+    finalComputerScore: number,
+    humanLeftover: Card[] = [],
+    computerLeftover: Card[] = [],
+  ) => {
+    // 🛡️ Prevent duplicate triggers if game is already over
+    if (gameState.isGameOver) return;
+
+    const didHumanWin = winner === "human";
+    const wordsPlayedSnapshot = [...matchWordsRef.current];
+    matchWordsRef.current = [];
+
+    // 1. Immediately record career stats (wins, losses, margins, etc.)
+    updateStats((currentStats: GameStatistics) =>
+      calculateUpdatedStats(currentStats, {
+        didWin: didHumanWin,
+        scoringMode: gameState.scoringMode,
+        wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
+          (word) => word.playerId === "human",
+        ),
+        humanScore: finalHumanScore,
+        computerScore: finalComputerScore,
+      }),
+    );
+
+    // 2. Pause 1.2s to let board state settle, then display the game-over modal
+    setTimeout(() => {
+      setGameState((prev) => ({
+        ...prev,
+        isGameOver: true,
+        winner,
+        currentTurn: "human", // optional: lock or reset turn focus
+        humanLeftoverHand: humanLeftover,
+        computerLeftoverHand: computerLeftover,
+      }));
+    }, 2500);
+  };
+
   const matchWordsRef = useRef<
     { word: string; score: number; playerId: "human" | "computer" }[]
   >([]);
@@ -749,20 +789,13 @@ export function App() {
           matchWinner = "tie";
         }
 
-        const didHumanWin = matchWinner === "human";
-        const wordsPlayedSnapshot = [...matchWordsRef.current];
-        matchWordsRef.current = [];
-
-        updateStats((currentStats: GameStatistics) =>
-          calculateUpdatedStats(currentStats, {
-            didWin: didHumanWin,
-            scoringMode: gameState.scoringMode,
-            wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-              (word) => word.playerId === "human",
-            ),
-            humanScore: finalMatchScores.human,
-            computerScore: finalMatchScores.computer,
-          }),
+        // 🎯 Replace the manual stats block and setGameState with triggerGameOver
+        triggerGameOver(
+          matchWinner,
+          finalMatchScores.human,
+          finalMatchScores.computer,
+          remainingHand,
+          gameState.computerHand,
         );
       }
 
@@ -857,20 +890,13 @@ export function App() {
           matchWinner = "tie";
         }
 
-        const didHumanWin = matchWinner === "human";
-        const wordsPlayedSnapshot = [...matchWordsRef.current];
-        matchWordsRef.current = [];
-
-        updateStats((currentStats: GameStatistics) =>
-          calculateUpdatedStats(currentStats, {
-            didWin: didHumanWin,
-            scoringMode: gameState.scoringMode,
-            wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-              (word) => word.playerId === "human",
-            ),
-            humanScore: finalMatchScores.human,
-            computerScore: finalMatchScores.computer,
-          }),
+        // 🎯 Replace the manual stats block and state updates with your helper
+        triggerGameOver(
+          matchWinner,
+          finalMatchScores.human,
+          finalMatchScores.computer,
+          remainingHand,
+          gameState.computerHand,
         );
       }
 
@@ -1431,20 +1457,17 @@ export function App() {
 
           // 🕒 TIMER 3: DELAY HANDOVER PROMPT TO PLAYER SO TOAST STAYS VISIBLE
           const timer3 = setTimeout(() => {
-            setAiStatusText("Your turn! Make a move or swap/skip.");
+            // 🛡️ Evaluate deck and hand states accurately
+            const isDeckEmpty = currentDeck.length === 0;
+            const isHandEmpty =
+              compHand.length === 0 || gameState.humanHand.length === 0; // Use gameState or prev if destructured
+            const hasTwoPasses =
+              (aiPlayedWord ? 0 : (gameState.consecutivePasses ?? 0) + 1) >= 4;
 
-            setGameState((prev) => {
-              // 🛡️ Evaluate deck and hand states accurately
-              const isDeckEmpty = currentDeck.length === 0;
-              const isHandEmpty =
-                compHand.length === 0 || prev.humanHand.length === 0;
-              // Require TWO consecutive passes to end match via pass
-              const hasTwoPasses =
-                (aiPlayedWord ? 0 : (prev.consecutivePasses ?? 0) + 1) >= 4;
+            const isMatchOver = isDeckEmpty && (isHandEmpty || hasTwoPasses);
 
-              const isMatchOver = isDeckEmpty && (isHandEmpty || hasTwoPasses);
-
-              const humanPenalty = calculateHandPenalty(prev.humanHand);
+            if (isMatchOver) {
+              const humanPenalty = calculateHandPenalty(gameState.humanHand);
               const compPenalty = calculateHandPenalty(compHand);
 
               const finalHumanScore = Math.max(
@@ -1453,64 +1476,41 @@ export function App() {
               );
               const finalCompScore = Math.max(0, compMatchScore - compPenalty);
 
-              const updatedMatchScores = {
-                human: finalHumanScore,
-                computer: finalCompScore,
-              };
-
-              let matchWinner: PlayerId | "tie" | "draw" | null = null;
-
-              if (isMatchOver) {
-                if (updatedMatchScores.human > updatedMatchScores.computer) {
-                  matchWinner = "human";
-                } else if (
-                  updatedMatchScores.computer > updatedMatchScores.human
-                ) {
-                  matchWinner = "computer";
-                } else {
-                  matchWinner = "tie";
-                }
-
-                const didHumanWin = matchWinner === "human";
-                const wordsPlayedSnapshot = [...matchWordsRef.current];
-                matchWordsRef.current = [];
-
-                updateStats((currentStats: GameStatistics) =>
-                  calculateUpdatedStats(currentStats, {
-                    didWin: didHumanWin,
-                    scoringMode: prev.scoringMode,
-                    wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-                      (word) => word.playerId === "human",
-                    ),
-                    humanScore: finalHumanScore,
-                    computerScore: finalCompScore,
-                  }),
-                );
+              let matchWinner: "human" | "computer" | "tie" = "tie";
+              if (finalHumanScore > finalCompScore) {
+                matchWinner = "human";
+              } else if (finalCompScore > finalHumanScore) {
+                matchWinner = "computer";
               }
 
-              return {
-                ...prev,
-                wordBoard: newBoard,
-                matchScores: isMatchOver
-                  ? updatedMatchScores
-                  : { human: humanMatchScore, computer: compMatchScore },
-                computerHand: compHand,
-                deck: currentDeck,
-                isFirstTurn: false,
-                currentTurn: isMatchOver ? "computer" : "human",
-                consecutivePasses: aiPlayedWord
-                  ? 0
-                  : (prev.consecutivePasses ?? 0) + 1,
-                isGameOver: isMatchOver,
-                winner: matchWinner,
-                humanLeftoverHand: isMatchOver
-                  ? prev.humanHand
-                  : prev.humanLeftoverHand,
-                computerLeftoverHand: isMatchOver
-                  ? compHand
-                  : prev.computerLeftoverHand,
-              };
-            });
+              // 🎯 ONE CLEAN CALL: Records stats, delays the game-over banner by 1.2s
+              triggerGameOver(
+                matchWinner,
+                finalHumanScore,
+                finalCompScore,
+                gameState.humanHand,
+                compHand,
+              );
+
+              setIsAiThinking(false);
+              return; // Stop here, don't run the normal turn-switch state update
+            }
+
+            // Otherwise, continue with normal turn handoff if match is NOT over
+            setAiStatusText("Your turn! Make a move or swap/skip.");
+
+            setGameState((prev) => ({
+              ...prev,
+              wordBoard: newBoard,
+              matchScores: { human: humanMatchScore, computer: compMatchScore },
+              computerHand: compHand,
+              deck: currentDeck,
+              isFirstTurn: false,
+              currentTurn: "human",
+              consecutivePasses: aiPlayedWord
+                ? 0
+                : (prev.consecutivePasses ?? 0) + 1,
+            }));
 
             setIsAiThinking(false);
           }, 3500); // Hold action message for 3.5s before prompting player turn
@@ -1532,77 +1532,53 @@ export function App() {
   const handleConfirmSwapOrSkip = (selectedCardIds: string[]) => {
     if (selectedCardIds.length === 0) {
       // ⏭️ SKIP TURN
-      setGameState((prev) => {
-        const nextPasses = prev.consecutivePasses + 1;
+      const nextPasses = gameState.consecutivePasses + 1;
 
-        // 🏁 Check for Stalemate Game Over (4 passes with empty deck OR 8 consecutive passes)
-        const isStalemate =
-          nextPasses >= 8 || (prev.deck.length === 0 && nextPasses >= 4);
+      // 🏁 Check for Stalemate Game Over
+      const isStalemate =
+        nextPasses >= 8 || (gameState.deck.length === 0 && nextPasses >= 4);
 
-        let matchWinner:
-          | "human"
-          | "computer"
-          | "tie"
-          | "draw"
-          | PlayerId
-          | null = prev.winner;
+      if (isStalemate) {
+        // 🛡️ 1. CALCULATE PENALTIES FOR UNPLAYED TILES
+        const humanPenalty = calculateHandPenalty(gameState.humanHand);
+        const compPenalty = calculateHandPenalty(gameState.computerHand);
 
-        let finalMatchScores = { ...prev.matchScores };
+        const finalHumanScore = Math.max(
+          0,
+          gameState.matchScores.human - humanPenalty,
+        );
+        const finalCompScore = Math.max(
+          0,
+          gameState.matchScores.computer - compPenalty,
+        );
 
-        if (isStalemate) {
-          // 🛡️ 1. CALCULATE PENALTIES FOR UNPLAYED TILES
-          const humanPenalty = calculateHandPenalty(prev.humanHand);
-          const compPenalty = calculateHandPenalty(prev.computerHand);
-
-          // 🛡️ 2. SUBTRACT PENALTIES FROM SCORES
-          finalMatchScores = {
-            human: Math.max(0, prev.matchScores.human - humanPenalty),
-            computer: Math.max(0, prev.matchScores.computer - compPenalty),
-          };
-
-          // 🛡️ 3. DETERMINE WINNER FROM PENALIZED SCORES
-          if (finalMatchScores.human > finalMatchScores.computer) {
-            matchWinner = "human";
-          } else if (finalMatchScores.computer > finalMatchScores.human) {
-            matchWinner = "computer";
-          } else {
-            matchWinner = "tie";
-          }
-
-          // 📊 4. RECORD MATCH STATS ON STALEMATE GAME OVER
-          const didHumanWin = matchWinner === "human";
-          const wordsPlayedSnapshot = [...matchWordsRef.current];
-          matchWordsRef.current = [];
-
-          updateStats((currentStats: GameStatistics) =>
-            calculateUpdatedStats(currentStats, {
-              didWin: didHumanWin,
-              scoringMode: prev.scoringMode,
-              wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-                (word) => word.playerId === "human",
-              ),
-              humanScore: finalMatchScores.human,
-              computerScore: finalMatchScores.computer,
-            }),
-          );
+        let matchWinner: "human" | "computer" | "tie" = "tie";
+        if (finalHumanScore > finalCompScore) {
+          matchWinner = "human";
+        } else if (finalCompScore > finalHumanScore) {
+          matchWinner = "computer";
         }
 
-        return {
-          ...prev,
-          matchScores: finalMatchScores, // 👈 Update with penalized scores
-          currentTurn: isStalemate ? "human" : "computer",
-          consecutivePasses: nextPasses,
-          hasPlayedThisTurn: false,
-          isGameOver: isStalemate,
-          winner: matchWinner,
-          humanLeftoverHand: isStalemate
-            ? prev.humanHand
-            : prev.humanLeftoverHand,
-          computerLeftoverHand: isStalemate
-            ? prev.computerHand
-            : prev.computerLeftoverHand,
-        };
-      });
+        // 🎯 2. ONE CLEAN CALL: Records stats, delays the game-over banner by 1.2s
+        triggerGameOver(
+          matchWinner,
+          finalHumanScore,
+          finalCompScore,
+          gameState.humanHand,
+          gameState.computerHand,
+        );
+
+        setAiStatusText("Match ended in a stalemate!");
+        return; // Stop here, don't run the normal skip turn logic
+      }
+
+      // Otherwise, normal skip logic continues
+      setGameState((prev) => ({
+        ...prev,
+        currentTurn: "computer",
+        consecutivePasses: nextPasses,
+        hasPlayedThisTurn: false,
+      }));
 
       setAiStatusText(`You skipped your turn. ${gameState.botName} is up...`);
     } else {

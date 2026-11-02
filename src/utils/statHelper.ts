@@ -1,7 +1,6 @@
-import type { GameStatistics } from "../types/game";
-import type { ScoringMode } from "../types/game";
+import type { GameStatistics, ScoringMode } from "../types/game";
 
-interface MatchResultArgs {
+export interface MatchResultArgs {
   didWin: boolean;
   scoringMode: ScoringMode;
   wordsPlayedThisMatch: { word: string; score: number; playerId: string }[];
@@ -14,16 +13,10 @@ export const calculateUpdatedStats = (
   result: MatchResultArgs,
 ): GameStatistics => {
   let highestWord = prevStats.highestScoringWord || { word: "", score: 0 };
-  let longestWord = prevStats.longestWord || "";
   let totalWordsCount = prevStats.totalWordsPlayed || 0;
 
   for (const wp of result.wordsPlayedThisMatch) {
     totalWordsCount += 1;
-
-    // 🛡️ Compare lengths, store the winning word string
-    if (wp.word.length > longestWord.length) {
-      longestWord = wp.word;
-    }
 
     // Check highest scoring word
     if (wp.score > highestWord.score) {
@@ -33,7 +26,7 @@ export const calculateUpdatedStats = (
 
   const didWin = result.didWin;
 
-  // 🧮 Calculate biggest margin of victory if the user won
+  // 🧮 Calculate margin of victory if human won
   const scoreMargin = didWin
     ? Math.max(0, (result.humanScore || 0) - (result.computerScore || 0))
     : 0;
@@ -51,13 +44,12 @@ export const calculateUpdatedStats = (
     losses: (prevStats.losses || 0) + (!didWin ? 1 : 0),
     totalWordsPlayed: totalWordsCount,
     highestScoringWord: highestWord,
-    longestWord: longestWord,
     cutthroatWins:
       (prevStats.cutthroatWins || 0) +
       (didWin && result.scoringMode === "cutthroat" ? 1 : 0),
     accumulatorWins:
       (prevStats.accumulatorWins || 0) +
       (didWin && result.scoringMode === "accumulator" ? 1 : 0),
-    biggestMarginOfVictory: newBiggestMargin, // 👈 Added here
+    biggestMarginOfVictory: newBiggestMargin,
   };
 };
