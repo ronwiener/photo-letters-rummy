@@ -39,7 +39,6 @@ const ALLOWED_TWO_LETTER_WORDS = new Set<string>([
   "pi",
   "ex",
   "ax",
-  "qi",
   "za",
 ]);
 
@@ -69,7 +68,7 @@ const BLOCKED_WORDS = new Set<string>([
   "cwm",
 ]);
 
-// 🛡️ Whitelist for common inflections/words missing from base dictionary
+// 🛡️ Whitelist for specific valid words/inflections missing from base json
 const CUSTOM_ALLOWED_WORDS = new Set([
   "forage",
   "foraged",
@@ -98,29 +97,9 @@ export function isValidWord(word: string): boolean {
   if (!/[aeiouy]/.test(lowerWord)) return false;
   if (/[^aeiouy]{4,}/.test(lowerWord)) return false;
 
+  // 🔒 Strict validation: Must exist directly in your dictionary or custom list
   if (CUSTOM_ALLOWED_WORDS.has(lowerWord)) return true;
   if (DICTIONARY_SET.has(lowerWord)) return true;
-
-  // Stricter Inflection & Suffix Fallback (Restricted to safe suffixes like -ed and -ing)
-  const inflections = [
-    { ending: "ed", strips: 2 },
-    { ending: "ing", strips: 3 },
-  ];
-
-  for (const { ending, strips } of inflections) {
-    if (lowerWord.endsWith(ending) && lowerWord.length - strips >= 2) {
-      const stem = lowerWord.slice(0, -strips);
-
-      if (
-        CUSTOM_ALLOWED_WORDS.has(stem) ||
-        CUSTOM_ALLOWED_WORDS.has(stem + "e") ||
-        DICTIONARY_SET.has(stem) ||
-        DICTIONARY_SET.has(stem + "e")
-      ) {
-        return true;
-      }
-    }
-  }
 
   return false;
 }

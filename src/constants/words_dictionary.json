@@ -16181,6 +16181,8 @@
   "LOOSING",
   "LOOSINGS",
   "LOOT",
+  "LOOTER",
+  "LOOTERS",
   "LOOTING",
   "LOOTINGS",
   "LOOTS",
@@ -17701,6 +17703,9 @@
   "MOONLIT",
   "MOONLITS",
   "MOONS",
+  "MOOR",
+  "MOORING",
+  "MOORINGS",
   "MOORS",
   "MOOS",
   "MOOSE",
@@ -17716,7 +17721,7 @@
   "MOPINGS",
   "MOPPED",
   "MOPPING",
-  "MOPPINGS",
+
   "MOPS",
   "MOR",
   "MORAL",
@@ -17793,7 +17798,7 @@
   "MOTHBALLS",
   "MOTHER",
   "MOTHERING",
-  "MOTHERINGS",
+
   "MOTHERS",
   "MOTHS",
   "MOTIF",
@@ -17865,7 +17870,7 @@
   "MOVIE",
   "MOVIES",
   "MOVING",
-  "MOVINGS",
+
   "MOW",
   "MOWED",
   "MOWER",
@@ -17946,7 +17951,7 @@
   "MUNCH",
   "MUNCHES",
   "MUNCHING",
-  "MUNCHINGS",
+
   "MUNCHKIN",
   "MUNCHKINS",
   "MUNDANE",
@@ -17960,7 +17965,7 @@
   "MURDERERS",
   "MURDERESS",
   "MURDERING",
-  "MURDERINGS",
+
   "MURDEROUS",
   "MURDERS",
   "MURKIES",
@@ -17974,7 +17979,7 @@
   "MUSCLED",
   "MUSCLES",
   "MUSCULAR",
-  "MUSCULARS",
+
   "MUSE",
   "MUSEUM",
   "MUSEUMS",
@@ -18042,7 +18047,7 @@
   "MYRTLE",
   "MYRTLES",
   "MYSELF",
-  "MYSELFS",
+
   "MYSTERIES",
   "MYSTERY",
   "MYSTIC",
@@ -18075,7 +18080,7 @@
   "NAIL",
   "NAILED",
   "NAILING",
-  "NAILINGS",
+
   "NAILS",
   "NAIVE",
   "NAIVES",
@@ -18094,7 +18099,7 @@
   "NAMETAG",
   "NAMETAGS",
   "NAMING",
-  "NAMINGS",
+
   "NAMS",
   "NAN",
   "NANA",
@@ -18142,7 +18147,7 @@
   "NASALS",
   "NASTIES",
   "NASTIEST",
-  "NASTIESTS",
+
   "NASTY",
   "NATION",
   "NATIONAL",
@@ -18191,7 +18196,7 @@
   "NEARBIES",
   "NEARBY",
   "NEAREST",
-  "NEARESTS",
+
   "NEARLIES",
   "NEARLY",
   "NEARS",
@@ -18225,7 +18230,7 @@
   "NEEDIES",
   "NEEDINESS",
   "NEEDING",
-  "NEEDINGS",
+
   "NEEDLE",
   "NEEDLES",
   "NEEDLESS",
@@ -18242,7 +18247,7 @@
   "NEGLIGEE",
   "NEGLIGEES",
   "NEGLIGENT",
-  "NEGLIGENTS",
+
   "NEGOTIATE",
   "NEGOTIATES",
   "NEIGHBOR",
@@ -18250,7 +18255,7 @@
   "NEIGHBOUR",
   "NEIGHBOURS",
   "NEITHER",
-  "NEITHERS",
+
   "NELLIE",
   "NELLIES",
   "NELLY",
@@ -18271,7 +18276,7 @@
   "NERVE",
   "NERVES",
   "NERVOUS",
-  "NERVOUSLIES",
+
   "NERVOUSLY",
   "NES",
   "NESS",
@@ -18279,7 +18284,7 @@
   "NESTS",
   "NET",
   "NETHER",
-  "NETHERS",
+
   "NETS",
   "NETWORK",
   "NETWORKS",
@@ -18361,8 +18366,7 @@
   "NIECES",
   "NIFTIES",
   "NIFTY",
-  "NIGGER",
-  "NIGGERS",
+
   "NIGH",
   "NIGHS",
   "NIGHT",
@@ -18444,7 +18448,7 @@
   "NOD",
   "NODDED",
   "NODDING",
-  "NODDINGS",
+
   "NODE",
   "NODES",
   "NODS",
@@ -18475,10 +18479,10 @@
   "NOMINEE",
   "NOMINEES",
   "NONE",
-  "NONES",
+
   "NONISSUE",
   "NONISSUES",
-  "NONSENS",
+
   "NONSENSE",
   "NONSTOP",
   "NONSTOPS",
@@ -18487,10 +18491,10 @@
   "NOODLES",
   "NOON",
   "NOONS",
-  "NOOS",
+
   "NOOSE",
   "NOPE",
-  "NOPES",
+
   "NOR",
   "NORDIC",
   "NORDICS",
@@ -18504,7 +18508,7 @@
   "NORMALLY",
   "NORMALS",
   "NORMS",
-  "NORS",
+
   "NORTH",
   "NORTHEAST",
   "NORTHEASTS",
@@ -18512,7 +18516,7 @@
   "NORTHERN",
   "NORTHERNS",
   "NORTHERS",
-  "NORTHS",
+
   "NORTHWEST",
   "NORTHWESTS",
   "NOS",
@@ -18521,16 +18525,17 @@
   "NOSEDIVE",
   "NOSEDIVES",
   "NOSEY",
-  "NOSEYS",
+  "NOSIES",
   "NOSH",
   "NOSHES",
   "NOSIES",
+  "NOSIER",
   "NOSING",
   "NOSINGS",
   "NOSTALGIA",
   "NOSTALGIAS",
   "NOSTALGIC",
-  "NOSTALGICS",
+
   "NOSTRIL",
   "NOSTRILS",
   "NOSY",
@@ -18689,7 +18694,7 @@
   "OBEY",
   "OBEYED",
   "OBEYING",
-  "OBEYINGS",
+
   "OBEYS",
   "OBI",
   "OBIS",
@@ -18699,7 +18704,7 @@
   "OBJECT",
   "OBJECTED",
   "OBJECTING",
-  "OBJECTINGS",
+
   "OBJECTION",
   "OBJECTIONS",
   "OBJECTIVE",
@@ -18734,11 +18739,11 @@
   "OBSERVERS",
   "OBSERVES",
   "OBSERVING",
-  "OBSERVINGS",
+
   "OBSESS",
   "OBSESSED",
   "OBSESSING",
-  "OBSESSINGS",
+
   "OBSESSION",
   "OBSESSIONS",
   "OBSESSIVE",
@@ -18769,7 +18774,7 @@
   "OCCUPIES",
   "OCCUPY",
   "OCCUPYING",
-  "OCCUPYINGS",
+
   "OCCUR",
   "OCCURRED",
   "OCCURS",
@@ -18809,7 +18814,7 @@
   "OFFENDER",
   "OFFENDERS",
   "OFFENDING",
-  "OFFENDINGS",
+
   "OFFENDS",
   "OFFENS",
   "OFFENSE",
@@ -18908,7 +18913,7 @@
   "ONE",
   "ONES",
   "ONESELF",
-  "ONESELFS",
+
   "ONGOING",
   "ONGOINGS",
   "ONION",
@@ -18917,7 +18922,7 @@
   "ONLY",
   "ONS",
   "ONSTAGE",
-  "ONSTAGES",
+
   "ONTO",
   "ONTOS",
   "ONWARD",
@@ -18952,7 +18957,7 @@
   "OPERATED",
   "OPERATES",
   "OPERATING",
-  "OPERATINGS",
+
   "OPERATION",
   "OPERATIONS",
   "OPERATIVE",
@@ -18973,7 +18978,7 @@
   "OPPOSE",
   "OPPOSED",
   "OPPOSING",
-  "OPPOSINGS",
+
   "OPPOSITE",
   "OPPOSITES",
   "OPPRESS",
@@ -19011,7 +19016,7 @@
   "ORBITAL",
   "ORBITALS",
   "ORBITING",
-  "ORBITINGS",
+
   "ORBITS",
   "ORBS",
   "ORCHARD",
@@ -19023,7 +19028,7 @@
   "ORDER",
   "ORDERED",
   "ORDERING",
-  "ORDERINGS",
+
   "ORDERLIES",
   "ORDERLY",
   "ORDERS",
@@ -19091,7 +19096,7 @@
   "OSTRICHES",
   "OTHER",
   "OTHERS",
-  "OTHERWIS",
+
   "OTHERWISE",
   "OTTER",
   "OTTERS",
@@ -19107,6 +19112,7 @@
   "OUNCES",
   "OUR",
   "OURS",
+  "OURSELF",
   "OURSELVES",
   "OUT",
   "OUTAGE",
@@ -19133,9 +19139,9 @@
   "OUTDONES",
   "OUTDOOR",
   "OUTDOORS",
-  "OUTDOORSIES",
+
   "OUTDOORSY",
-  "OUTDOS",
+  "OUTDOES",
   "OUTER",
   "OUTERS",
   "OUTFIELD",
@@ -19149,9 +19155,9 @@
   "OUTGREWS",
   "OUTGROW",
   "OUTGROWN",
-  "OUTGROWNS",
+
   "OUTGROWS",
-  "OUTHOUS",
+
   "OUTHOUSE",
   "OUTING",
   "OUTINGS",
@@ -19161,6 +19167,7 @@
   "OUTLASTS",
   "OUTLAW",
   "OUTLAWED",
+  "OUTLAWER",
   "OUTLAWS",
   "OUTLET",
   "OUTLETS",
@@ -19218,38 +19225,38 @@
   "OVERBITE",
   "OVERBITES",
   "OVERBLOWN",
-  "OVERBLOWNS",
+
   "OVERBOARD",
   "OVERBOARDS",
   "OVERCAME",
-  "OVERCAMES",
+
   "OVERCAST",
   "OVERCASTS",
   "OVERCOME",
   "OVERCOMES",
   "OVERDID",
-  "OVERDIDS",
+
   "OVERDO",
   "OVERDONE",
   "OVERDONES",
-  "OVERDOS",
+  "OVERDOES",
   "OVERDOSE",
   "OVERDOSED",
   "OVERDRIVE",
   "OVERDRIVES",
   "OVERDUE",
-  "OVERDUES",
+
   "OVERFLOW",
   "OVERFLOWS",
   "OVERGROWN",
-  "OVERGROWNS",
+
   "OVERHAUL",
   "OVERHAULS",
   "OVERHEAD",
   "OVERHEADS",
   "OVERHEAR",
   "OVERHEARD",
-  "OVERHEARDS",
+
   "OVERHEARS",
   "OVERJOYED",
   "OVERKILL",
@@ -19289,7 +19296,7 @@
   "OVERSLEEP",
   "OVERSLEEPS",
   "OVERSLEPT",
-  "OVERSLEPTS",
+
   "OVERSTAY",
   "OVERSTAYS",
   "OVERSTEP",
@@ -19307,13 +19314,13 @@
   "OVERWHELM",
   "OVERWHELMS",
   "OVULATING",
-  "OVULATINGS",
+
   "OW",
   "OWE",
   "OWED",
   "OWES",
   "OWING",
-  "OWINGS",
+
   "OWL",
   "OWLS",
   "OWN",
@@ -19323,7 +19330,7 @@
   "OWNERSHIP",
   "OWNERSHIPS",
   "OWNING",
-  "OWNINGS",
+
   "OWNS",
   "OWS",
   "OX",
@@ -19338,7 +19345,7 @@
   "OXYMORONS",
   "OY",
   "OYEZ",
-  "OYEZES",
+
   "OYS",
   "OYSTER",
   "OYSTERS",
@@ -19463,7 +19470,7 @@
   "PAMPER",
   "PAMPERED",
   "PAMPERING",
-  "PAMPERINGS",
+
   "PAMPERS",
   "PAMPHLET",
   "PAMPHLETS",
@@ -19491,7 +19498,7 @@
   "PANICKED",
   "PANICKIES",
   "PANICKING",
-  "PANICKINGS",
+
   "PANICKY",
   "PANICS",
   "PANNED",
@@ -19603,7 +19610,7 @@
   "PARKER",
   "PARKERS",
   "PARKING",
-  "PARKINGS",
+
   "PARKS",
   "PARKWAY",
   "PARKWAYS",
@@ -19841,21 +19848,21 @@
   "PECKING",
   "PECKINGS",
   "PECKISH",
-  "PECKISHES",
+
   "PECKS",
   "PECS",
   "PECULIAR",
   "PECULIARS",
   "PEDAL",
   "PEDALING",
-  "PEDALINGS",
+
   "PEDALS",
   "PEDDLE",
   "PEDDLER",
   "PEDDLERS",
   "PEDDLES",
   "PEDDLING",
-  "PEDDLINGS",
+
   "PEDESTAL",
   "PEDESTALS",
   "PEDIATRIC",
@@ -19885,7 +19892,7 @@
   "PEEP",
   "PEEPERS",
   "PEEPING",
-  "PEEPINGS",
+
   "PEEPS",
   "PEER",
   "PEERING",
@@ -20064,7 +20071,7 @@
   "PEST",
   "PESTER",
   "PESTERING",
-  "PESTERINGS",
+
   "PESTERS",
   "PESTO",
   "PESTOS",
@@ -20090,7 +20097,7 @@
   "PETTICOATS",
   "PETTIES",
   "PETTING",
-  "PETTINGS",
+
   "PETTY",
   "PEW",
   "PEWS",
@@ -20185,16 +20192,16 @@
   "PICTURED",
   "PICTURES",
   "PICTURING",
-  "PICTURINGS",
+
   "PIDDLES",
   "PIDDLING",
-  "PIDDLINGS",
+
   "PIE",
   "PIECE",
   "PIECED",
   "PIECES",
   "PIECING",
-  "PIECINGS",
+
   "PIED",
   "PIER",
   "PIERCE",
@@ -20265,7 +20272,7 @@
   "PINCHED",
   "PINCHES",
   "PINCHING",
-  "PINCHINGS",
+
   "PINE",
   "PINEAPPLE",
   "PINEAPPLES",
@@ -20353,7 +20360,7 @@
   "PITTINGS",
   "PITY",
   "PITYING",
-  "PITYINGS",
+
   "PIVOT",
   "PIVOTAL",
   "PIVOTALS",
@@ -20380,7 +20387,7 @@
   "PLAGUED",
   "PLAGUES",
   "PLAGUING",
-  "PLAGUINGS",
+
   "PLAID",
   "PLAIDS",
   "PLAIN",
@@ -20399,7 +20406,7 @@
   "PLANETARY",
   "PLANETS",
   "PLANING",
-  "PLANINGS",
+
   "PLANK",
   "PLANKS",
   "PLANKTON",
@@ -20408,7 +20415,7 @@
   "PLANNER",
   "PLANNERS",
   "PLANNING",
-  "PLANNINGS",
+
   "PLANS",
   "PLANT",
   "PLANTED",
@@ -20423,6 +20430,7 @@
   "PLASMAS",
   "PLASTER",
   "PLASTERED",
+  "PLASTERING",
   "PLASTERS",
   "PLASTIC",
   "PLASTICS",
@@ -20447,7 +20455,7 @@
   "PLATTERS",
   "PLATYPUS",
   "PLAUSIBLE",
-  "PLAUSIBLES",
+
   "PLAY",
   "PLAYA",
   "PLAYAS",
@@ -20460,8 +20468,8 @@
   "PLAYERS",
   "PLAYFUL",
   "PLAYFULS",
-  "PLAYHOUS",
   "PLAYHOUSE",
+  "PLAYHOUSES",
   "PLAYING",
   "PLAYINGS",
   "PLAYMATE",
@@ -20498,7 +20506,7 @@
   "PLEDGED",
   "PLEDGES",
   "PLEDGING",
-  "PLEDGINGS",
+
   "PLENTIES",
   "PLENTY",
   "PLETHORA",
@@ -20512,11 +20520,11 @@
   "PLOTS",
   "PLOTTED",
   "PLOTTING",
-  "PLOTTINGS",
+
   "PLOW",
   "PLOWED",
   "PLOWING",
-  "PLOWINGS",
+
   "PLOWS",
   "PLOY",
   "PLOYS",
@@ -20524,19 +20532,19 @@
   "PLUCKED",
   "PLUCKIES",
   "PLUCKING",
-  "PLUCKINGS",
+
   "PLUCKS",
   "PLUCKY",
   "PLUG",
   "PLUGGED",
   "PLUGGING",
-  "PLUGGINGS",
+
   "PLUGS",
   "PLUM",
   "PLUMBER",
   "PLUMBERS",
   "PLUMBING",
-  "PLUMBINGS",
+
   "PLUMMET",
   "PLUMMETED",
   "PLUMMETS",
@@ -20627,13 +20635,13 @@
   "POLES",
   "POLICE",
   "POLICEMAN",
-  "POLICEMANS",
+
   "POLICEMEN",
-  "POLICEMENS",
+
   "POLICES",
   "POLICIES",
   "POLICING",
-  "POLICINGS",
+
   "POLICY",
   "POLIES",
   "POLIO",
@@ -20668,7 +20676,7 @@
   "POLLUTE",
   "POLLUTES",
   "POLLUTING",
-  "POLLUTINGS",
+
   "POLLUTION",
   "POLLUTIONS",
   "POLO",
@@ -20896,7 +20904,7 @@
   "POWERFUL",
   "POWERFULS",
   "POWERING",
-  "POWERINGS",
+
   "POWERLESS",
   "POWERS",
   "POWS",
@@ -20917,7 +20925,7 @@
   "PRAISE",
   "PRAISED",
   "PRAISING",
-  "PRAISINGS",
+
   "PRALINES",
   "PRAM",
   "PRAMS",
@@ -20926,7 +20934,7 @@
   "PRANCERS",
   "PRANCES",
   "PRANCING",
-  "PRANCINGS",
+
   "PRANK",
   "PRANKS",
   "PRANKSTER",
@@ -20938,7 +20946,7 @@
   "PRAYER",
   "PRAYERS",
   "PRAYING",
-  "PRAYINGS",
+
   "PRAYS",
   "PREACH",
   "PREACHED",
@@ -21010,12 +21018,12 @@
   "PREPARED",
   "PREPARES",
   "PREPARING",
-  "PREPARINGS",
+
   "PREPPED",
   "PREPPIE",
   "PREPPIES",
   "PREPPING",
-  "PREPPINGS",
+
   "PREPPY",
   "PREPS",
   "PRESCHOOL",
@@ -21041,11 +21049,11 @@
   "PRESIDENTS",
   "PRESIDES",
   "PRESIDING",
-  "PRESIDINGS",
+
   "PRESS",
   "PRESSED",
   "PRESSING",
-  "PRESSINGS",
+
   "PRESSMAN",
   "PRESSMANS",
   "PRESSURE",
@@ -21059,7 +21067,7 @@
   "PRESUMED",
   "PRESUMES",
   "PRESUMING",
-  "PRESUMINGS",
+
   "PRETEND",
   "PRETENDED",
   "PRETENDS",
@@ -21073,7 +21081,7 @@
   "PRETTIERS",
   "PRETTIES",
   "PRETTIEST",
-  "PRETTIESTS",
+
   "PRETTY",
   "PRETZEL",
   "PRETZELS",
@@ -21089,7 +21097,7 @@
   "PREY",
   "PREYED",
   "PREYING",
-  "PREYINGS",
+
   "PREYS",
   "PRICE",
   "PRICED",
@@ -21129,7 +21137,7 @@
   "PRIMO",
   "PRIMOS",
   "PRIMPING",
-  "PRIMPINGS",
+
   "PRIMS",
   "PRINCE",
   "PRINCELIES",
@@ -21210,7 +21218,7 @@
   "PRODUCERS",
   "PRODUCES",
   "PRODUCING",
-  "PRODUCINGS",
+
   "PRODUCT",
   "PRODUCTS",
   "PROF",
@@ -21258,14 +21266,14 @@
   "PROMISE",
   "PROMISED",
   "PROMISING",
-  "PROMISINGS",
+
   "PROMO",
   "PROMOS",
   "PROMOTE",
   "PROMOTED",
   "PROMOTES",
   "PROMOTING",
-  "PROMOTINGS",
+
   "PROMOTION",
   "PROMOTIONS",
   "PROMPT",
@@ -21363,7 +21371,7 @@
   "PROVIDERS",
   "PROVIDES",
   "PROVIDING",
-  "PROVIDINGS",
+
   "PROVINCES",
   "PROVING",
   "PROVINGS",
@@ -21467,7 +21475,7 @@
   "PULLER",
   "PULLERS",
   "PULLING",
-  "PULLINGS",
+
   "PULLS",
   "PULMONARIES",
   "PULMONARY",
@@ -21477,14 +21485,13 @@
   "PULPS",
   "PULS",
   "PULSATING",
-  "PULSATINGS",
+
   "PULSE",
   "PUMMEL",
   "PUMMELS",
   "PUMP",
   "PUMPED",
-  "PUMPING",
-  "PUMPINGS",
+
   "PUMPKIN",
   "PUMPKINS",
   "PUMPS",
@@ -21494,7 +21501,7 @@
   "PUNCHES",
   "PUNCHIES",
   "PUNCHING",
-  "PUNCHINGS",
+
   "PUNCHY",
   "PUNCTUAL",
   "PUNCTUALS",
@@ -21508,7 +21515,7 @@
   "PUNISHED",
   "PUNISHES",
   "PUNISHING",
-  "PUNISHINGS",
+
   "PUNITIVE",
   "PUNITIVES",
   "PUNK",
@@ -21525,6 +21532,7 @@
   "PUPILS",
   "PUPPET",
   "PUPPETEER",
+  "PUPPETEERING",
   "PUPPETEERS",
   "PUPPETS",
   "PUPPIES",
@@ -21572,7 +21580,7 @@
   "PURSUED",
   "PURSUES",
   "PURSUING",
-  "PURSUINGS",
+
   "PURSUIT",
   "PURSUITS",
   "PURVIEW",
@@ -21608,7 +21616,7 @@
   "PUZZLED",
   "PUZZLES",
   "PUZZLING",
-  "PUZZLINGS",
+
   "PYGMIES",
   "PYGMY",
   "PYJAMAS",
@@ -21727,10 +21735,10 @@
   "QUITTER",
   "QUITTERS",
   "QUITTING",
-  "QUITTINGS",
+
   "QUIVER",
   "QUIVERING",
-  "QUIVERINGS",
+
   "QUIVERS",
   "QUIXOTE",
   "QUIXOTES",
@@ -21749,7 +21757,7 @@
   "QUOTH",
   "QUOTHS",
   "QUOTING",
-  "QUOTINGS",
+
   "RABBI",
   "RABBIS",
   "RABBIT",
