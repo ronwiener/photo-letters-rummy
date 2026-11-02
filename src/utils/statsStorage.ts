@@ -12,6 +12,7 @@ export const DEFAULT_STATS: GameStatistics = {
   longestWord: "",
   cutthroatWins: 0,
   accumulatorWins: 0,
+  biggestMarginOfVictory: 0,
 };
 
 /**
