@@ -101,12 +101,10 @@ export function isValidWord(word: string): boolean {
   if (CUSTOM_ALLOWED_WORDS.has(lowerWord)) return true;
   if (DICTIONARY_SET.has(lowerWord)) return true;
 
-  // Stricter Inflection & Suffix Fallback (Removed loose -er rule to prevent 'aliver')
+  // Stricter Inflection & Suffix Fallback (Restricted to safe suffixes like -ed and -ing)
   const inflections = [
     { ending: "ed", strips: 2 },
     { ending: "ing", strips: 3 },
-    { ending: "es", strips: 2 },
-    { ending: "s", strips: 1 },
   ];
 
   for (const { ending, strips } of inflections) {
