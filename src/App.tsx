@@ -27,7 +27,11 @@ import { TradeModal } from "./components/TradeModal";
 import { SwapSkipModal } from "./components/SwapSkipModal";
 import { WordsPlayedModal } from "./components/WordsPlayedModal";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
-import { getStoredStats, saveStoredStats } from "./utils/statsStorage";
+import {
+  getStoredStats,
+  saveStoredStats,
+  DEFAULT_STATS,
+} from "./utils/statsStorage";
 import { StatsModal } from "./components/StatsModal";
 import { calculateUpdatedStats } from "./utils/statHelper";
 
@@ -99,22 +103,7 @@ export function App() {
   const [isWordsModalOpen, setIsWordsModalOpen] = useState(false);
   const [scoringMode, setScoringMode] = useState<ScoringMode>("accumulator");
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
-  const [stats, setStats] = useState<GameStatistics>(() => {
-    const loaded = getStoredStats();
-    return loaded && typeof loaded === "object"
-      ? loaded
-      : {
-          gamesPlayed: 0,
-          gamesWon: 0,
-          wins: 0,
-          losses: 0,
-          totalWordsPlayed: 0,
-          highestScoringWord: { word: "", score: 0 },
-          longestWord: "",
-          cutthroatWins: 0,
-          accumulatorWins: 0,
-        };
-  });
+  const [stats, setStats] = useState<GameStatistics>(getStoredStats);
 
   useEffect(() => {
     console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
@@ -771,6 +760,8 @@ export function App() {
             wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
               (word) => word.playerId === "human",
             ),
+            humanScore: finalMatchScores.human,
+            computerScore: finalMatchScores.computer,
           }),
         );
       }
@@ -877,6 +868,8 @@ export function App() {
             wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
               (word) => word.playerId === "human",
             ),
+            humanScore: finalMatchScores.human,
+            computerScore: finalMatchScores.computer,
           }),
         );
       }
@@ -1013,6 +1006,8 @@ export function App() {
           wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
             (word) => word.playerId === "human",
           ),
+          humanScore: adjustedHumanScore,
+          computerScore: adjustedCompScore,
         }),
       );
 
@@ -1487,6 +1482,8 @@ export function App() {
                     wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
                       (word) => word.playerId === "human",
                     ),
+                    humanScore: finalHumanScore,
+                    computerScore: finalCompScore,
                   }),
                 );
               }
@@ -1584,6 +1581,8 @@ export function App() {
               wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
                 (word) => word.playerId === "human",
               ),
+              humanScore: finalMatchScores.human,
+              computerScore: finalMatchScores.computer,
             }),
           );
         }
@@ -1676,12 +1675,6 @@ export function App() {
     setTargetBoardWord(null);
   };
 
-  useEffect(() => {
-    if (gameState.isGameOver) {
-      setIsStatsModalOpen(true);
-    }
-  }, [gameState.isGameOver]);
-
   // 🧮 Compute exact potential score for the submit button preview
   let potentialScore = 0;
   if (stagedCards.length >= 2) {
@@ -1703,6 +1696,17 @@ export function App() {
       }
     }
   }
+
+  const handleResetStats = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to reset all career statistics? This cannot be undone.",
+      )
+    ) {
+      setStats(DEFAULT_STATS);
+      saveStoredStats(DEFAULT_STATS);
+    }
+  };
 
   // -------------------------------------------------------------
   // 1. EARLY RETURN FOR MAIN MENU / LANDING VIEW
@@ -1876,6 +1880,69 @@ export function App() {
         </div>
       </DragDropContext>
 
+      {/* 🏁 GAME-OVER OVERLAY BANNER */}
+      {gameState.isGameOver && (
+        <div className="absolute inset-x-4 top-20 z-50 bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-5 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
+          <h2 className="text-2xl font-extrabold tracking-wide mb-1">
+            {gameState.winner === "human"
+              ? "🎉 You Won the Match!"
+              : gameState.winner === "computer"
+                ? `🤖 ${gameState.botName} Wins!`
+                : "🤝 It's a Tie / Stalemate!"}
+          </h2>
+
+          <p className="text-slate-300 text-xs mb-3">
+            Final scores include penalties for unplayed tiles left in hand.
+          </p>
+
+          {/* Final Score Breakdown & Leftover Hands */}
+          <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3 rounded-xl mb-4 text-left border border-slate-700 text-xs">
+            <div>
+              <p className="font-bold text-amber-400">You</p>
+              <p className="text-xl font-black">
+                {gameState.matchScores.human} pts
+              </p>
+              <p className="text-[10px] text-slate-400 mt-0.5">
+                Leftover:{" "}
+                {gameState.humanLeftoverHand?.length
+                  ? gameState.humanLeftoverHand.map((c) => c.letter).join(", ")
+                  : "None (0 penalty)"}
+              </p>
+            </div>
+            <div>
+              <p className="font-bold text-amber-400">{gameState.botName}</p>
+              <p className="text-xl font-black">
+                {gameState.matchScores.computer} pts
+              </p>
+              <p className="text-[10px] text-slate-400 mt-0.5">
+                Leftover:{" "}
+                {gameState.computerLeftoverHand?.length
+                  ? gameState.computerLeftoverHand
+                      .map((c) => c.letter)
+                      .join(", ")
+                  : "None (0 penalty)"}
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => setIsStatsModalOpen(true)}
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl shadow transition text-xs cursor-pointer"
+            >
+              📊 View Statistics
+            </button>
+            <button
+              onClick={() => handleStartNewMatch()}
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl shadow transition text-xs cursor-pointer"
+            >
+              🔄 New Game
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Modals & Overlays */}
       <WordsPlayedModal
         isOpen={isWordsModalOpen}
@@ -1926,11 +1993,7 @@ export function App() {
       <StatsModal
         isOpen={isStatsModalOpen}
         stats={stats}
-        isGameOver={gameState.isGameOver}
-        winner={gameState.winner}
-        matchScores={gameState.matchScores}
-        computerLeftoverHand={gameState.computerLeftoverHand}
-        humanLeftoverHand={gameState.humanLeftoverHand}
+        onResetStats={handleResetStats}
         onClose={() => setIsStatsModalOpen(false)}
         onNewMatch={() => {
           setIsStatsModalOpen(false);

@@ -46,6 +46,7 @@ export interface GameStatistics {
   accumulatorWins: number;
   wins: number;
   losses: number;
+  biggestMarginOfVictory: number;
 }
 
 export const DEFAULT_STATS: GameStatistics = {
@@ -58,6 +59,7 @@ export const DEFAULT_STATS: GameStatistics = {
   longestWord: "",
   cutthroatWins: 0,
   accumulatorWins: 0,
+  biggestMarginOfVictory: 0,
 };
 
 export type PlayerId = "human" | "computer";
