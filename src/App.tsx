@@ -130,19 +130,17 @@ export function App() {
     humanLeftover: Card[] = [],
     computerLeftover: Card[] = [],
   ) => {
-    // 🛡️ Prevent duplicate triggers if game is already over
     if (gameState.isGameOver) return;
 
     const didHumanWin = winner === "human";
     const wordsPlayedSnapshot = [...matchWordsRef.current];
     matchWordsRef.current = [];
 
-    // 🎯 Count total human Bingos scored during this match
     const humanBingosThisMatch = wordsPlayedSnapshot.filter(
       (word) => word.playerId === "human" && word.isBingo,
     ).length;
 
-    // 1. Immediately record career stats (wins, losses, margins, bingos, etc.)
+    // 1. Record career stats immediately
     updateStats((currentStats: GameStatistics) =>
       calculateUpdatedStats(currentStats, {
         didWin: didHumanWin,
@@ -152,21 +150,29 @@ export function App() {
         ),
         humanScore: finalHumanScore,
         computerScore: finalComputerScore,
-        bingosCount: humanBingosThisMatch, // 👈 Satisfies MatchResultArgs requirement
+        bingosCount: humanBingosThisMatch,
       }),
     );
 
-    // 2. Pause 2.5s to let board state settle, then display the game-over modal
+    // 2. Set leftover hands immediately so player sees final board state
+    setGameState((prev) => ({
+      ...prev,
+      humanLeftoverHand: humanLeftover,
+      computerLeftoverHand: computerLeftover,
+    }));
+
+    // 3. Pause 3s, THEN trigger game over modal & final adjusted scores
     setTimeout(() => {
       setGameState((prev) => ({
         ...prev,
+        matchScores: {
+          human: finalHumanScore,
+          computer: finalComputerScore,
+        },
         isGameOver: true,
         winner,
-        currentTurn: "human", // optional: lock or reset turn focus
-        humanLeftoverHand: humanLeftover,
-        computerLeftoverHand: computerLeftover,
       }));
-    }, 2500);
+    }, 3000);
   };
 
   const matchWordsRef = useRef<
@@ -1045,9 +1051,8 @@ export function App() {
     if (gameState.isGameOver) return;
 
     if (gameState.deck.length === 0 && gameState.consecutivePasses >= 4) {
-      // 🛡️ 1. CALCULATE HAND PENALTIES FOR BOTH PLAYERS
       const humanPenalty = calculateHandPenalty(gameState.humanHand);
-      const compPenalty = calculateHandPenalty(gameState.computerHand); // Or botHand / aiHand
+      const compPenalty = calculateHandPenalty(gameState.computerHand);
 
       let adjustedHumanScore = Math.max(
         0,
@@ -1062,40 +1067,14 @@ export function App() {
       if (adjustedHumanScore > adjustedCompScore) matchWinner = "human";
       else if (adjustedCompScore > adjustedHumanScore) matchWinner = "computer";
 
-      // 📊 2. RECORD CAREER STATS
-      const didHumanWin = matchWinner === "human";
-      const wordsPlayedSnapshot = [...matchWordsRef.current];
-      matchWordsRef.current = [];
-
-      // 🎯 Calculate total human Bingos scored during this match
-      const humanBingosThisMatch = wordsPlayedSnapshot.filter(
-        (word) => word.playerId === "human" && word.isBingo,
-      ).length;
-
-      updateStats((currentStats: GameStatistics) =>
-        calculateUpdatedStats(currentStats, {
-          didWin: didHumanWin,
-          scoringMode: gameState.scoringMode,
-          wordsPlayedThisMatch: wordsPlayedSnapshot.filter(
-            (word) => word.playerId === "human",
-          ),
-          humanScore: adjustedHumanScore,
-          computerScore: adjustedCompScore,
-          bingosCount: humanBingosThisMatch, // 👈 Satisfies MatchResultArgs requirement
-        }),
+      // 🚀 Hand off to our delayed trigger function!
+      triggerGameOver(
+        matchWinner,
+        adjustedHumanScore,
+        adjustedCompScore,
+        gameState.humanHand,
+        gameState.computerHand,
       );
-
-      setGameState((prev) => ({
-        ...prev,
-        matchScores: {
-          human: adjustedHumanScore,
-          computer: adjustedCompScore,
-        },
-        isGameOver: true,
-        winner: matchWinner,
-        humanLeftoverHand: prev.humanHand,
-        computerLeftoverHand: prev.computerHand,
-      }));
     }
   }, [
     gameState.deck.length,
@@ -1104,7 +1083,6 @@ export function App() {
     gameState.matchScores,
     gameState.humanHand,
     gameState.computerHand,
-    gameState.scoringMode,
   ]);
   // -------------------------------------------------------------
   // MONICA AI TURN ENGINE (Continuous Phase-Less Flow & Steal Mechanics)
@@ -1957,31 +1935,74 @@ export function App() {
 
           {/* Final Score Breakdown & Leftover Hands */}
           <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3 rounded-xl mb-4 text-left border border-slate-700 text-xs">
+            {/* Human Player */}
             <div>
               <p className="font-bold text-amber-400">You</p>
               <p className="text-xl font-black">
                 {gameState.matchScores.human} pts
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
-                Leftover:{" "}
-                {gameState.humanLeftoverHand?.length
-                  ? gameState.humanLeftoverHand.map((c) => c.letter).join(", ")
-                  : "None (0 penalty)"}
-              </p>
+              <div className="mt-1">
+                <span className="text-[10px] text-slate-400 block mb-0.5">
+                  Leftover Penalties:
+                </span>
+                {(() => {
+                  const leftover = gameState.humanLeftoverHand ?? [];
+                  return leftover.length > 0 ? (
+                    <div className="flex flex-wrap gap-1">
+                      {leftover.map((c, idx) => (
+                        <span
+                          key={c.id || `${c.letter}-${idx}`}
+                          className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                        >
+                          <span>{c.letter}</span>
+                          <span className="text-rose-400/80 text-[9px]">
+                            (-{c.points})
+                          </span>
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[10px] text-slate-400">
+                      None (0 penalty)
+                    </p>
+                  );
+                })()}
+              </div>
             </div>
+
+            {/* Computer / Bot Player */}
             <div>
               <p className="font-bold text-amber-400">{gameState.botName}</p>
               <p className="text-xl font-black">
                 {gameState.matchScores.computer} pts
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
-                Leftover:{" "}
-                {gameState.computerLeftoverHand?.length
-                  ? gameState.computerLeftoverHand
-                      .map((c) => c.letter)
-                      .join(", ")
-                  : "None (0 penalty)"}
-              </p>
+              <div className="mt-1">
+                <span className="text-[10px] text-slate-400 block mb-0.5">
+                  Leftover Penalties:
+                </span>
+                {(() => {
+                  const leftover = gameState.computerLeftoverHand ?? [];
+                  return leftover.length > 0 ? (
+                    <div className="flex flex-wrap gap-1">
+                      {leftover.map((c, idx) => (
+                        <span
+                          key={c.id || `${c.letter}-${idx}`}
+                          className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                        >
+                          <span>{c.letter}</span>
+                          <span className="text-rose-400/80 text-[9px]">
+                            (-{c.points})
+                          </span>
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[10px] text-slate-400">
+                      None (0 penalty)
+                    </p>
+                  );
+                })()}
+              </div>
             </div>
           </div>
 
