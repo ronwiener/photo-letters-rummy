@@ -13,6 +13,7 @@ export const DEFAULT_STATS: GameStatistics = {
   cutthroatWins: 0,
   accumulatorWins: 0,
   biggestMarginOfVictory: 0,
+  bingos: 0,
 };
 
 /**

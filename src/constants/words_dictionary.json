@@ -1729,11 +1729,11 @@
   "BADDER",
   "BADDERS",
   "BADDEST",
-  "BADDESTS",
+
   "BADGE",
   "BADGERED",
   "BADGERING",
-  "BADGERINGS",
+
   "BADGES",
   "BADLIES",
   "BADLY",
@@ -1753,7 +1753,7 @@
   "BAGGED",
   "BAGGIES",
   "BAGGING",
-  "BAGGINGS",
+
   "BAGGY",
   "BAGMAN",
   "BAGMANS",
@@ -1790,7 +1790,7 @@
   "BALANCED",
   "BALANCES",
   "BALANCING",
-  "BALANCINGS",
+
   "BALBOA",
   "BALBOAS",
   "BALCONIES",
@@ -1929,14 +1929,12 @@
   "BARE",
   "BARED",
   "BAREFOOT",
-  "BAREFOOTS",
-  "BARELIES",
   "BARELY",
   "BARES",
   "BARF",
   "BARFED",
   "BARFING",
-  "BARFINGS",
+
   "BARFS",
   "BARGAIN",
   "BARGAINED",
@@ -1945,7 +1943,7 @@
   "BARGED",
   "BARGES",
   "BARGING",
-  "BARGINGS",
+
   "BARING",
   "BARINGS",
   "BARIUM",
@@ -1966,7 +1964,7 @@
   "BARMAID",
   "BARMAIDS",
   "BARMAN",
-  "BARMANS",
+  "BARMEN",
   "BARN",
   "BARNACLE",
   "BARNACLES",
@@ -2001,7 +1999,7 @@
   "BARRIER",
   "BARRIERS",
   "BARRING",
-  "BARRINGS",
+
   "BARRIO",
   "BARRIOS",
   "BARRISTER",
@@ -2035,7 +2033,7 @@
   "BASHING",
   "BASHINGS",
   "BASIC",
-  "BASICALLIES",
+
   "BASICALLY",
   "BASICS",
   "BASIL",
@@ -2098,7 +2096,7 @@
   "BATTLE",
   "BATTLES",
   "BATTLING",
-  "BATTLINGS",
+
   "BATTY",
   "BAUBLE",
   "BAUBLES",
@@ -2135,7 +2133,7 @@
   "BEAM",
   "BEAMED",
   "BEAMING",
-  "BEAMINGS",
+
   "BEAMS",
   "BEAN",
   "BEANBAG",
@@ -2265,12 +2263,12 @@
   "BEGUN",
   "BEGUNS",
   "BEHALF",
-  "BEHALFS",
+
   "BEHAVE",
   "BEHAVED",
   "BEHAVES",
   "BEHAVING",
-  "BEHAVINGS",
+
   "BEHAVIOR",
   "BEHAVIORS",
   "BEHAVIOUR",
@@ -2300,7 +2298,7 @@
   "BELIEVERS",
   "BELIEVES",
   "BELIEVING",
-  "BELIEVINGS",
+
   "BELITTLE",
   "BELITTLES",
   "BELIVE",
@@ -2419,7 +2417,7 @@
   "BETRAYER",
   "BETRAYERS",
   "BETRAYING",
-  "BETRAYINGS",
+
   "BETRAYS",
   "BETS",
   "BETTER",
@@ -2459,7 +2457,7 @@
   "BIDDER",
   "BIDDERS",
   "BIDDING",
-  "BIDDINGS",
+
   "BIDE",
   "BIDES",
   "BIDING",
@@ -2613,7 +2611,7 @@
   "BLACKBIRDS",
   "BLACKED",
   "BLACKING",
-  "BLACKINGS",
+
   "BLACKJACK",
   "BLACKJACKS",
   "BLACKMAIL",
@@ -2641,7 +2639,7 @@
   "BLANK",
   "BLANKET",
   "BLANKETS",
-  "BLANKLIES",
+
   "BLANKLY",
   "BLANKS",
   "BLARING",
@@ -2657,7 +2655,7 @@
   "BLASTINGS",
   "BLASTS",
   "BLATANT",
-  "BLATANTLIES",
+
   "BLATANTLY",
   "BLATANTS",
   "BLATHER",
@@ -2711,7 +2709,7 @@
   "BLINDFOLD",
   "BLINDFOLDS",
   "BLINDING",
-  "BLINDINGS",
+
   "BLINDLIES",
   "BLINDLY",
   "BLINDNESS",
@@ -2727,7 +2725,7 @@
   "BLISSFUL",
   "BLISSFULS",
   "BLISTERS",
-  "BLITHELIES",
+
   "BLITHELY",
   "BLITZ",
   "BLITZES",
@@ -2793,9 +2791,7 @@
   "BLOWHARD",
   "BLOWHARDS",
   "BLOWING",
-  "BLOWINGS",
-  "BLOWJOB",
-  "BLOWJOBS",
+
   "BLOWN",
   "BLOWNS",
   "BLOWOUT",
@@ -2838,7 +2834,7 @@
   "BLURT",
   "BLURTED",
   "BLURTING",
-  "BLURTINGS",
+
   "BLURTS",
   "BLUSH",
   "BLUSHES",
@@ -2865,7 +2861,7 @@
   "BOAST",
   "BOASTS",
   "BOAT",
-  "BOATHOUS",
+
   "BOATHOUSE",
   "BOATING",
   "BOATINGS",
@@ -2909,7 +2905,7 @@
   "BOILER",
   "BOILERS",
   "BOILING",
-  "BOILINGS",
+
   "BOILS",
   "BOLD",
   "BOLDER",
@@ -2984,7 +2980,7 @@
   "BOOGIE",
   "BOOGIES",
   "BOOK",
-  "BOOKCAS",
+
   "BOOKCASE",
   "BOOKED",
   "BOOKENDS",
@@ -2995,7 +2991,7 @@
   "BOOKING",
   "BOOKINGS",
   "BOOKISH",
-  "BOOKISHES",
+
   "BOOKLET",
   "BOOKLETS",
   "BOOKMAN",
@@ -3019,7 +3015,7 @@
   "BOONIES",
   "BOONS",
   "BOORISH",
-  "BOORISHES",
+
   "BOOS",
   "BOOST",
   "BOOSTED",
@@ -3077,7 +3073,7 @@
   "BOSSED",
   "BOSSIES",
   "BOSSING",
-  "BOSSINGS",
+
   "BOSSY",
   "BOSTON",
   "BOSTONS",
@@ -3091,7 +3087,7 @@
   "BOTHER",
   "BOTHERED",
   "BOTHERING",
-  "BOTHERINGS",
+
   "BOTHERS",
   "BOTHS",
   "BOTS",
@@ -3118,7 +3114,7 @@
   "BOUNCES",
   "BOUNCIES",
   "BOUNCING",
-  "BOUNCINGS",
+
   "BOUNCY",
   "BOUND",
   "BOUNDARIES",
@@ -3153,7 +3149,7 @@
   "BOWLINE",
   "BOWLINES",
   "BOWLING",
-  "BOWLINGS",
+
   "BOWLS",
   "BOWMAN",
   "BOWMANS",
@@ -3206,7 +3202,7 @@
   "BRAIN",
   "BRAINED",
   "BRAINIEST",
-  "BRAINIESTS",
+
   "BRAINS",
   "BRAINWASH",
   "BRAINWASHES",
@@ -3247,7 +3243,7 @@
   "BRAVERY",
   "BRAVES",
   "BRAVEST",
-  "BRAVESTS",
+
   "BRAVO",
   "BRAVOS",
   "BRAWL",
@@ -3256,7 +3252,7 @@
   "BRAZEN",
   "BRAZENS",
   "BRAZIL",
-  "BRAZILS",
+
   "BREACH",
   "BREACHED",
   "BREACHES",
@@ -3274,7 +3270,7 @@
   "BREAKFAST",
   "BREAKFASTS",
   "BREAKING",
-  "BREAKINGS",
+
   "BREAKOUT",
   "BREAKOUTS",
   "BREAKS",
@@ -3304,7 +3300,7 @@
   "BREEZES",
   "BREEZIES",
   "BREEZING",
-  "BREEZINGS",
+
   "BREEZY",
   "BREN",
   "BRENS",
@@ -3341,7 +3337,7 @@
   "BRIDGES",
   "BRIE",
   "BRIEF",
-  "BRIEFCAS",
+
   "BRIEFCASE",
   "BRIEFED",
   "BRIEFING",
@@ -3361,14 +3357,14 @@
   "BRIGHTER",
   "BRIGHTERS",
   "BRIGHTEST",
-  "BRIGHTESTS",
+
   "BRIGHTLIES",
   "BRIGHTLY",
   "BRIGHTS",
   "BRIGS",
   "BRILL",
   "BRILLIANT",
-  "BRILLIANTS",
+
   "BRILLS",
   "BRIM",
   "BRIMS",
@@ -3385,7 +3381,7 @@
   "BRIS",
   "BRISKET",
   "BRISKETS",
-  "BRISKLIES",
+
   "BRISKLY",
   "BRISTOL",
   "BRISTOLS",
@@ -3440,6 +3436,10 @@
   "BROOK",
   "BROOKS",
   "BROOM",
+  "BROOMED",
+  "BROOMING",
+  "BROOMSTICK",
+  "BROOMSTICKS",
   "BROOMS",
   "BROS",
   "BROTH",
@@ -3488,7 +3488,7 @@
   "BRUSHED",
   "BRUSHES",
   "BRUSHING",
-  "BRUSHINGS",
+
   "BRUTAL",
   "BRUTALITIES",
   "BRUTALITY",
@@ -3512,7 +3512,7 @@
   "BUCKLED",
   "BUCKLES",
   "BUCKLING",
-  "BUCKLINGS",
+
   "BUCKO",
   "BUCKOS",
   "BUCKS",
@@ -3529,7 +3529,7 @@
   "BUDGETED",
   "BUDGETS",
   "BUDGING",
-  "BUDGINGS",
+
   "BUDS",
   "BUFF",
   "BUFFALO",
@@ -3571,7 +3571,7 @@
   "BULGE",
   "BULGES",
   "BULGING",
-  "BULGINGS",
+
   "BULIMIC",
   "BULIMICS",
   "BULK",
@@ -3594,8 +3594,7 @@
   "BULLPEN",
   "BULLPENS",
   "BULLS",
-  "BULLSHIT",
-  "BULLSHITS",
+
   "BULLY",
   "BUM",
   "BUMBLE",
@@ -3606,14 +3605,14 @@
   "BUMMER",
   "BUMMERS",
   "BUMMING",
-  "BUMMINGS",
+
   "BUMP",
   "BUMPED",
   "BUMPER",
   "BUMPERS",
   "BUMPIES",
   "BUMPING",
-  "BUMPINGS",
+
   "BUMPKINS",
   "BUMPS",
   "BUMPY",
@@ -3634,7 +3633,7 @@
   "BUNKER",
   "BUNKERS",
   "BUNKING",
-  "BUNKINGS",
+
   "BUNKS",
   "BUNNIES",
   "BUNNY",
@@ -3677,7 +3676,7 @@
   "BURNER",
   "BURNERS",
   "BURNING",
-  "BURNINGS",
+
   "BURNOUT",
   "BURNOUTS",
   "BURNS",
@@ -3685,7 +3684,7 @@
   "BURNTS",
   "BURP",
   "BURPING",
-  "BURPINGS",
+
   "BURPS",
   "BURRITO",
   "BURRITOS",
@@ -3694,7 +3693,7 @@
   "BURROWS",
   "BURST",
   "BURSTING",
-  "BURSTINGS",
+
   "BURSTS",
   "BURTON",
   "BURTONS",
@@ -3713,7 +3712,7 @@
   "BUSIERS",
   "BUSIES",
   "BUSIEST",
-  "BUSIESTS",
+
   "BUSINESS",
   "BUSLOAD",
   "BUSLOADS",
@@ -3727,7 +3726,7 @@
   "BUSTIERS",
   "BUSTIES",
   "BUSTING",
-  "BUSTINGS",
+
   "BUSTLE",
   "BUSTLES",
   "BUSTLING",
@@ -3755,16 +3754,16 @@
   "BUTTERFLY",
   "BUTTERIES",
   "BUTTERING",
-  "BUTTERINGS",
+
   "BUTTERS",
   "BUTTERY",
   "BUTTING",
-  "BUTTINGS",
+
   "BUTTOCKS",
   "BUTTON",
   "BUTTONED",
   "BUTTONING",
-  "BUTTONINGS",
+
   "BUTTONS",
   "BUTTS",
   "BUY",
@@ -3815,7 +3814,7 @@
   "CABINS",
   "CABLE",
   "CABLES",
-  "CABOOS",
+
   "CABOOSE",
   "CABS",
   "CACHE",
@@ -3893,7 +3892,7 @@
   "CALMER",
   "CALMERS",
   "CALMING",
-  "CALMINGS",
+
   "CALMLIES",
   "CALMLY",
   "CALMS",
@@ -3912,7 +3911,7 @@
   "CAMEOS",
   "CAMERA",
   "CAMERAMAN",
-  "CAMERAMANS",
+  "CAMERAMEN",
   "CAMERAS",
   "CAMES",
   "CAMP",
@@ -3924,7 +3923,7 @@
   "CAMPFIRE",
   "CAMPFIRES",
   "CAMPING",
-  "CAMPINGS",
+
   "CAMPOS",
   "CAMPS",
   "CAMPUS",
@@ -3957,7 +3956,7 @@
   "CANDIES",
   "CANDLE",
   "CANDLELIT",
-  "CANDLELITS",
+
   "CANDLES",
   "CANDOR",
   "CANDORS",
@@ -4035,7 +4034,7 @@
   "CAPTURED",
   "CAPTURES",
   "CAPTURING",
-  "CAPTURINGS",
+
   "CAR",
   "CARAMBA",
   "CARAMBAS",
@@ -4069,7 +4068,7 @@
   "CAREFREE",
   "CAREFREES",
   "CAREFUL",
-  "CAREFULLIES",
+
   "CAREFULLY",
   "CAREFULS",
   "CAREGIVER",
@@ -4107,7 +4106,7 @@
   "CAROLING",
   "CAROLINGS",
   "CAROLLING",
-  "CAROLLINGS",
+
   "CAROLS",
   "CAROTID",
   "CAROTIDS",
@@ -4120,7 +4119,7 @@
   "CARPENTRY",
   "CARPET",
   "CARPETING",
-  "CARPETINGS",
+
   "CARPETS",
   "CARPOOL",
   "CARPOOLS",
@@ -4137,7 +4136,7 @@
   "CARRS",
   "CARRY",
   "CARRYING",
-  "CARRYINGS",
+
   "CARS",
   "CART",
   "CARTED",
@@ -4187,7 +4186,7 @@
   "CASHIER",
   "CASHIERS",
   "CASHING",
-  "CASHINGS",
+
   "CASHMERE",
   "CASHMERES",
   "CASING",
@@ -4213,7 +4212,7 @@
   "CASTRATED",
   "CASTS",
   "CASUAL",
-  "CASUALLIES",
+
   "CASUALLY",
   "CASUALS",
   "CASUALTIES",
@@ -4236,7 +4235,7 @@
   "CATCHES",
   "CATCHIES",
   "CATCHING",
-  "CATCHINGS",
+
   "CATCHY",
   "CATEGORIES",
   "CATEGORY",
@@ -4276,7 +4275,7 @@
   "CAUSE",
   "CAUSED",
   "CAUSING",
-  "CAUSINGS",
+
   "CAUTION",
   "CAUTIONS",
   "CAUTIOUS",
@@ -4289,7 +4288,7 @@
   "CAVE",
   "CAVED",
   "CAVEMAN",
-  "CAVEMANS",
+  "CAVEMEN",
   "CAVERN",
   "CAVERNS",
   "CAVES",
@@ -4328,6 +4327,7 @@
   "CELLISTS",
   "CELLMATE",
   "CELLMATES",
+  "CELLI",
   "CELLO",
   "CELLOS",
   "CELLS",
@@ -4368,7 +4368,7 @@
   "CEREMONIES",
   "CEREMONY",
   "CERTAIN",
-  "CERTAINLIES",
+
   "CERTAINLY",
   "CERTAINS",
   "CERTAINTIES",
@@ -4431,7 +4431,7 @@
   "CHANGED",
   "CHANGES",
   "CHANGING",
-  "CHANGINGS",
+
   "CHANGS",
   "CHANNEL",
   "CHANNELED",
@@ -4472,7 +4472,7 @@
   "CHARGERS",
   "CHARGES",
   "CHARGING",
-  "CHARGINGS",
+
   "CHARIOT",
   "CHARIOTS",
   "CHARITIES",
@@ -4490,7 +4490,7 @@
   "CHARMER",
   "CHARMERS",
   "CHARMING",
-  "CHARMINGS",
+
   "CHARMS",
   "CHARRED",
   "CHART",
@@ -4505,7 +4505,7 @@
   "CHASER",
   "CHASERS",
   "CHASING",
-  "CHASINGS",
+
   "CHASM",
   "CHASMS",
   "CHASSIS",
@@ -4520,7 +4520,7 @@
   "CHATTERS",
   "CHATTIES",
   "CHATTING",
-  "CHATTINGS",
+
   "CHATTY",
   "CHAUFFEUR",
   "CHAUFFEURS",
@@ -4537,7 +4537,7 @@
   "CHEATER",
   "CHEATERS",
   "CHEATING",
-  "CHEATINGS",
+
   "CHEATS",
   "CHECK",
   "CHECKBOOK",
@@ -4547,7 +4547,7 @@
   "CHECKERED",
   "CHECKERS",
   "CHECKING",
-  "CHECKINGS",
+
   "CHECKMATE",
   "CHECKMATES",
   "CHECKOUT",
@@ -4617,7 +4617,7 @@
   "CHEWED",
   "CHEWIES",
   "CHEWING",
-  "CHEWINGS",
+
   "CHEWS",
   "CHEWY",
   "CHEZ",
@@ -4662,7 +4662,7 @@
   "CHILLED",
   "CHILLIES",
   "CHILLING",
-  "CHILLINGS",
+
   "CHILLS",
   "CHILLY",
   "CHIME",
@@ -4699,7 +4699,7 @@
   "CHIS",
   "CHISEL",
   "CHISELING",
-  "CHISELINGS",
+
   "CHISELS",
   "CHIT",
   "CHITCHAT",
@@ -4725,20 +4725,20 @@
   "CHOKERS",
   "CHOKES",
   "CHOKING",
-  "CHOKINGS",
+
   "CHOLERA",
   "CHOLERAS",
   "CHOMP",
   "CHOMPERS",
   "CHOMPING",
-  "CHOMPINGS",
+
   "CHOMPS",
   "CHOOS",
   "CHOOSE",
   "CHOOSERS",
   "CHOOSIES",
   "CHOOSING",
-  "CHOOSINGS",
+
   "CHOOSY",
   "CHOP",
   "CHOPPED",
@@ -4746,7 +4746,7 @@
   "CHOPPERS",
   "CHOPPIES",
   "CHOPPING",
-  "CHOPPINGS",
+
   "CHOPPY",
   "CHOPS",
   "CHORD",
@@ -4785,7 +4785,7 @@
   "CHUCKS",
   "CHUG",
   "CHUGGING",
-  "CHUGGINGS",
+
   "CHUGS",
   "CHUM",
   "CHUMMIES",
@@ -4805,7 +4805,7 @@
   "CHUTES",
   "CIAO",
   "CIAOS",
-  "CICELIES",
+
   "CICELY",
   "CIDER",
   "CIDERS",
@@ -4874,7 +4874,7 @@
   "CLAIM",
   "CLAIMED",
   "CLAIMING",
-  "CLAIMINGS",
+
   "CLAIMS",
   "CLAM",
   "CLAMBAKE",
@@ -4883,27 +4883,27 @@
   "CLAMMIES",
   "CLAMMY",
   "CLAMORING",
-  "CLAMORINGS",
+
   "CLAMP",
   "CLAMPED",
   "CLAMPING",
-  "CLAMPINGS",
+
   "CLAMPS",
   "CLAMS",
   "CLAN",
   "CLANG",
   "CLANGING",
-  "CLANGINGS",
+
   "CLANGS",
   "CLANKING",
-  "CLANKINGS",
+
   "CLANS",
   "CLAP",
   "CLAPPED",
   "CLAPPER",
   "CLAPPERS",
   "CLAPPING",
-  "CLAPPINGS",
+
   "CLAPS",
   "CLARENCE",
   "CLARENCES",
@@ -4951,7 +4951,7 @@
   "CLEANER",
   "CLEANERS",
   "CLEANEST",
-  "CLEANESTS",
+
   "CLEANING",
   "CLEANINGS",
   "CLEANS",
@@ -4990,13 +4990,13 @@
   "CLERGIES",
   "CLERGY",
   "CLERGYMAN",
-  "CLERGYMANS",
+  "CLERGYMEN",
   "CLERICAL",
   "CLERICALS",
   "CLERK",
   "CLERKS",
   "CLEVER",
-  "CLEVERLIES",
+
   "CLEVERLY",
   "CLEVERS",
   "CLICHE",
@@ -5022,7 +5022,7 @@
   "CLIMBED",
   "CLIMBERS",
   "CLIMBING",
-  "CLIMBINGS",
+
   "CLIMBS",
   "CLINCHED",
   "CLINCHER",
@@ -5031,7 +5031,7 @@
   "CLING",
   "CLINGIES",
   "CLINGING",
-  "CLINGINGS",
+
   "CLINGS",
   "CLINGY",
   "CLINIC",
@@ -5058,7 +5058,7 @@
   "CLOCK",
   "CLOCKED",
   "CLOCKING",
-  "CLOCKINGS",
+
   "CLOCKS",
   "CLOCKWIS",
   "CLOCKWISE",
@@ -5068,7 +5068,7 @@
   "CLODS",
   "CLOGGED",
   "CLOGGING",
-  "CLOGGINGS",
+
   "CLOGS",
   "CLONE",
   "CLONED",
@@ -5078,7 +5078,7 @@
   "CLOS",
   "CLOSE",
   "CLOSED",
-  "CLOSELIES",
+
   "CLOSELY",
   "CLOSENESS",
   "CLOSER",
@@ -5118,16 +5118,17 @@
   "CLOVES",
   "CLOWN",
   "CLOWNING",
-  "CLOWNINGS",
+
   "CLOWNS",
   "CLUB",
   "CLUBBED",
-  "CLUBHOUS",
+
   "CLUBHOUSE",
+  "CLUBHOUSES",
   "CLUBS",
   "CLUCK",
   "CLUCKING",
-  "CLUCKINGS",
+
   "CLUCKS",
   "CLUE",
   "CLUELESS",
@@ -5154,7 +5155,7 @@
   "COACHED",
   "COACHES",
   "COACHING",
-  "COACHINGS",
+
   "COAL",
   "COALITION",
   "COALITIONS",
@@ -5167,7 +5168,7 @@
   "COASTER",
   "COASTERS",
   "COASTING",
-  "COASTINGS",
+
   "COASTS",
   "COAT",
   "COATING",
@@ -5177,7 +5178,7 @@
   "COAX",
   "COAXES",
   "COAXING",
-  "COAXINGS",
+
   "COB",
   "COBB",
   "COBBLER",
@@ -5225,7 +5226,7 @@
   "CODICIL",
   "CODICILS",
   "CODING",
-  "CODINGS",
+
   "CODS",
   "COED",
   "COERCE",
@@ -5244,7 +5245,7 @@
   "COGNAC",
   "COGNACS",
   "COGNIZANT",
-  "COGNIZANTS",
+
   "COGS",
   "COHERENT",
   "COHERENTS",
@@ -5438,7 +5439,7 @@
   "COMMUNE",
   "COMMUNES",
   "COMMUNING",
-  "COMMUNINGS",
+
   "COMMUNION",
   "COMMUNIONS",
   "COMMUNISM",
@@ -5465,14 +5466,14 @@
   "COMPARED",
   "COMPARES",
   "COMPARING",
-  "COMPARINGS",
+
   "COMPASS",
   "COMPEL",
   "COMPELLED",
   "COMPELS",
   "COMPETE",
   "COMPETENT",
-  "COMPETENTS",
+
   "COMPETES",
   "COMPETING",
   "COMPETINGS",
@@ -5523,7 +5524,7 @@
   "CONCEDE",
   "CONCEDES",
   "CONCEDING",
-  "CONCEDINGS",
+
   "CONCEITED",
   "CONCEIVE",
   "CONCEIVED",
@@ -5600,12 +5601,12 @@
   "CONFIDENTS",
   "CONFIDES",
   "CONFIDING",
-  "CONFIDINGS",
+
   "CONFINE",
   "CONFINED",
   "CONFINES",
   "CONFINING",
-  "CONFININGS",
+
   "CONFIRM",
   "CONFIRMED",
   "CONFIRMS",
@@ -5623,7 +5624,7 @@
   "CONFUSE",
   "CONFUSED",
   "CONFUSING",
-  "CONFUSINGS",
+
   "CONFUSION",
   "CONFUSIONS",
   "CONGENIAL",
@@ -5701,7 +5702,7 @@
   "CONSUMERS",
   "CONSUMES",
   "CONSUMING",
-  "CONSUMINGS",
+
   "CONTACT",
   "CONTACTED",
   "CONTACTS",
@@ -5780,7 +5781,7 @@
   "COOKIE",
   "COOKIES",
   "COOKING",
-  "COOKINGS",
+
   "COOKS",
   "COOL",
   "COOLANT",
@@ -5791,7 +5792,7 @@
   "COOLEST",
   "COOLESTS",
   "COOLING",
-  "COOLINGS",
+
   "COOLLIES",
   "COOLLY",
   "COOLNESS",
@@ -5821,13 +5822,13 @@
   "COPILOT",
   "COPILOTS",
   "COPING",
-  "COPINGS",
+
   "COPIOUSLIES",
   "COPIOUSLY",
   "COPPER",
   "COPPERS",
   "COPPING",
-  "COPPINGS",
+
   "COPS",
   "COPTER",
   "COPTERS",
@@ -5871,7 +5872,7 @@
   "CORNER",
   "CORNERED",
   "CORNERING",
-  "CORNERINGS",
+
   "CORNERS",
   "CORNFIELD",
   "CORNFIELDS",
@@ -5898,7 +5899,7 @@
   "CORRALS",
   "CORRECT",
   "CORRECTED",
-  "CORRECTLIES",
+
   "CORRECTLY",
   "CORRECTS",
   "CORRIDOR",
@@ -5929,7 +5930,7 @@
   "COSTA",
   "COSTAS",
   "COSTING",
-  "COSTINGS",
+
   "COSTLIES",
   "COSTLY",
   "COSTS",
@@ -5950,7 +5951,7 @@
   "COUGARS",
   "COUGH",
   "COUGHING",
-  "COUGHINGS",
+
   "COUGHS",
   "COULD",
   "COULDS",
@@ -5969,7 +5970,7 @@
   "COUNTESS",
   "COUNTIES",
   "COUNTING",
-  "COUNTINGS",
+
   "COUNTLESS",
   "COUNTRIES",
   "COUNTRY",
@@ -6048,7 +6049,7 @@
   "COWED",
   "COWER",
   "COWERING",
-  "COWERINGS",
+
   "COWERS",
   "COWGIRL",
   "COWGIRLS",
@@ -6091,7 +6092,7 @@
   "CRAFTED",
   "CRAFTIES",
   "CRAFTING",
-  "CRAFTINGS",
+
   "CRAFTS",
   "CRAFTSMEN",
   "CRAFTSMENS",
@@ -6101,11 +6102,11 @@
   "CRAM",
   "CRAMMED",
   "CRAMMING",
-  "CRAMMINGS",
+
   "CRAMP",
   "CRAMPED",
   "CRAMPING",
-  "CRAMPINGS",
+
   "CRAMPS",
   "CRAMS",
   "CRANBERRIES",
@@ -6119,7 +6120,7 @@
   "CRANK",
   "CRANKIES",
   "CRANKING",
-  "CRANKINGS",
+
   "CRANKS",
   "CRANKY",
   "CRANNIES",
@@ -6130,7 +6131,7 @@
   "CRAPPERS",
   "CRAPPIES",
   "CRAPPING",
-  "CRAPPINGS",
+
   "CRAPPY",
   "CRAPS",
   "CRASH",
@@ -6139,7 +6140,7 @@
   "CRASHERS",
   "CRASHES",
   "CRASHING",
-  "CRASHINGS",
+
   "CRASS",
   "CRATE",
   "CRATED",
@@ -6155,7 +6156,7 @@
   "CRAWLERS",
   "CRAWLIES",
   "CRAWLING",
-  "CRAWLINGS",
+
   "CRAWLS",
   "CRAWLY",
   "CRAYONS",
@@ -6163,10 +6164,10 @@
   "CRAZED",
   "CRAZES",
   "CRAZIER",
-  "CRAZIERS",
+
   "CRAZIES",
   "CRAZIEST",
-  "CRAZIESTS",
+
   "CRAZINESS",
   "CRAZY",
   "CREAK",
@@ -6177,9 +6178,9 @@
   "CREAMED",
   "CREAMER",
   "CREAMERS",
-  "CREAMIES",
+
   "CREAMING",
-  "CREAMINGS",
+
   "CREAMS",
   "CREAMY",
   "CREAS",
@@ -6189,7 +6190,7 @@
   "CREATED",
   "CREATES",
   "CREATING",
-  "CREATINGS",
+
   "CREATION",
   "CREATIONS",
   "CREATIVE",
@@ -6216,7 +6217,7 @@
   "CREEPERS",
   "CREEPIES",
   "CREEPING",
-  "CREEPINGS",
+
   "CREEPS",
   "CREEPY",
   "CREMATED",
@@ -6331,7 +6332,7 @@
   "CROUCHED",
   "CROUCHES",
   "CROUCHING",
-  "CROUCHINGS",
+
   "CROUPIER",
   "CROUPIERS",
   "CROUTONS",
@@ -6341,7 +6342,7 @@
   "CROWD",
   "CROWDED",
   "CROWDING",
-  "CROWDINGS",
+
   "CROWDS",
   "CROWED",
   "CROWING",
@@ -6365,12 +6366,12 @@
   "CRUDDIES",
   "CRUDDY",
   "CRUDE",
-  "CRUDELIES",
+
   "CRUDELY",
   "CRUDES",
   "CRUDS",
   "CRUEL",
-  "CRUELLIES",
+
   "CRUELLY",
   "CRUELS",
   "CRUELTIES",
@@ -6381,13 +6382,13 @@
   "CRUISER",
   "CRUISERS",
   "CRUISING",
-  "CRUISINGS",
+
   "CRUMB",
   "CRUMBLE",
   "CRUMBLED",
   "CRUMBLES",
   "CRUMBLING",
-  "CRUMBLINGS",
+
   "CRUMBS",
   "CRUMMIES",
   "CRUMMY",
@@ -6408,7 +6409,7 @@
   "CRUSHERS",
   "CRUSHES",
   "CRUSHING",
-  "CRUSHINGS",
+
   "CRUST",
   "CRUSTIES",
   "CRUSTS",
@@ -6460,7 +6461,7 @@
   "CUFF",
   "CUFFED",
   "CUFFING",
-  "CUFFINGS",
+
   "CUFFS",
   "CUISINE",
   "CUISINES",
@@ -6484,7 +6485,6 @@
   "CUNEIFORM",
   "CUNEIFORMS",
   "CUNNING",
-  "CUNNINGS",
 
   "CUP",
   "CUPBOARD",
@@ -6498,7 +6498,7 @@
   "CUPS",
   "CUR",
   "CURACAO",
-  "CURACAOS",
+  "CURACOS",
   "CURATE",
   "CURATES",
   "CURATOR",
@@ -6590,11 +6590,10 @@
   "CUTE",
   "CUTENESS",
   "CUTER",
-  "CUTERS",
-  "CUTES",
+
   "CUTESIES",
   "CUTEST",
-  "CUTESTS",
+
   "CUTESY",
   "CUTICLE",
   "CUTICLES",
@@ -6652,7 +6651,7 @@
   "DABBLED",
   "DABBLES",
   "DABBLING",
-  "DABBLINGS",
+
   "DABS",
   "DAD",
   "DADDIES",
@@ -6693,7 +6692,7 @@
   "DALLIES",
   "DALLY",
   "DALLYING",
-  "DALLYINGS",
+
   "DALTON",
   "DALTONS",
   "DAM",
@@ -6701,7 +6700,7 @@
   "DAMAGED",
   "DAMAGES",
   "DAMAGING",
-  "DAMAGINGS",
+
   "DAME",
   "DAMES",
   "DAMN",
@@ -6709,7 +6708,7 @@
   "DAMNABLES",
   "DAMNED",
   "DAMNEDEST",
-  "DAMNEDESTS",
+
   "DAMNING",
   "DAMNINGS",
   "DAMNS",
@@ -6729,7 +6728,7 @@
   "DANCERS",
   "DANCES",
   "DANCING",
-  "DANCINGS",
+
   "DANDELION",
   "DANDELIONS",
   "DANDIES",
@@ -6744,7 +6743,7 @@
   "DANGLED",
   "DANGLES",
   "DANGLING",
-  "DANGLINGS",
+
   "DANGS",
   "DANISH",
   "DANISHES",
@@ -6758,7 +6757,7 @@
   "DAREDEVILS",
   "DARES",
   "DARING",
-  "DARINGS",
+
   "DARK",
   "DARKEN",
   "DARKENED",
@@ -6766,7 +6765,7 @@
   "DARKER",
   "DARKERS",
   "DARKEST",
-  "DARKESTS",
+
   "DARKNESS",
   "DARKROOM",
   "DARKROOMS",
@@ -6775,7 +6774,7 @@
   "DARLINGS",
   "DARN",
   "DARNDEST",
-  "DARNDESTS",
+
   "DARNED",
   "DARNS",
   "DART",
@@ -6788,10 +6787,11 @@
   "DASHERS",
   "DASHES",
   "DASHING",
-  "DASHINGS",
+
   "DATA",
-  "DATABAS",
+
   "DATABASE",
+  "DATABASES",
   "DATAS",
   "DATE",
   "DATED",
@@ -6808,7 +6808,7 @@
   "DAUGHTER",
   "DAUGHTERS",
   "DAUNTING",
-  "DAUNTINGS",
+
   "DAUPHIN",
   "DAUPHINS",
   "DAVENPORT",
@@ -6838,7 +6838,7 @@
   "DAZZLED",
   "DAZZLES",
   "DAZZLING",
-  "DAZZLINGS",
+
   "DE",
   "DEACON",
   "DEACONS",
@@ -6851,7 +6851,7 @@
   "DEADLIERS",
   "DEADLIES",
   "DEADLIEST",
-  "DEADLIESTS",
+
   "DEADLINE",
   "DEADLINES",
   "DEADLOCK",
@@ -6860,8 +6860,8 @@
   "DEADS",
   "DEAF",
   "DEAFENING",
-  "DEAFENINGS",
-  "DEAFS",
+  "DEAFER",
+  "DEAFEST",
   "DEAL",
   "DEALER",
   "DEALERS",
@@ -6869,12 +6869,12 @@
   "DEALINGS",
   "DEALS",
   "DEALT",
-  "DEALTS",
+
   "DEAN",
   "DEANS",
   "DEAR",
   "DEAREST",
-  "DEARESTS",
+
   "DEARIE",
   "DEARIES",
   "DEARLIES",
@@ -6894,7 +6894,7 @@
   "DEBATED",
   "DEBATES",
   "DEBATING",
-  "DEBATINGS",
+
   "DEBIT",
   "DEBITS",
   "DEBONAIR",
@@ -6922,7 +6922,7 @@
   "DECANTERS",
   "DECAY",
   "DECAYING",
-  "DECAYINGS",
+
   "DECAYS",
   "DECEASED",
   "DECEIT",
@@ -6964,12 +6964,12 @@
   "DECLARED",
   "DECLARES",
   "DECLARING",
-  "DECLARINGS",
+
   "DECLINE",
   "DECLINED",
   "DECLINES",
   "DECLINING",
-  "DECLININGS",
+
   "DECO",
   "DECODED",
   "DECODER",
@@ -7016,8 +7016,7 @@
   "DEEPER",
   "DEEPERS",
   "DEEPEST",
-  "DEEPESTS",
-  "DEEPLIES",
+
   "DEEPLY",
   "DEEPS",
   "DEER",
@@ -7062,7 +7061,7 @@
   "DEFIANTLY",
   "DEFIANTS",
   "DEFICIENT",
-  "DEFICIENTS",
+  "DEFICIENCIES",
   "DEFICIT",
   "DEFICITS",
   "DEFIED",
@@ -7094,12 +7093,12 @@
   "DEFUSED",
   "DEFY",
   "DEFYING",
-  "DEFYINGS",
+
   "DEGRADE",
   "DEGRADED",
   "DEGRADES",
   "DEGRADING",
-  "DEGRADINGS",
+
   "DEGREE",
   "DEGREES",
   "DEIGNED",
@@ -7111,7 +7110,7 @@
   "DELAY",
   "DELAYED",
   "DELAYING",
-  "DELAYINGS",
+
   "DELAYS",
   "DELEGATE",
   "DELEGATES",
@@ -7147,7 +7146,7 @@
   "DELUDED",
   "DELUDES",
   "DELUDING",
-  "DELUDINGS",
+
   "DELUGE",
   "DELUGES",
   "DELUSION",
@@ -7157,15 +7156,15 @@
   "DELVE",
   "DELVES",
   "DELVING",
-  "DELVINGS",
+
   "DEMAND",
   "DEMANDED",
   "DEMANDING",
-  "DEMANDINGS",
+
   "DEMANDS",
   "DEMEAN",
   "DEMEANING",
-  "DEMEANINGS",
+
   "DEMEANS",
   "DEMENTED",
   "DEMENTIA",
@@ -7229,12 +7228,12 @@
   "DEPENDENT",
   "DEPENDENTS",
   "DEPENDING",
-  "DEPENDINGS",
+
   "DEPENDS",
   "DEPICT",
   "DEPICTED",
   "DEPICTING",
-  "DEPICTINGS",
+
   "DEPICTION",
   "DEPICTIONS",
   "DEPICTS",
@@ -7312,7 +7311,7 @@
   "DESERVED",
   "DESERVES",
   "DESERVING",
-  "DESERVINGS",
+
   "DESIGN",
   "DESIGNATE",
   "DESIGNATES",
@@ -7320,7 +7319,7 @@
   "DESIGNER",
   "DESIGNERS",
   "DESIGNING",
-  "DESIGNINGS",
+
   "DESIGNS",
   "DESIRABLE",
   "DESIRABLES",
@@ -7345,7 +7344,7 @@
   "DESPISE",
   "DESPISED",
   "DESPISING",
-  "DESPISINGS",
+
   "DESPITE",
   "DESPITES",
   "DESSERT",
@@ -7373,12 +7372,12 @@
   "DETAIN",
   "DETAINED",
   "DETAINING",
-  "DETAININGS",
+
   "DETAINS",
   "DETECT",
   "DETECTED",
   "DETECTING",
-  "DETECTINGS",
+
   "DETECTION",
   "DETECTIONS",
   "DETECTIVE",
@@ -7437,13 +7436,13 @@
   "DEVOTED",
   "DEVOTES",
   "DEVOTING",
-  "DEVOTINGS",
+
   "DEVOTION",
   "DEVOTIONS",
   "DEVOUR",
   "DEVOURED",
   "DEVOURING",
-  "DEVOURINGS",
+
   "DEVOURS",
   "DEW",
   "DEWARS",
@@ -7508,7 +7507,7 @@
   "DICTATED",
   "DICTATES",
   "DICTATING",
-  "DICTATINGS",
+
   "DICTATION",
   "DICTATIONS",
   "DICTATOR",
@@ -7528,15 +7527,14 @@
   "DIETER",
   "DIETERS",
   "DIETING",
-  "DIETINGS",
+
   "DIETS",
   "DIFFER",
   "DIFFERENT",
   "DIFFERENTS",
   "DIFFERS",
   "DIFFICULT",
-  "DIFFICULTS",
-  "DIFFUS",
+
   "DIFFUSE",
   "DIFFUSION",
   "DIFFUSIONS",
@@ -7544,7 +7542,7 @@
   "DIGEST",
   "DIGESTED",
   "DIGESTING",
-  "DIGESTINGS",
+
   "DIGESTION",
   "DIGESTIONS",
   "DIGESTIVE",
@@ -7599,7 +7597,7 @@
   "DIMMER",
   "DIMMERS",
   "DIMMING",
-  "DIMMINGS",
+
   "DIMPLE",
   "DIMPLED",
   "DIMPLES",
@@ -7631,7 +7629,7 @@
   "DINNER",
   "DINNERS",
   "DINNING",
-  "DINNINGS",
+
   "DINOSAUR",
   "DINOSAURS",
   "DIOXIDE",
@@ -7649,7 +7647,7 @@
   "DIRECT",
   "DIRECTED",
   "DIRECTING",
-  "DIRECTINGS",
+
   "DIRECTION",
   "DIRECTIONS",
   "DIRECTIVE",
@@ -7667,7 +7665,7 @@
   "DIRT",
   "DIRTIES",
   "DIRTIEST",
-  "DIRTIESTS",
+
   "DIRTS",
   "DIRTY",
   "DIS",
@@ -7675,7 +7673,7 @@
   "DISABLED",
   "DISABLES",
   "DISABLING",
-  "DISABLINGS",
+
   "DISAGREE",
   "DISAGREED",
   "DISAGREES",
@@ -7684,7 +7682,7 @@
   "DISARM",
   "DISARMED",
   "DISARMING",
-  "DISARMINGS",
+
   "DISARMS",
   "DISARRAY",
   "DISARRAYS",
@@ -7740,7 +7738,7 @@
   "DISH",
   "DISHES",
   "DISHONEST",
-  "DISHONESTS",
+
   "DISHONOR",
   "DISHONORS",
   "DISINFECT",
@@ -7798,7 +7796,7 @@
   "DISPOSALS",
   "DISPOSE",
   "DISPOSING",
-  "DISPOSINGS",
+
   "DISPROVE",
   "DISPROVES",
   "DISPUTE",
@@ -7854,7 +7852,7 @@
   "DITCHED",
   "DITCHES",
   "DITCHING",
-  "DITCHINGS",
+
   "DITS",
   "DITSIES",
   "DITSY",
@@ -7877,7 +7875,7 @@
   "DIVERT",
   "DIVERTED",
   "DIVERTING",
-  "DIVERTINGS",
+
   "DIVERTS",
   "DIVES",
   "DIVEST",
@@ -7891,7 +7889,7 @@
   "DIVING",
   "DIVINGS",
   "DIVINING",
-  "DIVININGS",
+
   "DIVINITIES",
   "DIVINITY",
   "DIVISION",
@@ -7902,7 +7900,7 @@
   "DIVORCEES",
   "DIVORCES",
   "DIVORCING",
-  "DIVORCINGS",
+
   "DIVULGED",
   "DIVVIES",
   "DIVVY",
@@ -7910,7 +7908,7 @@
   "DIZZINESS",
   "DIZZY",
   "DIZZYING",
-  "DIZZYINGS",
+
   "DO",
   "DOBBIN",
   "DOBBINS",
@@ -7939,7 +7937,7 @@
   "DODGES",
   "DODGIES",
   "DODGING",
-  "DODGINGS",
+
   "DODGY",
   "DOE",
   "DOER",
@@ -7969,7 +7967,7 @@
   "DOLE",
   "DOLES",
   "DOLING",
-  "DOLINGS",
+
   "DOLL",
   "DOLLAR",
   "DOLLARS",
@@ -8012,7 +8010,7 @@
   "DONATED",
   "DONATES",
   "DONATING",
-  "DONATINGS",
+
   "DONATION",
   "DONATIONS",
   "DONE",
@@ -8178,7 +8176,7 @@
   "DRAG",
   "DRAGGED",
   "DRAGGING",
-  "DRAGGINGS",
+
   "DRAGON",
   "DRAGONFLIES",
   "DRAGONFLY",
@@ -8190,7 +8188,7 @@
   "DRAINAGES",
   "DRAINED",
   "DRAINING",
-  "DRAININGS",
+
   "DRAINPIPE",
   "DRAINPIPES",
   "DRAINS",
@@ -8230,7 +8228,7 @@
   "DREAMERS",
   "DREAMIES",
   "DREAMING",
-  "DREAMINGS",
+
   "DREAMLESS",
   "DREAMS",
   "DREAMT",
@@ -8261,7 +8259,7 @@
   "DRIBBLE",
   "DRIBBLES",
   "DRIBBLING",
-  "DRIBBLINGS",
+
   "DRIED",
   "DRIER",
   "DRIERS",
@@ -8271,7 +8269,7 @@
   "DRIFTER",
   "DRIFTERS",
   "DRIFTING",
-  "DRIFTINGS",
+
   "DRIFTS",
   "DRIFTWOOD",
   "DRIFTWOODS",
@@ -8284,7 +8282,7 @@
   "DRINKER",
   "DRINKERS",
   "DRINKING",
-  "DRINKINGS",
+
   "DRINKS",
   "DRIP",
   "DRIPPED",
@@ -8304,7 +8302,7 @@
   "DRIVEWAY",
   "DRIVEWAYS",
   "DRIVING",
-  "DRIVINGS",
+
   "DROLL",
   "DROLLS",
   "DRONE",
@@ -8312,7 +8310,7 @@
   "DROOL",
   "DROOLED",
   "DROOLING",
-  "DROOLINGS",
+
   "DROOLS",
   "DROOP",
   "DROOPIES",
@@ -8343,9 +8341,9 @@
   "DRUG",
   "DRUGGED",
   "DRUGGING",
-  "DRUGGINGS",
+
   "DRUGGIST",
-  "DRUGGISTS",
+
   "DRUGS",
   "DRUGSTORE",
   "DRUGSTORES",
@@ -8369,7 +8367,7 @@
   "DRYER",
   "DRYERS",
   "DRYING",
-  "DRYINGS",
+
   "DRYWALL",
   "DRYWALLS",
   "DUAL",
@@ -8387,7 +8385,7 @@
   "DUCKED",
   "DUCKIES",
   "DUCKING",
-  "DUCKINGS",
+
   "DUCKLING",
   "DUCKLINGS",
   "DUCKS",
@@ -8428,7 +8426,7 @@
   "DULLARDS",
   "DULLED",
   "DULLEST",
-  "DULLESTS",
+
   "DULLNESS",
   "DULLS",
   "DULY",
@@ -8489,7 +8487,7 @@
   "DUSTED",
   "DUSTIES",
   "DUSTING",
-  "DUSTINGS",
+
   "DUSTS",
   "DUSTY",
   "DUTCH",
@@ -8512,7 +8510,7 @@
   "DWELLINGS",
   "DWELLS",
   "DWINDLING",
-  "DWINDLINGS",
+
   "DYE",
   "DYED",
   "DYEING",
@@ -8550,7 +8548,7 @@
   "EARLIERS",
   "EARLIES",
   "EARLIEST",
-  "EARLIESTS",
+
   "EARLOBE",
   "EARLOBES",
   "EARLS",
@@ -8560,7 +8558,7 @@
   "EARN",
   "EARNED",
   "EARNEST",
-  "EARNESTS",
+
   "EARNING",
   "EARNINGS",
   "EARNS",
@@ -8589,7 +8587,7 @@
   "EASIERS",
   "EASIES",
   "EASIEST",
-  "EASIESTS",
+
   "EASILIES",
   "EASILY",
   "EASING",
@@ -8680,7 +8678,7 @@
   "EDUCATED",
   "EDUCATES",
   "EDUCATING",
-  "EDUCATINGS",
+
   "EDUCATION",
   "EDUCATIONS",
   "EDUCATOR",
@@ -8692,11 +8690,11 @@
   "EERILIES",
   "EERILY",
   "EFFACING",
-  "EFFACINGS",
+
   "EFFECT",
   "EFFECTED",
   "EFFECTING",
-  "EFFECTINGS",
+
   "EFFECTIVE",
   "EFFECTIVES",
   "EFFECTS",
@@ -8763,7 +8761,7 @@
   "ELECT",
   "ELECTED",
   "ELECTING",
-  "ELECTINGS",
+
   "ELECTION",
   "ELECTIONS",
   "ELECTIVE",
@@ -8798,7 +8796,7 @@
   "ELEVENTH",
   "ELEVENTHS",
   "ELF",
-  "ELFS",
+  "ELVES",
   "ELICIT",
   "ELICITS",
   "ELIGIBLE",
@@ -8829,7 +8827,7 @@
   "ELS",
   "ELSE",
   "ELSEWHERE",
-  "ELSEWHERES",
+
   "ELUDE",
   "ELUDED",
   "ELUDES",
@@ -8867,7 +8865,7 @@
   "EMBRACED",
   "EMBRACES",
   "EMBRACING",
-  "EMBRACINGS",
+
   "EMBROILED",
   "EMBRYO",
   "EMBRYOS",
@@ -8916,7 +8914,7 @@
   "EMPLOYER",
   "EMPLOYERS",
   "EMPLOYING",
-  "EMPLOYINGS",
+
   "EMPLOYS",
   "EMPORIUM",
   "EMPORIUMS",
@@ -8927,11 +8925,10 @@
   "EMPTINESS",
   "EMPTY",
   "EMPTYING",
-  "EMPTYINGS",
+
   "EMS",
   "EMULATING",
-  "EMULATINGS",
-  "EN",
+
   "ENABLE",
   "ENABLED",
   "ENABLES",
@@ -8962,7 +8959,7 @@
   "ENDANGERS",
   "ENDEAR",
   "ENDEARING",
-  "ENDEARINGS",
+
   "ENDEARS",
   "ENDEAVOR",
   "ENDEAVORS",
@@ -8979,7 +8976,7 @@
   "ENDORS",
   "ENDORSE",
   "ENDORSING",
-  "ENDORSINGS",
+
   "ENDOWMENT",
   "ENDOWMENTS",
   "ENDS",
@@ -8989,7 +8986,7 @@
   "ENDURED",
   "ENDURES",
   "ENDURING",
-  "ENDURINGS",
+
   "ENEMA",
   "ENEMAS",
   "ENEMIES",
@@ -9003,13 +9000,12 @@
   "ENFORCERS",
   "ENFORCES",
   "ENFORCING",
-  "ENFORCINGS",
-  "ENG",
+
   "ENGAGE",
   "ENGAGED",
   "ENGAGES",
   "ENGAGING",
-  "ENGAGINGS",
+
   "ENGINE",
   "ENGINEER",
   "ENGINEERS",
@@ -9064,7 +9060,7 @@
   "ENRICHINGS",
   "ENROLLED",
   "ENROLLING",
-  "ENROLLINGS",
+
   "ENS",
   "ENSCONCED",
   "ENSEMBLE",
@@ -9078,17 +9074,17 @@
   "ENSUED",
   "ENSUES",
   "ENSUING",
-  "ENSUINGS",
+
   "ENSURE",
   "ENSURES",
   "ENSURING",
-  "ENSURINGS",
+
   "ENTAIL",
   "ENTAILS",
   "ENTER",
   "ENTERED",
   "ENTERING",
-  "ENTERINGS",
+
   "ENTERS",
   "ENTERTAIN",
   "ENTERTAINS",
@@ -9181,7 +9177,7 @@
   "ERASER",
   "ERASERS",
   "ERASING",
-  "ERASINGS",
+
   "ERE",
   "ERECT",
   "ERECTION",
@@ -9195,13 +9191,13 @@
   "ERODE",
   "ERODES",
   "ERODING",
-  "ERODINGS",
+
   "EROGENOUS",
   "EROS",
   "EROSION",
   "EROSIONS",
   "EROTIC",
-  "EROTICS",
+
   "ERR",
   "ERRAND",
   "ERRANDS",
@@ -9231,7 +9227,7 @@
   "ESCAPEES",
   "ESCAPES",
   "ESCAPING",
-  "ESCAPINGS",
+
   "ESCARGOT",
   "ESCARGOTS",
   "ESCORT",
@@ -9333,7 +9329,7 @@
   "EVENS",
   "EVENT",
   "EVENTFUL",
-  "EVENTFULS",
+
   "EVENTS",
   "EVENTUAL",
   "EVENTUALS",
@@ -9341,10 +9337,10 @@
   "EVERIES",
   "EVERS",
   "EVERY",
-  "EVERYBODIES",
+
   "EVERYBODY",
   "EVERYDAY",
-  "EVERYDAYS",
+
   "EVERYMAN",
   "EVERYMANS",
   "EVERYONE",
@@ -9371,13 +9367,13 @@
   "EVOLVED",
   "EVOLVES",
   "EVOLVING",
-  "EVOLVINGS",
+
   "EWE",
   "EWES",
   "EX",
   "EXACT",
   "EXACTING",
-  "EXACTINGS",
+
   "EXACTLIES",
   "EXACTLY",
   "EXACTS",
@@ -9389,17 +9385,17 @@
   "EXAMINERS",
   "EXAMINES",
   "EXAMINING",
-  "EXAMININGS",
+
   "EXAMPLE",
   "EXAMPLES",
   "EXAMS",
   "EXCEED",
   "EXCEEDED",
   "EXCEEDING",
-  "EXCEEDINGS",
+
   "EXCEL",
   "EXCELLENT",
-  "EXCELLENTS",
+
   "EXCELS",
   "EXCEPT",
   "EXCEPTED",
@@ -9416,11 +9412,11 @@
   "EXCITED",
   "EXCITES",
   "EXCITING",
-  "EXCITINGS",
+
   "EXCLUDED",
   "EXCLUDES",
   "EXCLUDING",
-  "EXCLUDINGS",
+
   "EXCLUSION",
   "EXCLUSIONS",
   "EXCLUSIVE",
@@ -9431,13 +9427,13 @@
   "EXCUSE",
   "EXCUSED",
   "EXCUSING",
-  "EXCUSINGS",
+
   "EXECS",
   "EXECUTE",
   "EXECUTED",
   "EXECUTES",
   "EXECUTING",
-  "EXECUTINGS",
+
   "EXECUTION",
   "EXECUTIONS",
   "EXECUTIVE",
@@ -9482,12 +9478,12 @@
   "EXISTENT",
   "EXISTENTS",
   "EXISTING",
-  "EXISTINGS",
+
   "EXISTS",
   "EXIT",
   "EXITED",
   "EXITING",
-  "EXITINGS",
+
   "EXITS",
   "EXODUS",
   "EXONERATE",
@@ -9503,14 +9499,14 @@
   "EXPAND",
   "EXPANDED",
   "EXPANDING",
-  "EXPANDINGS",
+
   "EXPANDS",
   "EXPANSION",
   "EXPANSIONS",
   "EXPECT",
   "EXPECTED",
   "EXPECTING",
-  "EXPECTINGS",
+
   "EXPECTS",
   "EXPEDIENT",
   "EXPEDIENTS",
@@ -9541,7 +9537,7 @@
   "EXPLODED",
   "EXPLODES",
   "EXPLODING",
-  "EXPLODINGS",
+
   "EXPLOIT",
   "EXPLOITED",
   "EXPLOITS",
@@ -9551,7 +9547,7 @@
   "EXPLORERS",
   "EXPLORES",
   "EXPLORING",
-  "EXPLORINGS",
+
   "EXPLOSION",
   "EXPLOSIONS",
   "EXPLOSIVE",
@@ -9560,13 +9556,13 @@
   "EXPORTER",
   "EXPORTERS",
   "EXPORTING",
-  "EXPORTINGS",
+
   "EXPORTS",
   "EXPOS",
   "EXPOSE",
   "EXPOSED",
   "EXPOSING",
-  "EXPOSINGS",
+
   "EXPOSURE",
   "EXPOSURES",
   "EXPRESS",
@@ -9581,7 +9577,7 @@
   "EXTEND",
   "EXTENDED",
   "EXTENDING",
-  "EXTENDINGS",
+
   "EXTENDS",
   "EXTENSION",
   "EXTENSIONS",
@@ -9675,7 +9671,7 @@
   "FACTOR",
   "FACTORIES",
   "FACTORING",
-  "FACTORINGS",
+
   "FACTORS",
   "FACTORY",
   "FACTS",
@@ -9708,7 +9704,7 @@
   "FAINTER",
   "FAINTERS",
   "FAINTEST",
-  "FAINTESTS",
+
   "FAINTING",
   "FAINTINGS",
   "FAINTS",
@@ -9716,7 +9712,7 @@
   "FAIRER",
   "FAIRERS",
   "FAIREST",
-  "FAIRESTS",
+
   "FAIRIES",
   "FAIRLIES",
   "FAIRLY",
@@ -9736,7 +9732,7 @@
   "FAKED",
   "FAKES",
   "FAKING",
-  "FAKINGS",
+
   "FALAFEL",
   "FALAFELS",
   "FALCON",
@@ -9751,7 +9747,7 @@
   "FALLIBLE",
   "FALLIBLES",
   "FALLING",
-  "FALLINGS",
+
   "FALLOUT",
   "FALLOUTS",
   "FALLOW",
@@ -9793,7 +9789,7 @@
   "FANGS",
   "FANNIES",
   "FANNING",
-  "FANNINGS",
+
   "FANNY",
   "FANS",
   "FANTASIES",
@@ -9852,7 +9848,7 @@
   "FASTER",
   "FASTERS",
   "FASTEST",
-  "FASTESTS",
+
   "FASTING",
   "FASTINGS",
   "FASTS",
@@ -9866,7 +9862,7 @@
   "FATHER",
   "FATHERED",
   "FATHERING",
-  "FATHERINGS",
+
   "FATHERLIES",
   "FATHERLY",
   "FATHERS",
@@ -9879,7 +9875,7 @@
   "FATSOS",
   "FATTEN",
   "FATTENING",
-  "FATTENINGS",
+
   "FATTENS",
   "FATTEST",
   "FATTESTS",
@@ -9911,7 +9907,7 @@
   "FAVOUR",
   "FAVOURS",
   "FAWNING",
-  "FAWNINGS",
+
   "FAX",
   "FAXED",
   "FAXES",
@@ -9922,7 +9918,7 @@
   "FEARFUL",
   "FEARFULS",
   "FEARING",
-  "FEARINGS",
+
   "FEARLESS",
   "FEARS",
   "FEARSOME",
@@ -9931,7 +9927,7 @@
   "FEASIBLES",
   "FEAST",
   "FEASTING",
-  "FEASTINGS",
+
   "FEASTS",
   "FEAT",
   "FEATHER",
@@ -9941,7 +9937,7 @@
   "FEATURED",
   "FEATURES",
   "FEATURING",
-  "FEATURINGS",
+
   "FECES",
   "FECKLESS",
   "FED",
@@ -9980,8 +9976,7 @@
   "FELLAH",
   "FELLAHS",
   "FELLAS",
-  "FELLATIO",
-  "FELLATIOS",
+
   "FELLER",
   "FELLERS",
   "FELLING",
@@ -10015,7 +10010,7 @@
   "FENDER",
   "FENDERS",
   "FENDING",
-  "FENDINGS",
+
   "FENDS",
   "FENS",
   "FER",
@@ -10041,7 +10036,7 @@
   "FESS",
   "FESTER",
   "FESTERING",
-  "FESTERINGS",
+
   "FESTERS",
   "FESTIVAL",
   "FESTIVALS",
@@ -10084,7 +10079,7 @@
   "FIBBER",
   "FIBBERS",
   "FIBBING",
-  "FIBBINGS",
+
   "FIBER",
   "FIBERS",
   "FIBRE",
@@ -10123,7 +10118,7 @@
   "FIERCE",
   "FIERCES",
   "FIERCEST",
-  "FIERCESTS",
+
   "FIERIES",
   "FIERY",
   "FIESTA",
@@ -10145,7 +10140,7 @@
   "FIGHTER",
   "FIGHTERS",
   "FIGHTING",
-  "FIGHTINGS",
+
   "FIGHTS",
   "FIGMENT",
   "FIGMENTS",
@@ -10155,7 +10150,7 @@
   "FIGURES",
   "FIGURINES",
   "FIGURING",
-  "FIGURINGS",
+
   "FILE",
   "FILED",
   "FILES",
@@ -10294,7 +10289,7 @@
   "FISHED",
   "FISHER",
   "FISHERMAN",
-  "FISHERMANS",
+
   "FISHERMEN",
   "FISHERS",
   "FISHES",
@@ -10333,7 +10328,7 @@
   "FIXABLES",
   "FIXATED",
   "FIXATING",
-  "FIXATINGS",
+
   "FIXATION",
   "FIXATIONS",
   "FIXED",
@@ -10354,13 +10349,13 @@
   "FLAG",
   "FLAGGED",
   "FLAGGING",
-  "FLAGGINGS",
+
   "FLAGS",
   "FLAGSHIP",
   "FLAGSHIPS",
   "FLAIL",
   "FLAILING",
-  "FLAILINGS",
+
   "FLAILS",
   "FLAIR",
   "FLAIRS",
@@ -10426,7 +10421,7 @@
   "FLATWARES",
   "FLAUNT",
   "FLAUNTING",
-  "FLAUNTINGS",
+
   "FLAUNTS",
   "FLAVOR",
   "FLAVORED",
@@ -10448,16 +10443,16 @@
   "FLED",
   "FLEDGED",
   "FLEDGLING",
-  "FLEDGLINGS",
+
   "FLEE",
   "FLEECE",
   "FLEECES",
   "FLEEING",
-  "FLEEINGS",
+
   "FLEES",
   "FLEET",
   "FLEETING",
-  "FLEETINGS",
+
   "FLEETS",
   "FLESH",
   "FLESHES",
@@ -10472,7 +10467,7 @@
   "FLEXIBLE",
   "FLEXIBLES",
   "FLEXING",
-  "FLEXINGS",
+
   "FLICK",
   "FLICKED",
   "FLICKER",
@@ -10509,14 +10504,14 @@
   "FLIRT",
   "FLIRTED",
   "FLIRTING",
-  "FLIRTINGS",
+
   "FLIRTS",
   "FLOAT",
   "FLOATED",
   "FLOATER",
   "FLOATERS",
   "FLOATING",
-  "FLOATINGS",
+
   "FLOATS",
   "FLOCK",
   "FLOCKS",
@@ -10556,7 +10551,7 @@
   "FLORISTS",
   "FLOSS",
   "FLOSSING",
-  "FLOSSINGS",
+
   "FLOTATION",
   "FLOTATIONS",
   "FLOUNDER",
@@ -10569,7 +10564,7 @@
   "FLOWERINGS",
   "FLOWERS",
   "FLOWING",
-  "FLOWINGS",
+
   "FLOWN",
   "FLOWNS",
   "FLOWS",
@@ -10580,7 +10575,7 @@
   "FLUFFED",
   "FLUFFIES",
   "FLUFFING",
-  "FLUFFINGS",
+
   "FLUFFS",
   "FLUFFY",
   "FLUID",
@@ -10593,7 +10588,7 @@
   "FLUNKED",
   "FLUNKIES",
   "FLUNKING",
-  "FLUNKINGS",
+
   "FLUNKS",
   "FLUNKY",
   "FLURRIES",
@@ -10613,13 +10608,13 @@
   "FLYER",
   "FLYERS",
   "FLYING",
-  "FLYINGS",
+
   "FOAL",
   "FOALS",
   "FOAM",
   "FOAMIES",
   "FOAMING",
-  "FOAMINGS",
+
   "FOAMS",
   "FOAMY",
   "FOB",
@@ -10632,7 +10627,7 @@
   "FOCUSINGS",
   "FOCUSSED",
   "FOCUSSING",
-  "FOCUSSINGS",
+
   "FODDER",
   "FODDERS",
   "FOE",
@@ -10640,20 +10635,20 @@
   "FOG",
   "FOGGED",
   "FOGGIEST",
-  "FOGGIESTS",
+
   "FOGS",
   "FOIBLES",
   "FOIL",
   "FOILED",
   "FOILS",
   "FOISTING",
-  "FOISTINGS",
+
   "FOLD",
   "FOLDED",
   "FOLDER",
   "FOLDERS",
   "FOLDING",
-  "FOLDINGS",
+
   "FOLDS",
   "FOLIAGE",
   "FOLIAGES",
@@ -10678,7 +10673,7 @@
   "FONDER",
   "FONDERS",
   "FONDEST",
-  "FONDESTS",
+
   "FONDLE",
   "FONDLED",
   "FONDLES",
@@ -10754,7 +10749,7 @@
   "FORCIBLIES",
   "FORCIBLY",
   "FORCING",
-  "FORCINGS",
+
   "FORD",
   "FORDS",
   "FORE",
@@ -10771,7 +10766,7 @@
   "FOREMAN",
   "FOREMANS",
   "FOREMOST",
-  "FOREMOSTS",
+
   "FORENSIC",
   "FORENSICS",
   "FOREPLAY",
@@ -10814,13 +10809,13 @@
   "FORGETFULS",
   "FORGETS",
   "FORGING",
-  "FORGINGS",
+
   "FORGIVE",
   "FORGIVEN",
   "FORGIVENS",
   "FORGIVES",
   "FORGIVING",
-  "FORGIVINGS",
+
   "FORGO",
   "FORGOS",
   "FORGOT",
@@ -10849,7 +10844,7 @@
   "FORMERLY",
   "FORMERS",
   "FORMING",
-  "FORMINGS",
+
   "FORMS",
   "FORMULA",
   "FORMULAS",
@@ -10861,7 +10856,7 @@
   "FORSAKENS",
   "FORSAKES",
   "FORSAKING",
-  "FORSAKINGS",
+
   "FORT",
   "FORTE",
   "FORTES",
@@ -10906,7 +10901,7 @@
   "FOUNDER",
   "FOUNDERS",
   "FOUNDING",
-  "FOUNDINGS",
+
   "FOUNDS",
   "FOUNTAIN",
   "FOUNTAINS",
@@ -10952,7 +10947,7 @@
   "FRAMEWORK",
   "FRAMEWORKS",
   "FRAMING",
-  "FRAMINGS",
+
   "FRANC",
   "FRANCHIS",
   "FRANCHISE",
@@ -10983,7 +10978,7 @@
   "FREAKED",
   "FREAKIES",
   "FREAKING",
-  "FREAKINGS",
+
   "FREAKISH",
   "FREAKISHES",
   "FREAKS",
@@ -10991,7 +10986,7 @@
   "FRECKLE",
   "FRECKLES",
   "FRECKLING",
-  "FRECKLINGS",
+
   "FREE",
   "FREEBIE",
   "FREEBIES",
@@ -11004,6 +10999,7 @@
   "FREEINGS",
   "FREELANCE",
   "FREELANCES",
+  "FREELANCING",
   "FREELIES",
   "FREELY",
   "FREEMAN",
@@ -11018,7 +11014,7 @@
   "FREEZERS",
   "FREEZES",
   "FREEZING",
-  "FREEZINGS",
+
   "FREIGHT",
   "FREIGHTER",
   "FREIGHTERS",
@@ -11040,7 +11036,7 @@
   "FRESHERS",
   "FRESHES",
   "FRESHEST",
-  "FRESHESTS",
+
   "FRESHLIES",
   "FRESHLY",
   "FRESHMAN",
@@ -11049,7 +11045,7 @@
   "FRET",
   "FRETS",
   "FRETTING",
-  "FRETTINGS",
+
   "FRICTION",
   "FRICTIONS",
   "FRIDGE",
@@ -11063,12 +11059,12 @@
   "FRIGATE",
   "FRIGATES",
   "FRIGGING",
-  "FRIGGINGS",
+
   "FRIGHT",
   "FRIGHTEN",
   "FRIGHTENS",
   "FRIGHTFUL",
-  "FRIGHTFULS",
+
   "FRIGHTS",
   "FRIGID",
   "FRIGIDS",
@@ -11100,7 +11096,7 @@
   "FRONTIER",
   "FRONTIERS",
   "FRONTING",
-  "FRONTINGS",
+
   "FRONTS",
   "FROS",
   "FROST",
@@ -11108,11 +11104,11 @@
   "FROSTBITES",
   "FROSTIES",
   "FROSTING",
-  "FROSTINGS",
+
   "FROSTS",
   "FROSTY",
   "FROUFROU",
-  "FROUFROUS",
+
   "FROWN",
   "FROWNS",
   "FROZE",
@@ -11136,18 +11132,18 @@
   "FRYER",
   "FRYERS",
   "FRYING",
-  "FRYINGS",
+
   "FUCHSIA",
   "FUCHSIAS",
   "FUDGE",
   "FUDGED",
   "FUDGES",
   "FUDGING",
-  "FUDGINGS",
+
   "FUEL",
   "FUELED",
   "FUELING",
-  "FUELINGS",
+
   "FUELS",
   "FUGITIVE",
   "FUGITIVES",
@@ -11159,16 +11155,16 @@
   "FUHRERS",
   "FULCRUM",
   "FULCRUMS",
-  "FULFIL",
+
   "FULFILL",
   "FULFILLED",
   "FULFILLS",
-  "FULFILS",
+
   "FULL",
   "FULLER",
   "FULLERS",
   "FULLEST",
-  "FULLESTS",
+
   "FULLIES",
   "FULLS",
   "FULLY",
@@ -11184,7 +11180,7 @@
   "FUND",
   "FUNDED",
   "FUNDING",
-  "FUNDINGS",
+
   "FUNDS",
   "FUNERAL",
   "FUNERALS",
@@ -11203,7 +11199,7 @@
   "FUNNIEST",
   "FUNNIESTS",
   "FUNNY",
-  "FUNS",
+
   "FUR",
   "FURIES",
   "FURIOUS",
@@ -11223,7 +11219,7 @@
   "FURTHER",
   "FURTHERS",
   "FURTHEST",
-  "FURTHESTS",
+
   "FURTIVE",
   "FURTIVES",
   "FURY",
@@ -11237,7 +11233,7 @@
   "FUSS",
   "FUSSIES",
   "FUSSING",
-  "FUSSINGS",
+
   "FUSSY",
   "FUTILE",
   "FUTILES",
@@ -11253,7 +11249,7 @@
   "FUZZY",
   "GABBIES",
   "GABBING",
-  "GABBINGS",
+
   "GABBY",
   "GABIES",
   "GABY",
@@ -11268,7 +11264,7 @@
   "GAGES",
   "GAGGED",
   "GAGGING",
-  "GAGGINGS",
+
   "GAGGLE",
   "GAGGLES",
   "GAGS",
@@ -11281,7 +11277,7 @@
   "GAINFULLY",
   "GAINFULS",
   "GAINING",
-  "GAININGS",
+
   "GAINS",
   "GAL",
   "GALA",
@@ -11300,11 +11296,11 @@
   "GALLERIES",
   "GALLERY",
   "GALLING",
-  "GALLINGS",
+
   "GALLON",
   "GALLONS",
   "GALLOPING",
-  "GALLOPINGS",
+
   "GALLOWS",
   "GALLS",
   "GALORE",
@@ -11318,7 +11314,7 @@
   "GAMBLERS",
   "GAMBLES",
   "GAMBLING",
-  "GAMBLINGS",
+
   "GAME",
   "GAMER",
   "GAMERS",
@@ -11335,7 +11331,7 @@
   "GANG",
   "GANGED",
   "GANGING",
-  "GANGINGS",
+
   "GANGLAND",
   "GANGLANDS",
   "GANGLIES",
@@ -11365,7 +11361,7 @@
   "GARDENERS",
   "GARDENIAS",
   "GARDENING",
-  "GARDENINGS",
+
   "GARDENS",
   "GARGLING",
   "GARGLINGS",
@@ -11406,7 +11402,7 @@
   "GASP",
   "GASPED",
   "GASPING",
-  "GASPINGS",
+
   "GASPS",
   "GASS",
   "GASSED",
@@ -11435,7 +11431,7 @@
   "GAUGE",
   "GAUGES",
   "GAUGING",
-  "GAUGINGS",
+
   "GAULT",
   "GAULTS",
   "GAUNTLET",
@@ -11448,7 +11444,7 @@
   "GAVES",
   "GAWK",
   "GAWKING",
-  "GAWKINGS",
+
   "GAWKS",
   "GAY",
   "GAYEST",
@@ -11469,7 +11465,7 @@
   "GEAR",
   "GEARED",
   "GEARING",
-  "GEARINGS",
+
   "GEARS",
   "GEARSHIFT",
   "GEARSHIFTS",
@@ -11540,7 +11536,7 @@
   "GENTLEMAN",
   "GENTLEMANS",
   "GENTLEMEN",
-  "GENTLEMENS",
+
   "GENTLER",
   "GENTLERS",
   "GENTLES",
@@ -11573,7 +11569,7 @@
   "GESTAPO",
   "GESTAPOS",
   "GESTATING",
-  "GESTATINGS",
+
   "GESTATION",
   "GESTATIONS",
   "GESTURE",
@@ -11585,7 +11581,7 @@
   "GETTER",
   "GETTERS",
   "GETTING",
-  "GETTINGS",
+
   "GETUP",
   "GETUPS",
   "GEYSER",
@@ -11624,7 +11620,7 @@
   "GIGGLES",
   "GIGGLIES",
   "GIGGLING",
-  "GIGGLINGS",
+
   "GIGGLY",
   "GIGOLO",
   "GIGOLOS",
@@ -11675,7 +11671,7 @@
   "GIVERS",
   "GIVES",
   "GIVING",
-  "GIVINGS",
+
   "GIZMO",
   "GIZMOS",
   "GIZZARD",
@@ -11704,7 +11700,7 @@
   "GLARE",
   "GLARES",
   "GLARING",
-  "GLARINGS",
+
   "GLASS",
   "GLASSES",
   "GLASSIES",
@@ -11720,7 +11716,7 @@
   "GLAZES",
   "GLEAM",
   "GLEAMING",
-  "GLEAMINGS",
+
   "GLEAMS",
   "GLEE",
   "GLEES",
@@ -11735,7 +11731,7 @@
   "GLIDERS",
   "GLIDES",
   "GLIDING",
-  "GLIDINGS",
+
   "GLIMMER",
   "GLIMMERS",
   "GLIMPS",
@@ -11749,7 +11745,7 @@
   "GLITTERS",
   "GLOAT",
   "GLOATING",
-  "GLOATINGS",
+
   "GLOATS",
   "GLOBAL",
   "GLOBALS",
@@ -11776,7 +11772,7 @@
   "GLOVES",
   "GLOW",
   "GLOWING",
-  "GLOWINGS",
+
   "GLOWS",
   "GLUCOS",
   "GLUCOSE",
@@ -11784,7 +11780,7 @@
   "GLUED",
   "GLUES",
   "GLUING",
-  "GLUINGS",
+
   "GLUM",
   "GLUMS",
   "GLUT",
@@ -11799,7 +11795,7 @@
   "GNATS",
   "GNAW",
   "GNAWING",
-  "GNAWINGS",
+
   "GNAWS",
   "GNOME",
   "GNOMES",
@@ -11807,7 +11803,7 @@
   "GOA",
   "GOAD",
   "GOADING",
-  "GOADINGS",
+
   "GOADS",
   "GOAL",
   "GOALIE",
@@ -12174,7 +12170,7 @@
   "GRINDER",
   "GRINDERS",
   "GRINDING",
-  "GRINDINGS",
+
   "GRINDS",
   "GRINGO",
   "GRINGOS",
@@ -12187,7 +12183,7 @@
   "GRIPING",
   "GRIPINGS",
   "GRIPPING",
-  "GRIPPINGS",
+
   "GRIPS",
   "GRISLIES",
   "GRISLY",
@@ -12231,7 +12227,7 @@
   "GROSSER",
   "GROSSERS",
   "GROSSING",
-  "GROSSINGS",
+
   "GROSSLIES",
   "GROSSLY",
   "GROTESQUE",
@@ -12258,13 +12254,13 @@
   "GROVE",
   "GROVEL",
   "GROVELING",
-  "GROVELINGS",
+
   "GROVELS",
   "GROVES",
   "GROW",
   "GROWERS",
   "GROWING",
-  "GROWINGS",
+
   "GROWL",
   "GROWLS",
   "GROWN",
@@ -12277,19 +12273,19 @@
   "GRUB",
   "GRUBBIES",
   "GRUBBING",
-  "GRUBBINGS",
+
   "GRUBBY",
   "GRUBS",
   "GRUDGE",
   "GRUDGES",
   "GRUDGING",
-  "GRUDGINGS",
+
   "GRUEL",
   "GRUELS",
   "GRUESOME",
   "GRUESOMES",
   "GRUMBLING",
-  "GRUMBLINGS",
+
   "GRUMPIES",
   "GRUMPY",
   "GRUNGE",
@@ -12307,7 +12303,7 @@
   "GUARDIAN",
   "GUARDIANS",
   "GUARDING",
-  "GUARDINGS",
+
   "GUARDRAIL",
   "GUARDRAILS",
   "GUARDS",
@@ -12326,7 +12322,7 @@
   "GUFF",
   "GUFFS",
   "GUIDANCE",
-  "GUIDANCES",
+
   "GUIDE",
   "GUIDED",
   "GUIDES",
@@ -12517,7 +12513,7 @@
   "HAMMER",
   "HAMMERED",
   "HAMMERING",
-  "HAMMERINGS",
+
   "HAMMERS",
   "HAMMOCK",
   "HAMMOCKS",
@@ -12554,7 +12550,7 @@
   "HANDLERS",
   "HANDLES",
   "HANDLING",
-  "HANDLINGS",
+
   "HANDOFF",
   "HANDOFFS",
   "HANDOUT",
@@ -12607,7 +12603,7 @@
   "HAPPIERS",
   "HAPPIES",
   "HAPPIEST",
-  "HAPPIESTS",
+
   "HAPPILIES",
   "HAPPILY",
   "HAPPINESS",
@@ -12616,7 +12612,7 @@
   "HARASS",
   "HARASSED",
   "HARASSING",
-  "HARASSINGS",
+
   "HARBOR",
   "HARBORING",
 
@@ -12732,7 +12728,7 @@
   "HAUL",
   "HAULED",
   "HAULING",
-  "HAULINGS",
+
   "HAULS",
   "HAUNT",
   "HAUNTED",
@@ -12746,7 +12742,7 @@
   "HAVENS",
   "HAVES",
   "HAVING",
-  "HAVINGS",
+
   "HAVOC",
   "HAVOCS",
   "HAW",
@@ -12826,7 +12822,7 @@
   "HEALER",
   "HEALERS",
   "HEALING",
-  "HEALINGS",
+
   "HEALS",
   "HEALTH",
   "HEALTHIER",
@@ -12837,7 +12833,7 @@
   "HEAP",
   "HEAPED",
   "HEAPING",
-  "HEAPINGS",
+
   "HEAPS",
   "HEAR",
   "HEARD",
@@ -12877,7 +12873,7 @@
   "HEATHERS",
   "HEATHS",
   "HEATING",
-  "HEATINGS",
+
   "HEATS",
   "HEAVE",
   "HEAVED",
@@ -13017,7 +13013,7 @@
   "HERCULES",
   "HERD",
   "HERDING",
-  "HERDINGS",
+
   "HERDS",
   "HERE",
   "HEREAFTER",
@@ -13144,7 +13140,7 @@
   "HIM",
   "HIMS",
   "HIMSELF",
-  "HIMSELFS",
+
   "HIND",
   "HINDRANCE",
   "HINDRANCES",
@@ -13155,11 +13151,11 @@
   "HINT",
   "HINTED",
   "HINTING",
-  "HINTINGS",
+
   "HINTS",
   "HIP",
   "HIPPEST",
-  "HIPPESTS",
+
   "HIPPIE",
   "HIPPIES",
   "HIPPO",
@@ -13174,7 +13170,7 @@
   "HISS",
   "HISSED",
   "HISSELF",
-  "HISSELFS",
+
   "HISSING",
   "HISSINGS",
   "HISTORIAN",
@@ -13190,12 +13186,12 @@
   "HITCHHIKE",
   "HITCHHIKES",
   "HITCHING",
-  "HITCHINGS",
+
   "HITS",
   "HITTER",
   "HITTERS",
   "HITTING",
-  "HITTINGS",
+
   "HIVE",
   "HIVES",
   "HM",
@@ -13228,7 +13224,7 @@
   "HOCKEY",
   "HOCKEYS",
   "HOCKING",
-  "HOCKINGS",
+
   "HOCKS",
   "HOCUS",
   "HOE",
@@ -13246,7 +13242,7 @@
   "HOIST",
   "HOISTED",
   "HOISTING",
-  "HOISTINGS",
+
   "HOISTS",
   "HOKEY",
   "HOKEYS",
@@ -13367,7 +13363,7 @@
   "HONORARY",
   "HONORED",
   "HONORING",
-  "HONORINGS",
+
   "HONORS",
   "HONOUR",
   "HONOURING",
@@ -13418,7 +13414,7 @@
   "HOPELESS",
   "HOPES",
   "HOPING",
-  "HOPINGS",
+
   "HOPPED",
   "HOPPER",
   "HOPPERS",
@@ -13471,7 +13467,7 @@
   "HORSEY",
   "HORSEYS",
   "HORSING",
-  "HORSINGS",
+
   "HOS",
   "HOSE",
   "HOSED",
@@ -13493,7 +13489,6 @@
   "HOSTILITIES",
   "HOSTILITY",
   "HOSTING",
-  "HOSTINGS",
   "HOSTS",
   "HOT",
   "HOTBED",
@@ -13519,7 +13514,6 @@
   "HOUND",
   "HOUNDED",
   "HOUNDING",
-  "HOUNDINGS",
   "HOUNDS",
   "HOUR",
   "HOURGLASS",
@@ -13536,12 +13530,10 @@
   "HOUSEWIFE",
   "HOUSEWIVES",
   "HOUSING",
-  "HOUSINGS",
   "HOVEL",
   "HOVELS",
   "HOVER",
   "HOVERING",
-
   "HOVERS",
   "HOW",
   "HOWDIES",
@@ -13552,7 +13544,6 @@
   "HOWEVERS",
   "HOWL",
   "HOWLING",
-  "HOWLINGS",
   "HOWLS",
   "HOWS",
   "HOY",
@@ -13577,7 +13568,6 @@
   "HUFFED",
   "HUFFIES",
   "HUFFING",
-
   "HUFFY",
   "HUG",
   "HUGE",
@@ -13588,7 +13578,6 @@
   "HUGGER",
   "HUGGERS",
   "HUGGING",
-  "HUGGINGS",
   "HUGS",
   "HUH",
   "HUHS",
@@ -13596,7 +13585,6 @@
   "HULAS",
   "HULK",
   "HULKING",
-
   "HULKS",
   "HULL",
   "HULLO",
@@ -13620,7 +13608,6 @@
   "HUMBLES",
   "HUMBLIES",
   "HUMBLING",
-  "HUMBLINGS",
   "HUMBLY",
   "HUMBUG",
   "HUMBUGS",
@@ -13640,12 +13627,10 @@
   "HUMMER",
   "HUMMERS",
   "HUMMING",
-  "HUMMINGS",
   "HUMMUS",
   "HUMOR",
   "HUMORED",
   "HUMORING",
-
   "HUMORLESS",
   "HUMORS",
   "HUMOUR",
@@ -13657,7 +13642,6 @@
   "HUMPH",
   "HUMPHS",
   "HUMPING",
-
   "HUMPS",
   "HUMS",
   "HUMUS",
@@ -13692,7 +13676,7 @@
   "HUNTER",
   "HUNTERS",
   "HUNTING",
-  "HUNTINGS",
+
   "HUNTS",
   "HUP",
   "HUPS",
@@ -13701,7 +13685,6 @@
   "HURLEY",
   "HURLEYS",
   "HURLING",
-
   "HURLS",
   "HURRAH",
   "HURRAHS",
@@ -13713,16 +13696,13 @@
   "HURRIES",
   "HURRY",
   "HURRYING",
-  "HURRYINGS",
   "HURST",
   "HURSTS",
   "HURT",
   "HURTFUL",
   "HURTFULS",
   "HURTING",
-
   "HURTLING",
-
   "HURTS",
   "HUSBAND",
   "HUSBANDS",
@@ -23159,9 +23139,11 @@
   "RIVERS",
   "RIVERSIDE",
   "RIVERSIDES",
+  "RIVET",
+  "RIVETS",
   "RIVETED",
   "RIVETING",
-  "RIVETINGS",
+
   "RIVIERA",
   "RIVIERAS",
   "ROACH",
@@ -23180,11 +23162,11 @@
   "ROADWAYS",
   "ROAM",
   "ROAMING",
-  "ROAMINGS",
+
   "ROAMS",
   "ROAR",
   "ROARING",
-  "ROARINGS",
+
   "ROARS",
   "ROAST",
   "ROASTED",
@@ -23199,7 +23181,7 @@
   "ROBBERY",
   "ROBBIN",
   "ROBBING",
-  "ROBBINGS",
+
   "ROBBINS",
   "ROBE",
   "ROBES",
@@ -23220,7 +23202,7 @@
   "ROCKETS",
   "ROCKIES",
   "ROCKING",
-  "ROCKINGS",
+
   "ROCKS",
   "ROCKY",
   "ROD",
@@ -23246,7 +23228,7 @@
   "ROLLER",
   "ROLLERS",
   "ROLLING",
-  "ROLLINGS",
+
   "ROLLS",
   "ROM",
   "ROMAN",
@@ -23322,7 +23304,7 @@
   "ROTATED",
   "ROTATES",
   "ROTATING",
-  "ROTATINGS",
+
   "ROTATION",
   "ROTATIONS",
   "ROTO",
@@ -23332,7 +23314,7 @@
   "ROTTEN",
   "ROTTENS",
   "ROTTING",
-  "ROTTINGS",
+
   "ROTUNDA",
   "ROTUNDAS",
   "ROUGE",
@@ -23343,7 +23325,7 @@
   "ROUGHER",
   "ROUGHERS",
   "ROUGHING",
-  "ROUGHINGS",
+
   "ROUGHLIES",
   "ROUGHLY",
   "ROUGHS",
@@ -23352,12 +23334,12 @@
   "ROUND",
   "ROUNDED",
   "ROUNDING",
-  "ROUNDINGS",
+
   "ROUNDS",
   "ROUS",
   "ROUSE",
   "ROUSING",
-  "ROUSINGS",
+
   "ROUST",
   "ROUSTED",
   "ROUSTS",
@@ -23375,7 +23357,7 @@
   "ROVER",
   "ROVERS",
   "ROVING",
-  "ROVINGS",
+
   "ROW",
   "ROWAN",
   "ROWANS",
@@ -23386,7 +23368,7 @@
   "ROWER",
   "ROWERS",
   "ROWING",
-  "ROWINGS",
+
   "ROWS",
   "ROYAL",
   "ROYALLIES",
@@ -23399,7 +23381,7 @@
   "RUBBER",
   "RUBBERS",
   "RUBBING",
-  "RUBBINGS",
+
   "RUBBISH",
   "RUBBISHES",
   "RUBBLE",
@@ -23435,7 +23417,7 @@
   "RUIN",
   "RUINED",
   "RUINING",
-  "RUININGS",
+
   "RUINS",
   "RULE",
   "RULED",
@@ -23480,7 +23462,7 @@
   "RUNNERS",
   "RUNNIES",
   "RUNNING",
-  "RUNNINGS",
+
   "RUNNY",
   "RUNOFF",
   "RUNOFFS",
@@ -23500,7 +23482,7 @@
   "RUSHED",
   "RUSHES",
   "RUSHING",
-  "RUSHINGS",
+
   "RUST",
   "RUSTED",
   "RUSTIES",
@@ -23514,7 +23496,7 @@
   "RUTHS",
   "RUTS",
   "RUTTING",
-  "RUTTINGS",
+
   "RYA",
   "RYAS",
   "RYE",
@@ -23583,7 +23565,7 @@
   "SAGE",
   "SAGES",
   "SAGGING",
-  "SAGGINGS",
+
   "SAGGY",
   "SAHIB",
   "SAHIBS",
@@ -23620,9 +23602,9 @@
   "SALE",
   "SALES",
   "SALESMAN",
-  "SALESMANS",
+
   "SALESMEN",
-  "SALESMENS",
+
   "SALIENT",
   "SALIENTS",
   "SALINA",
@@ -23694,7 +23676,7 @@
   "SANDERS",
   "SANDIES",
   "SANDING",
-  "SANDINGS",
+
   "SANDMAN",
   "SANDMANS",
   "SANDPAPER",
@@ -23708,7 +23690,7 @@
   "SANE",
   "SANES",
   "SANEST",
-  "SANESTS",
+
   "SANG",
   "SANGRIA",
   "SANGRIAS",
@@ -23718,7 +23700,7 @@
   "SANITIES",
   "SANITY",
   "SANK",
-  "SANKS",
+
   "SANS",
   "SANTO",
   "SANTOS",
@@ -23759,7 +23741,7 @@
   "SATISFIED",
   "SATISFIES",
   "SATISFY",
-  "SATS",
+
   "SATURATED",
   "SATYR",
   "SATYRS",
@@ -23784,10 +23766,10 @@
   "SAVER",
   "SAVERS",
   "SAVES",
-  "SAVIN",
+
   "SAVING",
   "SAVINGS",
-  "SAVINS",
+
   "SAVIOR",
   "SAVIORS",
   "SAVIOUR",
@@ -23795,7 +23777,7 @@
   "SAVOR",
   "SAVORED",
   "SAVORING",
-  "SAVORINGS",
+
   "SAVORS",
   "SAVOUR",
   "SAVOURS",
@@ -23830,7 +23812,7 @@
   "SCAGS",
   "SCALD",
   "SCALDING",
-  "SCALDINGS",
+
   "SCALDS",
   "SCALE",
   "SCALED",
@@ -23882,13 +23864,13 @@
   "SCARES",
   "SCARF",
   "SCARFING",
-  "SCARFINGS",
+
   "SCARFS",
   "SCARIER",
   "SCARIERS",
   "SCARIES",
   "SCARIEST",
-  "SCARIESTS",
+
   "SCARING",
   "SCARINGS",
   "SCARLET",
@@ -23924,7 +23906,7 @@
   "SCHEMED",
   "SCHEMES",
   "SCHEMING",
-  "SCHEMINGS",
+
   "SCHILLER",
   "SCHILLERS",
   "SCHIZO",
@@ -23954,6 +23936,8 @@
   "SCHOOLBOY",
   "SCHOOLBOYS",
   "SCHOOLED",
+  "SCHOOLGIRL",
+  "SCHOOLGIRLS",
   "SCHOOLING",
   "SCHOOLINGS",
   "SCHOOLS",
@@ -23969,14 +23953,14 @@
   "SCOFFS",
   "SCOLDED",
   "SCOLDING",
-  "SCOLDINGS",
+
   "SCOLIOSIS",
   "SCONE",
   "SCONES",
   "SCOOP",
   "SCOOPED",
   "SCOOPING",
-  "SCOOPINGS",
+
   "SCOOPS",
   "SCOOT",
   "SCOOTER",
@@ -23985,19 +23969,19 @@
   "SCOPE",
   "SCOPES",
   "SCOPING",
-  "SCOPINGS",
+
   "SCORCH",
   "SCORCHED",
   "SCORCHER",
   "SCORCHERS",
   "SCORCHES",
   "SCORCHING",
-  "SCORCHINGS",
+
   "SCORE",
   "SCORED",
   "SCORES",
   "SCORING",
-  "SCORINGS",
+
   "SCORNED",
   "SCORPION",
   "SCORPIONS",
@@ -24056,7 +24040,7 @@
   "SCREAMER",
   "SCREAMERS",
   "SCREAMING",
-  "SCREAMINGS",
+
   "SCREAMS",
   "SCREECH",
   "SCREECHES",
@@ -24127,7 +24111,7 @@
   "SCURRIES",
   "SCURRY",
   "SCURRYING",
-  "SCURRYINGS",
+
   "SCURVIES",
   "SCURVY",
   "SCUTTLED",
@@ -24143,7 +24127,7 @@
   "SEAL",
   "SEALED",
   "SEALING",
-  "SEALINGS",
+
   "SEALS",
   "SEAM",
   "SEAMAN",
@@ -24159,7 +24143,7 @@
   "SEARCHED",
   "SEARCHES",
   "SEARCHING",
-  "SEARCHINGS",
+
   "SEARED",
   "SEARS",
   "SEAS",
@@ -24196,7 +24180,7 @@
   "SECRETARY",
   "SECRETIVE",
   "SECRETIVES",
-  "SECRETLIES",
+
   "SECRETLY",
   "SECRETS",
   "SECS",
@@ -24206,11 +24190,11 @@
   "SECTORS",
   "SECURE",
   "SECURED",
-  "SECURELIES",
+
   "SECURELY",
   "SECURES",
   "SECURING",
-  "SECURINGS",
+
   "SECURITIES",
   "SECURITY",
   "SEDAN",
@@ -24226,14 +24210,14 @@
   "SEDUCED",
   "SEDUCES",
   "SEDUCING",
-  "SEDUCINGS",
+
   "SEDUCTION",
   "SEDUCTIONS",
   "SEDUCTIVE",
   "SEDUCTIVES",
   "SEE",
   "SEED",
-  "SEEDIES",
+  "SEEDS",
   "SEEDY",
   "SEEING",
   "SEEINGS",
@@ -24241,18 +24225,18 @@
   "SEEKER",
   "SEEKERS",
   "SEEKING",
-  "SEEKINGS",
+
   "SEEKS",
   "SEEM",
   "SEEMED",
-  "SEEMINGLIES",
+
   "SEEMINGLY",
   "SEEMS",
   "SEEN",
-  "SEENS",
+
   "SEEP",
   "SEEPING",
-  "SEEPINGS",
+
   "SEEPS",
   "SEER",
   "SEERS",
@@ -24271,7 +24255,7 @@
   "SEIZED",
   "SEIZES",
   "SEIZING",
-  "SEIZINGS",
+
   "SEIZURE",
   "SEIZURES",
   "SELDOM",
@@ -24279,18 +24263,17 @@
   "SELECT",
   "SELECTED",
   "SELECTING",
-  "SELECTINGS",
+
   "SELECTION",
   "SELECTIONS",
   "SELECTIVE",
-  "SELECTIVES",
+
   "SELECTMAN",
-  "SELECTMANS",
+
   "SELECTS",
   "SELF",
   "SELFISH",
-  "SELFISHES",
-  "SELFISHLIES",
+
   "SELFISHLY",
   "SELFLESS",
   "SELFS",
@@ -24298,7 +24281,7 @@
   "SELLER",
   "SELLERS",
   "SELLING",
-  "SELLINGS",
+
   "SELLS",
   "SELTZER",
   "SELTZERS",
@@ -24307,7 +24290,7 @@
   "SEMBLANCE",
   "SEMBLANCES",
   "SEMEN",
-  "SEMENS",
+
   "SEMESTER",
   "SEMESTERS",
   "SEMI",
@@ -24329,7 +24312,7 @@
   "SENDER",
   "SENDERS",
   "SENDING",
-  "SENDINGS",
+
   "SENDOFF",
   "SENDOFFS",
   "SENDS",
@@ -24354,7 +24337,7 @@
   "SENSIBLE",
   "SENSIBLES",
   "SENSING",
-  "SENSINGS",
+
   "SENSITIVE",
   "SENSITIVES",
   "SENSOR",
@@ -24409,7 +24392,7 @@
   "SERIALS",
   "SERIES",
   "SERIOUS",
-  "SERIOUSLIES",
+
   "SERIOUSLY",
   "SERMON",
   "SERMONS",
@@ -24431,7 +24414,7 @@
   "SERVICED",
   "SERVICES",
   "SERVICING",
-  "SERVICINGS",
+
   "SERVING",
   "SERVINGS",
   "SERVITUDE",
@@ -24482,17 +24465,17 @@
   "SEWER",
   "SEWERS",
   "SEWING",
-  "SEWINGS",
+
   "SEWN",
-  "SEWNS",
+
   "SEWS",
   "SEX",
   "SEXES",
   "SEXIER",
-  "SEXIERS",
+
   "SEXIES",
   "SEXIEST",
-  "SEXIESTS",
+
   "SEXISM",
   "SEXISMS",
   "SEXIST",
@@ -24501,14 +24484,14 @@
   "SEXUAL",
   "SEXUALITIES",
   "SEXUALITY",
-  "SEXUALLIES",
+
   "SEXUALLY",
   "SEXUALS",
   "SEXY",
   "SH",
   "SHA",
   "SHABBIES",
-  "SHABBILIES",
+
   "SHABBILY",
   "SHABBY",
   "SHACK",
@@ -24523,9 +24506,9 @@
   "SHADING",
   "SHADINGS",
   "SHADOW",
-  "SHADOWIES",
+
   "SHADOWING",
-  "SHADOWINGS",
+
   "SHADOWS",
   "SHADOWY",
   "SHADS",
@@ -24544,13 +24527,13 @@
   "SHAHS",
   "SHAKE",
   "SHAKEN",
-  "SHAKENS",
+
   "SHAKER",
   "SHAKERS",
   "SHAKES",
   "SHAKIES",
   "SHAKING",
-  "SHAKINGS",
+
   "SHAKY",
   "SHALE",
   "SHALES",
@@ -24569,7 +24552,7 @@
   "SHAME",
   "SHAMED",
   "SHAMEFUL",
-  "SHAMEFULS",
+
   "SHAMELESS",
   "SHAMES",
   "SHAMING",
@@ -24585,20 +24568,20 @@
   "SHANKS",
   "SHAPE",
   "SHAPED",
-  "SHAPELIES",
+
   "SHAPELY",
   "SHAPES",
   "SHAPING",
-  "SHAPINGS",
+
   "SHARDS",
   "SHARE",
   "SHARED",
   "SHARES",
   "SHARING",
-  "SHARINGS",
+
   "SHARK",
   "SHARKING",
-  "SHARKINGS",
+
   "SHARKS",
   "SHARP",
   "SHARPENED",
@@ -24608,7 +24591,7 @@
   "SHARPER",
   "SHARPERS",
   "SHARPEST",
-  "SHARPESTS",
+
   "SHARPLIES",
   "SHARPLY",
   "SHARPS",
@@ -24621,7 +24604,7 @@
   "SHAVE",
   "SHAVED",
   "SHAVEN",
-  "SHAVENS",
+
   "SHAVER",
   "SHAVERS",
   "SHAVES",
@@ -24641,12 +24624,12 @@
   "SHEARS",
   "SHEAS",
   "SHEBANG",
-  "SHEBANGS",
+
   "SHED",
   "SHEDDING",
-  "SHEDDINGS",
+
   "SHEEN",
-  "SHEENIES",
+
   "SHEENS",
   "SHEENY",
   "SHEEP",
@@ -24685,7 +24668,6 @@
   "SHERLOCKS",
   "SHERRIES",
   "SHERRY",
-  "SHES",
 
   "SHIELD",
   "SHIELDED",
@@ -24697,7 +24679,7 @@
   "SHIFTERS",
   "SHIFTIES",
   "SHIFTING",
-  "SHIFTINGS",
+
   "SHIFTS",
   "SHIFTY",
   "SHILL",
@@ -24716,7 +24698,7 @@
   "SHINGLES",
   "SHINIES",
   "SHINING",
-  "SHININGS",
+
   "SHINS",
   "SHINY",
   "SHIP",
@@ -24724,7 +24706,7 @@
   "SHIPMENTS",
   "SHIPPED",
   "SHIPPING",
-  "SHIPPINGS",
+
   "SHIPS",
   "SHIPSHAPE",
   "SHIPSHAPES",
@@ -24733,7 +24715,7 @@
   "SHIPYARD",
   "SHIPYARDS",
   "SHIRKING",
-  "SHIRKINGS",
+
   "SHIRT",
   "SHIRTLESS",
   "SHIRTS",
@@ -24743,7 +24725,7 @@
   "SHIVAS",
   "SHIVER",
   "SHIVERING",
-  "SHIVERINGS",
+
   "SHIVERS",
   "SHIVS",
   "SHOAL",
@@ -24753,7 +24735,7 @@
   "SHOCKER",
   "SHOCKERS",
   "SHOCKING",
-  "SHOCKINGS",
+
   "SHOCKS",
   "SHODDIES",
   "SHODDY",
@@ -24784,7 +24766,7 @@
   "SHOPPER",
   "SHOPPERS",
   "SHOPPING",
-  "SHOPPINGS",
+
   "SHOPS",
   "SHORE",
   "SHORELINE",
@@ -24803,7 +24785,7 @@
   "SHORTER",
   "SHORTERS",
   "SHORTEST",
-  "SHORTESTS",
+
   "SHORTHAND",
   "SHORTHANDS",
   "SHORTIES",
@@ -24825,18 +24807,18 @@
   "SHOUT",
   "SHOUTED",
   "SHOUTING",
-  "SHOUTINGS",
+
   "SHOUTS",
   "SHOVE",
   "SHOVED",
   "SHOVEL",
   "SHOVELED",
   "SHOVELING",
-  "SHOVELINGS",
+
   "SHOVELS",
   "SHOVES",
   "SHOVING",
-  "SHOVINGS",
+
   "SHOW",
   "SHOWBIZ",
   "SHOWBIZES",
@@ -24848,7 +24830,7 @@
   "SHOWER",
   "SHOWERED",
   "SHOWERING",
-  "SHOWERINGS",
+
   "SHOWERS",
   "SHOWGIRL",
   "SHOWGIRLS",
@@ -24875,7 +24857,7 @@
   "SHREWS",
   "SHRIEK",
   "SHRIEKING",
-  "SHRIEKINGS",
+
   "SHRIEKS",
   "SHRIMP",
   "SHRIMPS",
@@ -24885,7 +24867,7 @@
   "SHRINKAGE",
   "SHRINKAGES",
   "SHRINKING",
-  "SHRINKINGS",
+
   "SHRINKS",
   "SHRIVEL",
   "SHRIVELED",
@@ -24899,11 +24881,11 @@
   "SHRUG",
   "SHRUGGED",
   "SHRUGGING",
-  "SHRUGGINGS",
+
   "SHRUGS",
   "SHRUNK",
   "SHRUNKEN",
-  "SHRUNKENS",
+
   "SHRUNKS",
   "SHTICK",
   "SHTICKS",
@@ -24913,7 +24895,7 @@
   "SHUFFLED",
   "SHUFFLES",
   "SHUFFLING",
-  "SHUFFLINGS",
+
   "SHUN",
   "SHUNNED",
   "SHUNS",
@@ -24922,14 +24904,14 @@
   "SHUSH",
   "SHUSHES",
   "SHUSHING",
-  "SHUSHINGS",
+
   "SHUT",
   "SHUTDOWN",
   "SHUTDOWNS",
   "SHUTS",
   "SHUTTERS",
   "SHUTTING",
-  "SHUTTINGS",
+
   "SHUTTLE",
   "SHUTTLES",
   "SHY",
@@ -24945,12 +24927,12 @@
   "SICKEN",
   "SICKENED",
   "SICKENING",
-  "SICKENINGS",
+
   "SICKENS",
   "SICKER",
   "SICKERS",
   "SICKEST",
-  "SICKESTS",
+
   "SICKLIES",
   "SICKLY",
   "SICKNESS",
@@ -24989,7 +24971,7 @@
   "SIESTAS",
   "SIFT",
   "SIFTING",
-  "SIFTINGS",
+
   "SIFTS",
   "SIGH",
   "SIGHING",
@@ -25040,14 +25022,14 @@
   "SILL",
   "SILLIES",
   "SILLIEST",
-  "SILLIESTS",
+
   "SILLINESS",
   "SILLS",
   "SILLY",
   "SILVA",
   "SILVAS",
   "SILVER",
-  "SILVERIES",
+
   "SILVERS",
   "SILVERY",
   "SIM",
@@ -25065,7 +25047,7 @@
   "SIMPLERS",
   "SIMPLES",
   "SIMPLEST",
-  "SIMPLESTS",
+
   "SIMPLETON",
   "SIMPLETONS",
   "SIMPLIES",
@@ -25086,7 +25068,7 @@
   "SINCERELY",
   "SINCERES",
   "SINCEREST",
-  "SINCERESTS",
+
   "SINCERITIES",
   "SINCERITY",
   "SINCES",
@@ -25101,13 +25083,13 @@
   "SINGERS",
   "SINGES",
   "SINGING",
-  "SINGINGS",
+
   "SINGLE",
   "SINGLES",
   "SINGLETON",
   "SINGLETONS",
   "SINGLING",
-  "SINGLINGS",
+
   "SINGS",
   "SINISTER",
   "SINISTERS",
@@ -25115,7 +25097,7 @@
   "SINKER",
   "SINKERS",
   "SINKING",
-  "SINKINGS",
+
   "SINKS",
   "SINNED",
   "SINNER",
@@ -25124,10 +25106,10 @@
   "SINUS",
   "SIP",
   "SIPHONING",
-  "SIPHONINGS",
+
   "SIPPED",
   "SIPPING",
-  "SIPPINGS",
+
   "SIPS",
   "SIR",
   "SIRE",
@@ -25155,7 +25137,7 @@
   "SITTER",
   "SITTERS",
   "SITTING",
-  "SITTINGS",
+
   "SITUATED",
   "SITUATION",
   "SITUATIONS",
@@ -25172,18 +25154,18 @@
   "SIXTIES",
   "SIXTY",
   "SIZABLE",
-  "SIZABLES",
+
   "SIZE",
   "SIZEABLE",
-  "SIZEABLES",
+
   "SIZED",
   "SIZES",
   "SIZING",
-  "SIZINGS",
+
   "SIZZLE",
   "SIZZLES",
   "SIZZLING",
-  "SIZZLINGS",
+
   "SKAG",
   "SKAGS",
   "SKATE",
@@ -25192,7 +25174,7 @@
   "SKATERS",
   "SKATES",
   "SKATING",
-  "SKATINGS",
+
   "SKEDADDLE",
   "SKEDADDLES",
   "SKEETERS",
@@ -25202,7 +25184,7 @@
   "SKELETONS",
   "SKEPTIC",
   "SKEPTICAL",
-  "SKEPTICALS",
+
   "SKEPTICS",
   "SKETCH",
   "SKETCHES",
@@ -25231,12 +25213,12 @@
   "SKILLET",
   "SKILLETS",
   "SKILLFUL",
-  "SKILLFULS",
+
   "SKILLS",
   "SKIM",
   "SKIMMED",
   "SKIMMING",
-  "SKIMMINGS",
+
   "SKIMP",
   "SKIMPIES",
   "SKIMPS",
@@ -25254,7 +25236,7 @@
   "SKIPPER",
   "SKIPPERS",
   "SKIPPING",
-  "SKIPPINGS",
+
   "SKIPS",
   "SKIRMISH",
   "SKIRMISHES",
@@ -25264,7 +25246,7 @@
   "SKIT",
   "SKITS",
   "SKITTISH",
-  "SKITTISHES",
+
   "SKITTLES",
   "SKIVVIES",
   "SKULK",
@@ -25287,7 +25269,7 @@
   "SLAMMER",
   "SLAMMERS",
   "SLAMMING",
-  "SLAMMINGS",
+
   "SLAMS",
   "SLANDER",
   "SLANDERS",
@@ -25299,7 +25281,7 @@
   "SLAP",
   "SLAPPED",
   "SLAPPING",
-  "SLAPPINGS",
+
   "SLAPS",
   "SLASH",
   "SLASHED",
@@ -25317,7 +25299,7 @@
   "SLAUGHTERS",
   "SLAVE",
   "SLAVED",
-  "SLAVERIES",
+
   "SLAVERY",
   "SLAVES",
   "SLAW",
@@ -25333,11 +25315,11 @@
   "SLEAZEBAG",
   "SLEAZEBAGS",
   "SLEAZES",
-  "SLEAZIES",
+
   "SLEAZY",
   "SLED",
   "SLEDDING",
-  "SLEDDINGS",
+
   "SLEDGE",
   "SLEDGES",
   "SLEEK",
@@ -25345,9 +25327,9 @@
   "SLEEP",
   "SLEEPER",
   "SLEEPERS",
-  "SLEEPIES",
+
   "SLEEPING",
-  "SLEEPINGS",
+
   "SLEEPLESS",
   "SLEEPOVER",
   "SLEEPOVERS",
@@ -25386,14 +25368,13 @@
   "SLIDERS",
   "SLIDES",
   "SLIDING",
-  "SLIDINGS",
+
   "SLIDS",
   "SLIES",
   "SLIGHT",
   "SLIGHTED",
   "SLIGHTEST",
-  "SLIGHTESTS",
-  "SLIGHTLIES",
+
   "SLIGHTLY",
   "SLIGHTS",
   "SLIM",
@@ -25403,29 +25384,29 @@
   "SLIMMER",
   "SLIMMERS",
   "SLIMMING",
-  "SLIMMINGS",
+
   "SLIMS",
   "SLIMY",
   "SLING",
   "SLINGING",
-  "SLINGINGS",
+
   "SLINGS",
   "SLINGSHOT",
   "SLINGSHOTS",
   "SLINK",
   "SLINKIES",
   "SLINKING",
-  "SLINKINGS",
+
   "SLINKS",
   "SLINKY",
   "SLIP",
   "SLIPPED",
   "SLIPPER",
-  "SLIPPERIES",
+
   "SLIPPERS",
   "SLIPPERY",
   "SLIPPING",
-  "SLIPPINGS",
+
   "SLIPS",
   "SLIT",
   "SLITHER",
@@ -25456,10 +25437,9 @@
   "SLOWER",
   "SLOWERS",
   "SLOWEST",
-  "SLOWESTS",
+
   "SLOWING",
-  "SLOWINGS",
-  "SLOWLIES",
+
   "SLOWLY",
   "SLOWS",
   "SLUDGE",
@@ -25469,9 +25449,9 @@
   "SLUGGER",
   "SLUGGERS",
   "SLUGGING",
-  "SLUGGINGS",
+
   "SLUGGISH",
-  "SLUGGISHES",
+
   "SLUGS",
   "SLUM",
   "SLUMBER",
@@ -25479,7 +25459,7 @@
   "SLUMLORD",
   "SLUMLORDS",
   "SLUMMING",
-  "SLUMMINGS",
+
   "SLUMPED",
   "SLUMS",
   "SLUNG",
@@ -25487,14 +25467,14 @@
   "SLUR",
   "SLURP",
   "SLURPING",
-  "SLURPINGS",
+
   "SLURPS",
   "SLURS",
   "SLUSH",
   "SLUSHES",
   "SLUT",
   "SLUTS",
-  "SLUTTIES",
+
   "SLUTTY",
   "SLY",
   "SMACK",
@@ -25505,14 +25485,14 @@
   "SMALLER",
   "SMALLERS",
   "SMALLEST",
-  "SMALLESTS",
+
   "SMALLS",
   "SMART",
-  "SMARTASS",
+
   "SMARTER",
   "SMARTERS",
   "SMARTEST",
-  "SMARTESTS",
+
   "SMARTIES",
   "SMARTS",
   "SMARTY",
@@ -25520,17 +25500,17 @@
   "SMASHED",
   "SMASHES",
   "SMASHING",
-  "SMASHINGS",
+
   "SMEAR",
   "SMEARED",
   "SMEARING",
-  "SMEARINGS",
+
   "SMEARS",
   "SMELL",
   "SMELLED",
-  "SMELLIES",
+
   "SMELLING",
-  "SMELLINGS",
+
   "SMELLS",
   "SMELLY",
   "SMELT",
@@ -25543,10 +25523,10 @@
   "SMILEY",
   "SMILEYS",
   "SMILING",
-  "SMILINGS",
+
   "SMIRK",
   "SMIRKING",
-  "SMIRKINGS",
+
   "SMIRKS",
   "SMITE",
   "SMITES",
@@ -25554,7 +25534,7 @@
   "SMITHERS",
   "SMITHS",
   "SMITTEN",
-  "SMITTENS",
+
   "SMOCK",
   "SMOCKS",
   "SMOG",
@@ -25574,16 +25554,16 @@
   "SMOOCHES",
   "SMOOCHIES",
   "SMOOCHING",
-  "SMOOCHINGS",
+
   "SMOOCHY",
   "SMOOTH",
   "SMOOTHER",
   "SMOOTHERS",
   "SMOOTHEST",
-  "SMOOTHESTS",
+
   "SMOOTHIE",
   "SMOOTHIES",
-  "SMOOTHLIES",
+
   "SMOOTHLY",
   "SMOOTHS",
   "SMOTHER",
@@ -25599,17 +25579,17 @@
   "SMUGGLERS",
   "SMUGGLES",
   "SMUGGLING",
-  "SMUGGLINGS",
+
   "SMUGNESS",
   "SMUGS",
   "SNACK",
   "SNACKING",
-  "SNACKINGS",
+
   "SNACKS",
   "SNAG",
   "SNAGGED",
   "SNAGGING",
-  "SNAGGINGS",
+
   "SNAGS",
   "SNAILS",
   "SNAKE",
@@ -25624,7 +25604,7 @@
   "SNAPPERS",
   "SNAPPIES",
   "SNAPPING",
-  "SNAPPINGS",
+
   "SNAPPY",
   "SNAPS",
   "SNAPSHOT",
@@ -25633,7 +25613,7 @@
   "SNARKY",
   "SNARL",
   "SNARLING",
-  "SNARLINGS",
+
   "SNARLS",
   "SNATCH",
   "SNATCHED",
@@ -25641,7 +25621,7 @@
   "SNATCHERS",
   "SNATCHES",
   "SNATCHING",
-  "SNATCHINGS",
+
   "SNAZZIES",
   "SNAZZY",
   "SNEAK",
@@ -25650,7 +25630,7 @@
   "SNEAKERS",
   "SNEAKIES",
   "SNEAKING",
-  "SNEAKINGS",
+
   "SNEAKS",
   "SNEAKY",
   "SNEER",
@@ -25659,7 +25639,7 @@
   "SNEEZED",
   "SNEEZES",
   "SNEEZING",
-  "SNEEZINGS",
+
   "SNICKER",
   "SNICKERS",
   "SNIDE",
@@ -25667,10 +25647,10 @@
   "SNIFF",
   "SNIFFED",
   "SNIFFING",
-  "SNIFFINGS",
+
   "SNIFFLES",
   "SNIFFLING",
-  "SNIFFLINGS",
+
   "SNIFFS",
   "SNIFTER",
   "SNIFTERS",
@@ -25680,7 +25660,7 @@
   "SNIPERS",
   "SNIPES",
   "SNIPING",
-  "SNIPINGS",
+
   "SNIPS",
   "SNIT",
   "SNITCH",
@@ -25695,23 +25675,23 @@
   "SNOOP",
   "SNOOPIES",
   "SNOOPING",
-  "SNOOPINGS",
+
   "SNOOPS",
   "SNOOPY",
-  "SNOOTIES",
+
   "SNOOTY",
   "SNOOZE",
   "SNOOZES",
   "SNORE",
   "SNORES",
   "SNORING",
-  "SNORINGS",
+
   "SNORKEL",
   "SNORKELS",
   "SNORT",
   "SNORTED",
   "SNORTING",
-  "SNORTINGS",
+
   "SNORTS",
   "SNOT",
   "SNOTS",
@@ -25731,11 +25711,11 @@
   "SNOWFLAKES",
   "SNOWIES",
   "SNOWING",
-  "SNOWINGS",
+
   "SNOWMAN",
-  "SNOWMANS",
+  "SNOWMAN",
   "SNOWMEN",
-  "SNOWMENS",
+
   "SNOWS",
   "SNOWSTORM",
   "SNOWSTORMS",
@@ -25752,13 +25732,13 @@
   "SNUGGLED",
   "SNUGGLES",
   "SNUGGLING",
-  "SNUGGLINGS",
+
   "SNUGS",
   "SO",
   "SOAK",
   "SOAKED",
   "SOAKING",
-  "SOAKINGS",
+
   "SOAKS",
   "SOAP",
   "SOAPBOX",
@@ -25769,16 +25749,15 @@
   "SOAR",
   "SOARED",
   "SOARING",
-  "SOARINGS",
+
   "SOARS",
   "SOB",
   "SOBBING",
-  "SOBBINGS",
+
   "SOBER",
   "SOBERED",
   "SOBERING",
-  "SOBERINGS",
-  "SOBERLIES",
+
   "SOBERLY",
   "SOBERS",
   "SOBRIETIES",
@@ -25795,7 +25774,7 @@
   "SOCIALITES",
   "SOCIALIZE",
   "SOCIALIZES",
-  "SOCIALLIES",
+
   "SOCIALLY",
   "SOCIALS",
   "SOCIETIES",
@@ -25813,7 +25792,7 @@
   "SODA",
   "SODAS",
   "SODDING",
-  "SODDINGS",
+
   "SODIUM",
   "SODIUMS",
   "SODOMIES",
@@ -25828,14 +25807,14 @@
   "SOFTENER",
   "SOFTENERS",
   "SOFTENING",
-  "SOFTENINGS",
+
   "SOFTENS",
   "SOFTER",
   "SOFTERS",
   "SOFTEST",
-  "SOFTESTS",
+
   "SOFTIES",
-  "SOFTLIES",
+
   "SOFTLY",
   "SOFTNESS",
   "SOFTS",
@@ -25894,7 +25873,7 @@
   "SOLVENTS",
   "SOLVES",
   "SOLVING",
-  "SOLVINGS",
+
   "SOMBER",
   "SOMBERS",
   "SOME",
@@ -25942,13 +25921,13 @@
   "SOONER",
   "SOONERS",
   "SOONEST",
-  "SOONESTS",
+
   "SOONS",
   "SOOT",
   "SOOTHE",
   "SOOTHES",
   "SOOTHING",
-  "SOOTHINGS",
+
   "SOOTS",
   "SOP",
   "SOPHOMORE",
@@ -25978,7 +25957,7 @@
   "SORT",
   "SORTED",
   "SORTING",
-  "SORTINGS",
+
   "SORTS",
   "SOS",
   "SOT",
@@ -25995,12 +25974,11 @@
   "SOUND",
   "SOUNDED",
   "SOUNDING",
-  "SOUNDINGS",
-  "SOUNDLIES",
+
   "SOUNDLY",
   "SOUNDS",
   "SOUP",
-  "SOUPIES",
+
   "SOUPS",
   "SOUPY",
   "SOUR",
@@ -26028,7 +26006,7 @@
   "SOVIETS",
   "SOW",
   "SOWING",
-  "SOWINGS",
+
   "SOWN",
   "SOWNS",
   "SOWS",
@@ -26071,7 +26049,7 @@
   "SPARERIBS",
   "SPARES",
   "SPARING",
-  "SPARINGS",
+
   "SPARK",
   "SPARKED",
   "SPARKIES",
@@ -26115,12 +26093,11 @@
   "SPEAKER",
   "SPEAKERS",
   "SPEAKING",
-  "SPEAKINGS",
+
   "SPEAKS",
   "SPEAR",
   "SPEARS",
-  "SPECIAL",
-  "SPECIALLIES",
+
   "SPECIALLY",
   "SPECIALS",
   "SPECIALTIES",
@@ -26159,11 +26136,10 @@
   "SPEEDBOATS",
   "SPEEDER",
   "SPEEDERS",
-  "SPEEDIES",
-  "SPEEDILIES",
+
   "SPEEDILY",
   "SPEEDING",
-  "SPEEDINGS",
+
   "SPEEDO",
   "SPEEDOS",
   "SPEEDWAY",
@@ -26186,7 +26162,7 @@
   "SPENDER",
   "SPENDERS",
   "SPENDING",
-  "SPENDINGS",
+
   "SPENDS",
   "SPENT",
   "SPENTS",
@@ -26224,7 +26200,7 @@
   "SPILL",
   "SPILLED",
   "SPILLING",
-  "SPILLINGS",
+
   "SPILLS",
   "SPIN",
   "SPINACH",
@@ -26240,14 +26216,14 @@
   "SPINNER",
   "SPINNERS",
   "SPINNING",
-  "SPINNINGS",
+
   "SPINS",
   "SPINSTER",
   "SPINSTERS",
   "SPINY",
   "SPIRAL",
   "SPIRALING",
-  "SPIRALINGS",
+
   "SPIRALS",
   "SPIRIT",
   "SPIRITED",
@@ -26270,7 +26246,7 @@
   "SPLASHES",
   "SPLASHIES",
   "SPLASHING",
-  "SPLASHINGS",
+
   "SPLASHY",
   "SPLAT",
   "SPLATS",
@@ -26300,14 +26276,16 @@
   "SPOILER",
   "SPOILERS",
   "SPOILING",
-  "SPOILINGS",
+
   "SPOILS",
   "SPOKE",
   "SPOKEN",
   "SPOKENS",
   "SPOKES",
   "SPOKESMAN",
-  "SPOKESMANS",
+  "SPOKESMEN",
+  "SPOKESWOMAN",
+  "SPOKESWOMEN",
   "SPONGE",
   "SPONGES",
   "SPONSOR",
@@ -26317,7 +26295,7 @@
   "SPOOKED",
   "SPOOKIES",
   "SPOOKING",
-  "SPOOKINGS",
+
   "SPOOKS",
   "SPOOKY",
   "SPOOL",
@@ -26326,13 +26304,13 @@
   "SPOONFUL",
   "SPOONFULS",
   "SPOONING",
-  "SPOONINGS",
+
   "SPOONS",
   "SPORES",
   "SPORT",
   "SPORTIES",
   "SPORTING",
-  "SPORTINGS",
+
   "SPORTS",
   "SPORTY",
   "SPOT",
@@ -26350,7 +26328,7 @@
   "SPOUS",
   "SPOUSE",
   "SPOUTING",
-  "SPOUTINGS",
+
   "SPRAIN",
   "SPRAINED",
   "SPRAINS",
@@ -26360,11 +26338,11 @@
   "SPRAY",
   "SPRAYED",
   "SPRAYING",
-  "SPRAYINGS",
+
   "SPRAYS",
   "SPREAD",
   "SPREADING",
-  "SPREADINGS",
+
   "SPREADS",
   "SPREE",
   "SPREES",
@@ -26429,22 +26407,22 @@
   "SQUANDERS",
   "SQUARE",
   "SQUARED",
-  "SQUARELIES",
+
   "SQUARELY",
   "SQUARES",
   "SQUARING",
-  "SQUARINGS",
+
   "SQUASH",
   "SQUASHED",
   "SQUASHES",
   "SQUASHING",
-  "SQUASHINGS",
+
   "SQUAT",
   "SQUATS",
   "SQUATTER",
   "SQUATTERS",
   "SQUATTING",
-  "SQUATTINGS",
+
   "SQUAW",
   "SQUAWK",
   "SQUAWKING",
@@ -26474,7 +26452,7 @@
   "SQUIGGLIES",
   "SQUIGGLY",
   "SQUINTING",
-  "SQUINTINGS",
+
   "SQUIRE",
   "SQUIRES",
   "SQUIRM",
@@ -26487,7 +26465,7 @@
   "SQUISHED",
   "SQUISHES",
   "SQUISHING",
-  "SQUISHINGS",
+
   "SRI",
   "SRIS",
   "STAB",
@@ -26528,7 +26506,7 @@
   "STAINLESS",
   "STAINS",
   "STAIR",
-  "STAIRCAS",
+
   "STAIRCASE",
   "STAIRS",
   "STAIRWAY",
@@ -26556,7 +26534,7 @@
   "STALL",
   "STALLED",
   "STALLING",
-  "STALLINGS",
+
   "STALLION",
   "STALLIONS",
   "STALLS",
@@ -26574,7 +26552,7 @@
   "STAND",
   "STANDARD",
   "STANDARDS",
-  "STANDBIES",
+
   "STANDBY",
   "STANDING",
   "STANDINGS",
@@ -26615,7 +26593,7 @@
   "STARRED",
   "STARRIES",
   "STARRING",
-  "STARRINGS",
+
   "STARRY",
   "STARS",
   "STARSHIP",
@@ -26625,12 +26603,12 @@
   "STARTER",
   "STARTERS",
   "STARTING",
-  "STARTINGS",
+
   "STARTLE",
   "STARTLED",
   "STARTLES",
   "STARTLING",
-  "STARTLINGS",
+
   "STARTS",
   "STARTUP",
   "STARTUPS",
@@ -26638,7 +26616,7 @@
   "STARVED",
   "STARVES",
   "STARVING",
-  "STARVINGS",
+
   "STASH",
   "STASHED",
   "STASHES",
@@ -26658,13 +26636,13 @@
   "STATESIDE",
   "STATESIDES",
   "STATESMEN",
-  "STATESMENS",
+  "STATESMEN",
   "STATEWIDE",
   "STATEWIDES",
   "STATIC",
   "STATICS",
   "STATING",
-  "STATINGS",
+
   "STATION",
   "STATIONED",
   "STATIONS",
@@ -26687,13 +26665,13 @@
   "STAY",
   "STAYED",
   "STAYING",
-  "STAYINGS",
+
   "STAYS",
   "STEAD",
   "STEADFAST",
   "STEADFASTS",
   "STEADIES",
-  "STEADILIES",
+
   "STEADILY",
   "STEADS",
   "STEADY",
@@ -26703,10 +26681,10 @@
   "STEALER",
   "STEALERS",
   "STEALING",
-  "STEALINGS",
+
   "STEALS",
   "STEALTH",
-  "STEALTHIES",
+
   "STEALTHS",
   "STEALTHY",
   "STEAM",
@@ -26715,14 +26693,14 @@
   "STEAMERS",
   "STEAMIES",
   "STEAMING",
-  "STEAMINGS",
+
   "STEAMROLL",
   "STEAMROLLS",
   "STEAMS",
   "STEAMY",
   "STEED",
   "STEEL",
-  "STEELIES",
+
   "STEELS",
   "STEELY",
   "STEEP",
@@ -26732,7 +26710,7 @@
   "STEERAGES",
   "STEERED",
   "STEERING",
-  "STEERINGS",
+
   "STEERS",
   "STEIN",
   "STEINS",
@@ -26752,7 +26730,7 @@
   "STEPPED",
   "STEPPES",
   "STEPPING",
-  "STEPPINGS",
+
   "STEPS",
   "STEPSON",
   "STEPSONS",
@@ -26779,7 +26757,7 @@
   "STICKERS",
   "STICKIES",
   "STICKING",
-  "STICKINGS",
+
   "STICKLER",
   "STICKLERS",
   "STICKS",
@@ -26796,7 +26774,7 @@
   "STIFLERS",
   "STIFLES",
   "STIFLING",
-  "STIFLINGS",
+
   "STIGMA",
   "STIGMAS",
   "STIGMATA",
@@ -26816,7 +26794,7 @@
   "STINGERS",
   "STINGIES",
   "STINGING",
-  "STINGINGS",
+
   "STINGRAY",
   "STINGRAYS",
   "STINGS",
@@ -26824,7 +26802,7 @@
   "STINK",
   "STINKIES",
   "STINKING",
-  "STINKINGS",
+
   "STINKS",
   "STINKY",
   "STINT",
@@ -26834,7 +26812,7 @@
   "STIR",
   "STIRRED",
   "STIRRING",
-  "STIRRINGS",
+
   "STIRS",
   "STITCH",
   "STITCHED",
@@ -26869,7 +26847,7 @@
   "STOMPER",
   "STOMPERS",
   "STOMPING",
-  "STOMPINGS",
+
   "STOMPS",
   "STONE",
   "STONED",
@@ -26886,17 +26864,17 @@
   "STOOGES",
   "STOOL",
   "STOOLIE",
-  "STOOLIES",
+
   "STOOLS",
   "STOOP",
   "STOOPED",
   "STOOPING",
-  "STOOPINGS",
+
   "STOOPS",
   "STOP",
   "STOPPED",
   "STOPPING",
-  "STOPPINGS",
+
   "STOPS",
   "STOPWATCH",
   "STOPWATCHES",
@@ -26909,14 +26887,14 @@
   "STORES",
   "STORIES",
   "STORING",
-  "STORINGS",
+
   "STORK",
   "STORKS",
   "STORM",
   "STORMED",
   "STORMIES",
   "STORMING",
-  "STORMINGS",
+
   "STORMS",
   "STORMY",
   "STORY",
@@ -26936,7 +26914,7 @@
   "STRAIN",
   "STRAINED",
   "STRAINING",
-  "STRAININGS",
+
   "STRAINS",
   "STRAIT",
   "STRAITS",
@@ -26944,13 +26922,13 @@
   "STRANDED",
   "STRANDS",
   "STRANGE",
-  "STRANGELIES",
+
   "STRANGELY",
   "STRANGER",
   "STRANGERS",
   "STRANGES",
   "STRANGEST",
-  "STRANGESTS",
+
   "STRANGLE",
   "STRANGLED",
   "STRANGLER",
@@ -26974,7 +26952,7 @@
   "STREAKS",
   "STREAM",
   "STREAMING",
-  "STREAMINGS",
+
   "STREAMS",
   "STREET",
   "STREETCAR",
@@ -26990,20 +26968,20 @@
   "STRESSFUL",
   "STRESSFULS",
   "STRESSING",
-  "STRESSINGS",
+
   "STRETCH",
   "STRETCHED",
   "STRETCHER",
   "STRETCHERS",
   "STRETCHES",
   "STREWN",
-  "STREWNS",
+
   "STRICKEN",
-  "STRICKENS",
+
   "STRICT",
-  "STRICTLIES",
+
   "STRICTLY",
-  "STRICTS",
+
   "STRIDE",
   "STRIDES",
   "STRIFE",
@@ -27011,27 +26989,28 @@
   "STRIKE",
   "STRIKES",
   "STRIKING",
-  "STRIKINGS",
+
   "STRING",
   "STRINGING",
-  "STRINGINGS",
+
   "STRINGS",
   "STRIP",
   "STRIPE",
   "STRIPED",
   "STRIPES",
   "STRIPING",
-  "STRIPINGS",
+
   "STRIPPED",
   "STRIPPER",
   "STRIPPERS",
   "STRIPPING",
-  "STRIPPINGS",
+
   "STRIPS",
   "STRIVE",
+  "STRIVEN",
   "STRIVES",
   "STRIVING",
-  "STRIVINGS",
+
   "STROBE",
   "STROBES",
   "STROKE",
@@ -27040,7 +27019,7 @@
   "STROLLER",
   "STROLLERS",
   "STROLLING",
-  "STROLLINGS",
+
   "STROLLS",
   "STRONG",
   "STRONGBOX",
@@ -27048,12 +27027,12 @@
   "STRONGER",
   "STRONGERS",
   "STRONGEST",
-  "STRONGESTS",
-  "STRONGLIES",
+  "STROVE",
+
   "STRONGLY",
-  "STRONGS",
+
   "STRUCK",
-  "STRUCKS",
+
   "STRUCTURE",
   "STRUCTURES",
   "STRUGGLE",
@@ -27064,20 +27043,20 @@
   "STRUMPET",
   "STRUMPETS",
   "STRUNG",
-  "STRUNGS",
+
   "STRUT",
   "STRUTS",
   "STRUTTING",
-  "STRUTTINGS",
+
   "STUB",
   "STUBBED",
   "STUBBLE",
   "STUBBLES",
   "STUBBORN",
-  "STUBBORNS",
+
   "STUBS",
   "STUCK",
-  "STUCKS",
+
   "STUD",
   "STUDDED",
   "STUDENT",
@@ -27087,12 +27066,12 @@
   "STUDIO",
   "STUDIOS",
   "STUDIOUS",
-  "STUDLIES",
+
   "STUDLY",
   "STUDS",
   "STUDY",
   "STUDYING",
-  "STUDYINGS",
+
   "STUFF",
   "STUFFED",
   "STUFFIES",
@@ -27104,7 +27083,7 @@
   "STUMBLED",
   "STUMBLES",
   "STUMBLING",
-  "STUMBLINGS",
+
   "STUMP",
   "STUMPED",
   "STUMPER",
@@ -27112,7 +27091,7 @@
   "STUMPS",
   "STUN",
   "STUNG",
-  "STUNGS",
+
   "STUNK",
   "STUNKS",
   "STUNNED",
@@ -27122,16 +27101,16 @@
   "STUNT",
   "STUNTED",
   "STUNTMAN",
-  "STUNTMANS",
+  "STUNTMEN",
   "STUNTS",
   "STUPID",
   "STUPIDER",
-  "STUPIDERS",
+
   "STUPIDEST",
-  "STUPIDESTS",
+
   "STUPIDITIES",
   "STUPIDITY",
-  "STUPIDLIES",
+
   "STUPIDLY",
   "STUPIDS",
   "STUPOR",
@@ -27148,7 +27127,7 @@
   "STYLES",
   "STYLINGS",
   "STYLISH",
-  "STYLISHES",
+
   "STYLIST",
   "STYLISTS",
   "STYMIED",
@@ -27158,7 +27137,7 @@
   "SUBATOMIC",
   "SUBATOMICS",
   "SUBBING",
-  "SUBBINGS",
+
   "SUBDUED",
   "SUBDURAL",
   "SUBDURALS",
@@ -27182,7 +27161,7 @@
   "SUBSIDED",
   "SUBSIDIES",
   "SUBSIDIZE",
-  "SUBSIDIZES",
+
   "SUBSIDY",
   "SUBSTANCE",
   "SUBSTANCES",
@@ -27193,7 +27172,7 @@
   "SUBTITLES",
   "SUBTLE",
   "SUBTLES",
-  "SUBTLETIES",
+
   "SUBTLETY",
   "SUBTLIES",
   "SUBTLY",
@@ -27223,19 +27202,19 @@
   "SUCCUMBED",
   "SUCCUMBS",
   "SUCH",
-  "SUCHES",
+
   "SUCK",
   "SUCKED",
   "SUCKER",
   "SUCKERED",
   "SUCKERS",
   "SUCKING",
-  "SUCKINGS",
+
   "SUCKS",
   "SUCTION",
   "SUCTIONS",
   "SUDDEN",
-  "SUDDENLIES",
+
   "SUDDENLY",
   "SUDDENS",
   "SUDS",
@@ -27285,7 +27264,7 @@
   "SULFURS",
   "SULK",
   "SULKING",
-  "SULKINGS",
+
   "SULKS",
   "SULLEN",
   "SULLENS",
@@ -27295,7 +27274,7 @@
   "SULTRY",
   "SUM",
   "SUMMARIES",
-  "SUMMARILIES",
+
   "SUMMARILY",
   "SUMMARIZE",
   "SUMMARIZES",
@@ -27328,20 +27307,20 @@
   "SUNDOWN",
   "SUNDOWNS",
   "SUNDRESS",
+  "SUNDRESSES",
   "SUNFLOWER",
   "SUNFLOWERS",
   "SUNG",
-  "SUNGS",
+
   "SUNK",
   "SUNKEN",
-  "SUNKENS",
-  "SUNKS",
+
   "SUNLESS",
   "SUNLIGHT",
   "SUNLIGHTS",
   "SUNNIES",
   "SUNNING",
-  "SUNNINGS",
+
   "SUNNY",
   "SUNRIS",
   "SUNRISE",
@@ -27370,13 +27349,13 @@
   "SUPERIOR",
   "SUPERIORS",
   "SUPERMAN",
-  "SUPERMANS",
+  "SUPERMEN",
   "SUPERNOVA",
   "SUPERNOVAS",
   "SUPERS",
   "SUPERSTAR",
   "SUPERSTARS",
-  "SUPERVIS",
+
   "SUPERVISE",
   "SUPPER",
   "SUPPERS",
@@ -27399,12 +27378,12 @@
   "SUPREMACIES",
   "SUPREMACY",
   "SUPREME",
-  "SUPREMELIES",
+
   "SUPREMELY",
   "SUPREMES",
   "SUPS",
   "SURE",
-  "SURELIES",
+
   "SURELY",
   "SURES",
   "SURF",
@@ -27417,7 +27396,7 @@
   "SURFER",
   "SURFERS",
   "SURFING",
-  "SURFINGS",
+
   "SURFS",
   "SURGE",
   "SURGEON",
@@ -27428,7 +27407,7 @@
   "SURGICAL",
   "SURGICALS",
   "SURGING",
-  "SURGINGS",
+
   "SURLIES",
   "SURLY",
   "SURNAME",
@@ -27455,7 +27434,7 @@
   "SURVIVED",
   "SURVIVES",
   "SURVIVING",
-  "SURVIVINGS",
+
   "SURVIVOR",
   "SURVIVORS",
   "SUSHI",
@@ -27465,8 +27444,9 @@
   "SUSPECTS",
   "SUSPEND",
   "SUSPENDED",
+  "SUSPENDING",
   "SUSPENDS",
-  "SUSPENS",
+
   "SUSPENSE",
   "SUSPICION",
   "SUSPICIONS",
@@ -27493,18 +27473,18 @@
   "SWAMS",
   "SWAN",
   "SWANK",
-  "SWANKIES",
+
   "SWANKS",
   "SWANKY",
   "SWANS",
   "SWAP",
   "SWAPPED",
   "SWAPPING",
-  "SWAPPINGS",
+
   "SWAPS",
   "SWARM",
   "SWARMING",
-  "SWARMINGS",
+
   "SWARMS",
   "SWASTIKA",
   "SWASTIKAS",
@@ -27513,22 +27493,22 @@
   "SWATCHES",
   "SWATS",
   "SWATTING",
-  "SWATTINGS",
+
   "SWAY",
   "SWAYED",
   "SWAYING",
-  "SWAYINGS",
+
   "SWAYS",
   "SWEAR",
   "SWEARING",
-  "SWEARINGS",
+
   "SWEARS",
   "SWEAT",
   "SWEATER",
   "SWEATERS",
   "SWEATIES",
   "SWEATING",
-  "SWEATINGS",
+
   "SWEATS",
   "SWEATSHOP",
   "SWEATSHOPS",
@@ -27539,43 +27519,43 @@
   "SWEEPER",
   "SWEEPERS",
   "SWEEPING",
-  "SWEEPINGS",
+
   "SWEEPS",
   "SWEET",
   "SWEETER",
   "SWEETERS",
   "SWEETEST",
-  "SWEETESTS",
+
   "SWEETIE",
   "SWEETIES",
-  "SWEETLIES",
+
   "SWEETLY",
   "SWEETNESS",
   "SWEETS",
   "SWELL",
   "SWELLED",
   "SWELLING",
-  "SWELLINGS",
+
   "SWELLS",
   "SWEPT",
   "SWEPTS",
   "SWERVE",
   "SWERVES",
   "SWERVING",
-  "SWERVINGS",
+
   "SWIFT",
   "SWIFTS",
   "SWIG",
   "SWIGS",
   "SWILL",
   "SWILLING",
-  "SWILLINGS",
+
   "SWILLS",
   "SWIM",
   "SWIMMER",
   "SWIMMERS",
   "SWIMMING",
-  "SWIMMINGS",
+
   "SWIMS",
   "SWIMSUIT",
   "SWIMSUITS",
@@ -27585,17 +27565,17 @@
   "SWING",
   "SWINGERS",
   "SWINGING",
-  "SWINGINGS",
+
   "SWINGS",
   "SWIPE",
   "SWIPED",
   "SWIPES",
   "SWIPING",
-  "SWIPINGS",
+
   "SWIRL",
   "SWIRLIES",
   "SWIRLING",
-  "SWIRLINGS",
+
   "SWIRLS",
   "SWIRLY",
   "SWISS",
@@ -27603,21 +27583,21 @@
   "SWITCHED",
   "SWITCHES",
   "SWITCHING",
-  "SWITCHINGS",
+
   "SWITCHMAN",
-  "SWITCHMANS",
+  "SWITCHMEN",
   "SWIVEL",
   "SWIVELS",
   "SWIZZLE",
   "SWIZZLES",
   "SWOLLEN",
-  "SWOLLENS",
+
   "SWOONING",
-  "SWOONINGS",
+
   "SWOOP",
   "SWOOPED",
   "SWOOPING",
-  "SWOOPINGS",
+
   "SWOOPS",
   "SWORD",
   "SWORDFISH",
@@ -27626,9 +27606,9 @@
   "SWORE",
   "SWORES",
   "SWORN",
-  "SWORNS",
+
   "SWUNG",
-  "SWUNGS",
+
   "SYCAMORE",
   "SYCAMORES",
   "SYCOPHANT",
@@ -27675,6 +27655,8 @@
   "SYNTHESIS",
   "SYNTHETIC",
   "SYNTHETICS",
+  "SYNOD",
+  "SYNODS",
   "SYPHILIS",
   "SYPHON",
   "SYPHONS",
@@ -27707,12 +27689,12 @@
   "TACITS",
   "TACK",
   "TACKED",
-  "TACKIES",
+
   "TACKLE",
   "TACKLED",
   "TACKLES",
   "TACKLING",
-  "TACKLINGS",
+
   "TACKS",
   "TACKY",
   "TACO",
@@ -27740,12 +27722,12 @@
   "TAG",
   "TAGGED",
   "TAGGING",
-  "TAGGINGS",
+
   "TAGS",
   "TAIL",
   "TAILED",
   "TAILING",
-  "TAILINGS",
+
   "TAILOR",
   "TAILORED",
   "TAILORS",
@@ -27793,14 +27775,14 @@
   "TALKIE",
   "TALKIES",
   "TALKING",
-  "TALKINGS",
+
   "TALKS",
   "TALKY",
   "TALL",
   "TALLER",
   "TALLERS",
   "TALLEST",
-  "TALLESTS",
+
   "TALLIED",
   "TALLIES",
   "TALLS",
@@ -27814,7 +27796,7 @@
   "TAMPER",
   "TAMPERED",
   "TAMPERING",
-  "TAMPERINGS",
+
   "TAMPERS",
   "TAMPON",
   "TAMPONS",
@@ -27831,7 +27813,7 @@
   "TANGLED",
   "TANGLES",
   "TANGLING",
-  "TANGLINGS",
+
   "TANGO",
   "TANGOS",
   "TANK",
@@ -27839,13 +27821,13 @@
   "TANKER",
   "TANKERS",
   "TANKING",
-  "TANKINGS",
+
   "TANKS",
   "TANNED",
   "TANNER",
   "TANNERS",
   "TANNING",
-  "TANNINGS",
+
   "TANS",
   "TANTRIC",
   "TANTRICS",
@@ -27961,7 +27943,7 @@
   "TEAM",
   "TEAMED",
   "TEAMING",
-  "TEAMINGS",
+
   "TEAMMATE",
   "TEAMMATES",
   "TEAMS",
@@ -27975,14 +27957,14 @@
   "TEARFULS",
   "TEARIES",
   "TEARING",
-  "TEARINGS",
+
   "TEARS",
   "TEARY",
   "TEAS",
   "TEASE",
   "TEASED",
   "TEASING",
-  "TEASINGS",
+  "TEASES",
   "TEASPOON",
   "TEASPOONS",
   "TECHNICAL",
@@ -27995,8 +27977,11 @@
   "TEDIOUS",
   "TEE",
   "TEED",
+  "TEEM",
+  "TEEMED",
+  "TEEMS",
   "TEEMING",
-  "TEEMINGS",
+
   "TEEN",
   "TEENAGE",
   "TEENAGED",
@@ -28005,12 +27990,12 @@
   "TEENAGES",
   "TEENIES",
   "TEENS",
-  "TEENSIES",
+
   "TEENSY",
   "TEENY",
   "TEES",
   "TEETERING",
-  "TEETERINGS",
+
   "TEETH",
   "TEETHS",
   "TELEGRAM",
@@ -28037,7 +28022,7 @@
   "TELLERS",
   "TELLIES",
   "TELLING",
-  "TELLINGS",
+
   "TELLS",
   "TELLY",
   "TEMP",
@@ -28056,7 +28041,7 @@
   "TEMPT",
   "TEMPTED",
   "TEMPTING",
-  "TEMPTINGS",
+
   "TEMPTRESS",
   "TEMPTS",
   "TEN",
@@ -28072,7 +28057,7 @@
   "TENDER",
   "TENDERS",
   "TENDING",
-  "TENDINGS",
+
   "TENDON",
   "TENDONS",
   "TENDS",
@@ -28119,7 +28104,7 @@
   "TERRAS",
   "TERRIBLE",
   "TERRIBLES",
-  "TERRIBLIES",
+
   "TERRIBLY",
   "TERRIES",
   "TERRIFIC",
@@ -28151,7 +28136,7 @@
   "TESTIMONIES",
   "TESTIMONY",
   "TESTING",
-  "TESTINGS",
+
   "TESTS",
   "TESTY",
   "TET",
@@ -28174,7 +28159,7 @@
   "THANKFUL",
   "THANKFULS",
   "THANKING",
-  "THANKINGS",
+
   "THANKLESS",
   "THANKS",
   "THANS",
@@ -28183,11 +28168,11 @@
   "THATAWAYS",
   "THATCHER",
   "THATCHERS",
-  "THATS",
+
   "THAW",
   "THAWED",
   "THAWING",
-  "THAWINGS",
+
   "THAWS",
   "THE",
   "THEATER",
@@ -28244,7 +28229,7 @@
   "THICK",
   "THICKENS",
   "THICKER",
-  "THICKERS",
+
   "THICKS",
   "THIEF",
   "THIEFS",
@@ -28254,20 +28239,20 @@
   "THIGHS",
   "THIN",
   "THINE",
-  "THINES",
+
   "THING",
   "THINGS",
   "THINK",
   "THINKERS",
   "THINKING",
-  "THINKINGS",
+
   "THINKS",
   "THINLIES",
   "THINLY",
   "THINNER",
   "THINNERS",
   "THINNING",
-  "THINNINGS",
+
   "THINS",
   "THIRD",
   "THIRDS",
@@ -28336,16 +28321,16 @@
   "THRILLER",
   "THRILLERS",
   "THRILLING",
-  "THRILLINGS",
+
   "THRILLS",
   "THRIVE",
   "THRIVES",
   "THRIVING",
-  "THRIVINGS",
+
   "THROAT",
   "THROATS",
   "THROBBING",
-  "THROBBINGS",
+
   "THRONE",
   "THRONES",
   "THROTTLE",
@@ -28356,7 +28341,7 @@
   "THROWER",
   "THROWERS",
   "THROWING",
-  "THROWINGS",
+
   "THROWN",
   "THROWNS",
   "THROWS",
@@ -28371,16 +28356,17 @@
   "THUGS",
   "THUMB",
   "THUMBING",
-  "THUMBINGS",
+
   "THUMBS",
   "THUMP",
+  "THUMPED",
   "THUMPING",
-  "THUMPINGS",
+
   "THUMPS",
   "THUNDER",
   "THUNDERS",
   "THUS",
-  "THUSLIES",
+
   "THUSLY",
   "THY",
   "THYME",
@@ -28388,7 +28374,7 @@
   "THYROID",
   "THYROIDS",
   "THYSELF",
-  "THYSELFS",
+
   "TI",
   "TIARA",
   "TIARAS",
@@ -28403,11 +28389,11 @@
   "TICKETED",
   "TICKETS",
   "TICKING",
-  "TICKINGS",
+
   "TICKLE",
   "TICKLES",
   "TICKLING",
-  "TICKLINGS",
+
   "TICKLISH",
   "TICKLISHES",
   "TICKS",
@@ -28418,10 +28404,10 @@
   "TIDE",
   "TIDES",
   "TIDIES",
-  "TIDINGS",
+
   "TIDY",
   "TIDYING",
-  "TIDYINGS",
+
   "TIE",
   "TIED",
   "TIER",
@@ -28439,7 +28425,7 @@
   "TIGHTENS",
   "TIGHTER",
   "TIGHTERS",
-  "TIGHTLIES",
+
   "TIGHTLY",
   "TIGHTNESS",
   "TIGHTROPE",
@@ -28465,7 +28451,7 @@
   "TIME",
   "TIMED",
   "TIMELESS",
-  "TIMELIES",
+
   "TIMELINE",
   "TIMELINES",
   "TIMELY",
@@ -28475,7 +28461,7 @@
   "TIMETABLE",
   "TIMETABLES",
   "TIMID",
-  "TIMIDS",
+
   "TIMING",
   "TIMINGS",
   "TIMOTHIES",
@@ -28488,9 +28474,9 @@
   "TING",
   "TINGLE",
   "TINGLES",
-  "TINGLIES",
+
   "TINGLING",
-  "TINGLINGS",
+
   "TINGLY",
   "TINGS",
   "TINIES",
@@ -28498,7 +28484,7 @@
   "TINIESTS",
   "TINKERED",
   "TINKERING",
-  "TINKERINGS",
+
   "TINKLE",
   "TINKLES",
   "TINNING",
@@ -28522,7 +28508,7 @@
   "TIPSY",
   "TIPTOE",
   "TIPTOEING",
-  "TIPTOEINGS",
+
   "TIPTOES",
   "TIRAMISU",
   "TIRAMISUS",
@@ -28531,9 +28517,9 @@
   "TIRELESS",
   "TIRES",
   "TIRESOME",
-  "TIRESOMES",
+
   "TIRING",
-  "TIRINGS",
+
   "TIS",
   "TISSUE",
   "TISSUES",
@@ -28560,7 +28546,7 @@
   "TOASTERS",
   "TOASTIES",
   "TOASTING",
-  "TOASTINGS",
+
   "TOASTS",
   "TOASTY",
   "TOBACCO",
@@ -28589,11 +28575,11 @@
   "TOGA",
   "TOGAS",
   "TOGETHER",
-  "TOGETHERS",
+
   "TOILET",
   "TOILETS",
   "TOILING",
-  "TOILINGS",
+
   "TOKE",
   "TOKEN",
   "TOKENS",
@@ -28646,7 +28632,7 @@
   "TONICS",
   "TONIES",
   "TONIGHT",
-  "TONIGHTS",
+
   "TONNAGE",
   "TONNAGES",
   "TONS",
@@ -28741,7 +28727,7 @@
   "TOSS",
   "TOSSED",
   "TOSSING",
-  "TOSSINGS",
+
   "TOTAL",
   "TOTALED",
   "TOTALLED",
@@ -28753,7 +28739,7 @@
   "TOTEMS",
   "TOTES",
   "TOTING",
-  "TOTINGS",
+
   "TOTS",
   "TOUCH",
   "TOUCHDOWN",
@@ -28763,7 +28749,7 @@
   "TOUCHES",
   "TOUCHIES",
   "TOUCHING",
-  "TOUCHINGS",
+
   "TOUCHY",
   "TOUGH",
   "TOUGHEN",
@@ -28771,7 +28757,7 @@
   "TOUGHER",
   "TOUGHERS",
   "TOUGHEST",
-  "TOUGHESTS",
+
   "TOUGHNESS",
   "TOUGHS",
   "TOUPEE",
@@ -28779,7 +28765,7 @@
   "TOUR",
   "TOURED",
   "TOURING",
-  "TOURINGS",
+
   "TOURISM",
   "TOURISMS",
   "TOURIST",
@@ -28811,7 +28797,7 @@
   "TOY",
   "TOYED",
   "TOYING",
-  "TOYINGS",
+
   "TOYS",
   "TRACE",
   "TRACED",
@@ -28825,7 +28811,7 @@
   "TRACKER",
   "TRACKERS",
   "TRACKING",
-  "TRACKINGS",
+
   "TRACKS",
   "TRACTION",
   "TRACTIONS",
@@ -28841,7 +28827,7 @@
   "TRADERS",
   "TRADES",
   "TRADING",
-  "TRADINGS",
+
   "TRADITION",
   "TRADITIONS",
   "TRAFFIC",
@@ -28849,12 +28835,12 @@
   "TRAGEDIES",
   "TRAGEDY",
   "TRAGIC",
-  "TRAGICS",
+
   "TRAIL",
   "TRAILER",
   "TRAILERS",
   "TRAILING",
-  "TRAILINGS",
+
   "TRAILS",
   "TRAIN",
   "TRAINED",
@@ -28863,12 +28849,12 @@
   "TRAINER",
   "TRAINERS",
   "TRAINING",
-  "TRAININGS",
+
   "TRAINS",
   "TRAIPS",
   "TRAIPSE",
   "TRAIPSING",
-  "TRAIPSINGS",
+
   "TRAIT",
   "TRAITOR",
   "TRAITORS",
@@ -28878,7 +28864,7 @@
   "TRAMPLE",
   "TRAMPLES",
   "TRAMPLING",
-  "TRAMPLINGS",
+
   "TRAMPS",
   "TRAMS",
   "TRANCE",
@@ -28889,6 +28875,7 @@
   "TRANSFER",
   "TRANSFERS",
   "TRANSFORM",
+  "TRANSFORMING",
   "TRANSFORMS",
   "TRANSIENT",
   "TRANSIENTS",
@@ -28899,6 +28886,7 @@
   "TRANSMIT",
   "TRANSMITS",
   "TRANSPORT",
+  "TRANSPORTING",
   "TRANSPORTS",
   "TRAP",
   "TRAPEZE",
@@ -28914,7 +28902,7 @@
   "TRASHES",
   "TRASHIES",
   "TRASHING",
-  "TRASHINGS",
+
   "TRASHY",
   "TRATTORIA",
   "TRATTORIAS",
@@ -28927,7 +28915,7 @@
   "TRAVELER",
   "TRAVELERS",
   "TRAVELING",
-  "TRAVELINGS",
+
   "TRAVELLED",
   "TRAVELLER",
   "TRAVELLERS",
@@ -28960,12 +28948,12 @@
   "TREASURY",
   "TREAT",
   "TREATABLE",
-  "TREATABLES",
+
   "TREATED",
   "TREATERS",
   "TREATIES",
   "TREATING",
-  "TREATINGS",
+
   "TREATMENT",
   "TREATMENTS",
   "TREATS",
@@ -28984,7 +28972,7 @@
   "TRENCH",
   "TRENCHES",
   "TREND",
-  "TRENDIES",
+
   "TRENDS",
   "TRENDY",
   "TRESPASS",
@@ -29012,10 +29000,9 @@
   "TRICKERIES",
   "TRICKERY",
   "TRICKIER",
-  "TRICKIERS",
-  "TRICKIES",
+
   "TRICKING",
-  "TRICKINGS",
+
   "TRICKLE",
   "TRICKLES",
   "TRICKS",
@@ -29034,7 +29021,7 @@
   "TRIFLED",
   "TRIFLES",
   "TRIFLING",
-  "TRIFLINGS",
+
   "TRIG",
   "TRIGGER",
   "TRIGGERED",
@@ -29067,7 +29054,7 @@
   "TRIPPED",
   "TRIPPIES",
   "TRIPPING",
-  "TRIPPINGS",
+
   "TRIPPY",
   "TRIPS",
   "TRITE",
@@ -29079,7 +29066,7 @@
   "TRIVIALS",
   "TROLL",
   "TROLLING",
-  "TROLLINGS",
+
   "TROLLOP",
   "TROLLOPS",
   "TROLLS",
@@ -29103,7 +29090,7 @@
   "TROUBLED",
   "TROUBLES",
   "TROUBLING",
-  "TROUBLINGS",
+
   "TROUPE",
   "TROUPER",
   "TROUPERS",
@@ -29127,10 +29114,10 @@
   "TRUCKS",
   "TRUE",
   "TRUER",
-  "TRUERS",
+
   "TRUES",
   "TRUEST",
-  "TRUESTS",
+
   "TRUFFLE",
   "TRUFFLES",
   "TRULIES",
@@ -29149,7 +29136,7 @@
   "TRUSTEES",
   "TRUSTIES",
   "TRUSTING",
-  "TRUSTINGS",
+
   "TRUSTS",
   "TRUSTY",
   "TRUTH",
@@ -29158,7 +29145,7 @@
   "TRUTHS",
   "TRY",
   "TRYING",
-  "TRYINGS",
+
   "TRYOUT",
   "TRYOUTS",
   "TSK",
@@ -29181,7 +29168,7 @@
   "TUCKER",
   "TUCKERS",
   "TUCKING",
-  "TUCKINGS",
+
   "TUCKS",
   "TUG",
   "TUGS",
@@ -29245,7 +29232,7 @@
   "TURNER",
   "TURNERS",
   "TURNING",
-  "TURNINGS",
+
   "TURNIPS",
   "TURNOUT",
   "TURNOUTS",
@@ -29289,7 +29276,7 @@
   "TWEAK",
   "TWEAKED",
   "TWEAKING",
-  "TWEAKINGS",
+
   "TWEAKS",
   "TWEED",
   "TWEEDLE",
@@ -29332,7 +29319,7 @@
   "TWISTERS",
   "TWISTIES",
   "TWISTING",
-  "TWISTINGS",
+
   "TWISTS",
   "TWISTY",
   "TWIT",
@@ -29362,7 +29349,7 @@
   "TYPICALLY",
   "TYPICALS",
   "TYPING",
-  "TYPINGS",
+
   "TYPIST",
   "TYPISTS",
   "TYPO",
@@ -29379,7 +29366,7 @@
   "UGHS",
   "UGLIES",
   "UGLIEST",
-  "UGLIESTS",
+
   "UGLINESS",
   "UGLY",
   "UH",
@@ -29459,7 +29446,7 @@
   "UNDERDOGS",
   "UNDERGO",
   "UNDERGONE",
-  "UNDERGONES",
+
   "UNDERGOS",
   "UNDERGRAD",
   "UNDERGRADS",
@@ -29502,11 +29489,11 @@
   "UNEASIES",
   "UNEASY",
   "UNENDING",
-  "UNENDINGLY",
+
   "UNETHICAL",
   "UNETHICALS",
   "UNFAIR",
-  "UNFAIRLIES",
+
   "UNFAIRLY",
   "UNFAIRS",
   "UNFIT",
@@ -29566,7 +29553,7 @@
   "UNIVERSAL",
   "UNIVERSALS",
   "UNIVERSE",
-  "UNJUSTLIES",
+
   "UNJUSTLY",
   "UNKNOWN",
   "UNKNOWNS",
@@ -29587,12 +29574,12 @@
   "UNLISTED",
   "UNLOAD",
   "UNLOADING",
-  "UNLOADINGS",
+
   "UNLOADS",
   "UNLOCK",
   "UNLOCKED",
   "UNLOCKING",
-  "UNLOCKINGS",
+
   "UNLOCKS",
   "UNLOVABLE",
   "UNLOVABLES",
@@ -29611,7 +29598,7 @@
   "UNPACK",
   "UNPACKED",
   "UNPACKING",
-  "UNPACKINGS",
+
   "UNPACKS",
   "UNPAID",
   "UNPAIDS",
@@ -29637,7 +29624,7 @@
   "UNSAFE",
   "UNSAFES",
   "UNSAID",
-  "UNSAIDS",
+
   "UNSAVORIES",
   "UNSAVORY",
   "UNSCATHED",
@@ -29649,7 +29636,7 @@
   "UNSEEMLIES",
   "UNSEEMLY",
   "UNSEEN",
-  "UNSEENS",
+
   "UNSELFISH",
   "UNSELFISHES",
   "UNSETTLED",
@@ -29659,13 +29646,13 @@
   "UNSPOKEN",
   "UNSPOKENS",
   "UNSTABLE",
-  "UNSTABLES",
+
   "UNSTUCK",
   "UNSTUCKS",
   "UNSUNG",
-  "UNSUNGS",
+
   "UNSURE",
-  "UNSURES",
+
   "UNTAMED",
   "UNTANGLE",
   "UNTANGLES",
@@ -29677,7 +29664,7 @@
   "UNTIES",
   "UNTIL",
   "UNTILS",
-  "UNTIMELIES",
+
   "UNTIMELY",
   "UNTO",
   "UNTOS",
@@ -29701,7 +29688,7 @@
   "UNWASHED",
   "UNWELCOME",
   "UNWELCOMES",
-  "UNWIELDIES",
+
   "UNWIELDY",
   "UNWILLING",
 
@@ -29730,7 +29717,7 @@
   "UPDATED",
   "UPDATES",
   "UPDATING",
-  "UPDATINGS",
+
   "UPFRONT",
   "UPFRONTS",
   "UPGRADE",
@@ -29749,7 +29736,7 @@
   "UPKEEP",
   "UPKEEPS",
   "UPLIFTING",
-  "UPLIFTINGS",
+
   "UPLINK",
   "UPLINKS",
   "UPLOAD",
@@ -29762,7 +29749,7 @@
   "UPPER",
   "UPPERS",
   "UPPING",
-  "UPPINGS",
+
   "UPPITIES",
   "UPPITY",
   "UPRIGHT",
@@ -29773,6 +29760,7 @@
   "UPROARS",
   "UPROOT",
   "UPROOTED",
+  "UPROOTING",
   "UPROOTS",
   "UPS",
   "UPSCALE",
@@ -29822,7 +29810,7 @@
   "URGINGS",
   "URINAL",
   "URINALS",
-  "URINARIES",
+
   "URINARY",
   "URINATE",
   "URINATES",
@@ -29848,7 +29836,7 @@
   "USERS",
   "USHER",
   "USHERING",
-  "USHERINGS",
+
   "USHERS",
   "USING",
   "USINGS",
@@ -29869,7 +29857,7 @@
   "UTOPIA",
   "UTOPIAS",
   "UTTER",
-  "UTTERLIES",
+
   "UTTERLY",
   "UTTERS",
   "UZI",
@@ -29982,7 +29970,7 @@
   "VASECTOMIES",
   "VASECTOMY",
   "VAST",
-  "VASTLIES",
+
   "VASTLY",
   "VASTS",
   "VAT",
@@ -29997,7 +29985,7 @@
   "VEER",
   "VEERED",
   "VEERING",
-  "VEERINGS",
+
   "VEERS",
   "VEES",
   "VEG",
@@ -30050,7 +30038,7 @@
   "VENTILATE",
   "VENTILATES",
   "VENTING",
-  "VENTINGS",
+
   "VENTRICLE",
   "VENTRICLES",
   "VENTS",
@@ -30065,7 +30053,7 @@
   "VERANDAS",
   "VERAS",
   "VERBAL",
-  "VERBALLIES",
+
   "VERBALLY",
   "VERBALS",
   "VERBATIM",
@@ -30074,9 +30062,10 @@
   "VERDICT",
   "VERDICTS",
   "VERGE",
-  "VERGER",
+  "VERGED",
   "VERGERS",
   "VERGES",
+  "VERGING",
   "VERIES",
   "VERIFIED",
   "VERIFIES",
@@ -30096,7 +30085,7 @@
   "VERONICAS",
   "VERS",
   "VERSATILE",
-  "VERSATILES",
+
   "VERSE",
   "VERSED",
   "VERSION",
@@ -30107,6 +30096,7 @@
   "VERTICAL",
   "VERTICALS",
   "VERTIGO",
+  "VERTIGOES",
   "VERTIGOS",
   "VERY",
   "VESPERS",
@@ -30119,7 +30109,7 @@
   "VESTIBULE",
   "VESTIBULES",
   "VESTIGIAL",
-  "VESTIGIALS",
+
   "VESTS",
   "VET",
   "VETERAN",
@@ -30133,14 +30123,14 @@
   "VEXES",
   "VIA",
   "VIABLE",
-  "VIABLES",
+  "VIABLY",
   "VIAL",
   "VIALS",
   "VIAS",
   "VIBE",
   "VIBES",
   "VIBRANT",
-  "VIBRANTS",
+
   "VIBRATING",
 
   "VIBRATOR",
@@ -30219,7 +30209,7 @@
   "VIOLATED",
   "VIOLATES",
   "VIOLATING",
-  "VIOLATINGS",
+
   "VIOLATION",
   "VIOLATIONS",
   "VIOLENCE",
@@ -30241,13 +30231,13 @@
   "VIRGIN",
   "VIRGINAL",
   "VIRGINALS",
-  "VIRGINITIES",
+
   "VIRGINITY",
   "VIRGINS",
   "VIRILE",
   "VIRILES",
   "VIRTUAL",
-  "VIRTUALLIES",
+
   "VIRTUALLY",
   "VIRTUALS",
   "VIRTUE",
@@ -30256,7 +30246,7 @@
   "VIRTUOSOS",
   "VIRTUOUS",
   "VIRULENT",
-  "VIRULENTS",
+
   "VIRUS",
   "VIS",
   "VISA",
@@ -30269,7 +30259,7 @@
   "VISCOUNTS",
   "VISCOUS",
   "VISIBLE",
-  "VISIBLES",
+
   "VISION",
   "VISIONS",
   "VISIT",
@@ -30292,7 +30282,7 @@
   "VITAL",
   "VITALITIES",
   "VITALITY",
-  "VITALLIES",
+
   "VITALLY",
   "VITALS",
   "VITAMIN",
@@ -30315,7 +30305,7 @@
   "VODKA",
   "VODKAS",
   "VOGUE",
-  "VOGUES",
+
   "VOICE",
   "VOICED",
   "VOICES",
@@ -30378,11 +30368,11 @@
   "VROOM",
   "VROOMS",
   "VULGAR",
-  "VULGARS",
+
   "VULTURE",
   "VULTURES",
   "VYING",
-  "VYINGS",
+
   "WACK",
   "WACKIES",
   "WACKO",
@@ -30461,7 +30451,7 @@
   "WALLOPS",
   "WALLOW",
   "WALLOWING",
-  "WALLOWINGS",
+
   "WALLOWS",
   "WALLPAPER",
   "WALLPAPERS",
@@ -30481,13 +30471,13 @@
   "WANDERER",
   "WANDERERS",
   "WANDERING",
-  "WANDERINGS",
+
   "WANDERS",
   "WANDS",
   "WANGLER",
   "WANGLERS",
   "WANING",
-  "WANINGS",
+
   "WANS",
   "WANT",
   "WANTED",
@@ -30503,7 +30493,7 @@
   "WARDROBES",
   "WARDS",
   "WARE",
-  "WAREHOUS",
+
   "WAREHOUSE",
   "WARES",
   "WARFARE",
@@ -30544,7 +30534,7 @@
   "WARREN",
   "WARRENS",
   "WARRING",
-  "WARRINGS",
+
   "WARRIOR",
   "WARRIORS",
   "WARS",
@@ -30581,12 +30571,13 @@
   "WATCHERS",
   "WATCHES",
   "WATCHFUL",
-  "WATCHFULS",
+
   "WATCHING",
   "WATCHMAN",
-  "WATCHMANS",
+
   "WATER",
   "WATERBED",
+  "WATERBEDS",
   "WATERED",
   "WATERFALL",
   "WATERFALLS",
@@ -30689,7 +30680,7 @@
   "WEEP",
   "WEEPIES",
   "WEEPING",
-  "WEEPINGS",
+
   "WEEPS",
   "WEEPY",
   "WEES",
@@ -30710,8 +30701,7 @@
   "WEIRDER",
   "WEIRDERS",
   "WEIRDEST",
-  "WEIRDESTS",
-  "WEIRDLIES",
+
   "WEIRDLY",
   "WEIRDNESS",
   "WEIRDO",
@@ -30725,13 +30715,13 @@
   "WELCOMED",
   "WELCOMES",
   "WELCOMING",
-  "WELCOMINGS",
+
   "WELD",
   "WELDED",
   "WELDER",
   "WELDERS",
   "WELDING",
-  "WELDINGS",
+
   "WELDS",
   "WELFARE",
   "WELFARES",
@@ -30753,7 +30743,7 @@
   "WERE",
   "WERES",
   "WEREWOLF",
-  "WEREWOLFS",
+  "WEREWOLVES",
   "WES",
   "WEST",
   "WESTBOUND",
@@ -30894,7 +30884,7 @@
   "WHISTLERS",
   "WHISTLES",
   "WHISTLING",
-  "WHISTLINGS",
+
   "WHIT",
   "WHITE",
   "WHITENESS",
@@ -30908,7 +30898,7 @@
   "WHITTLED",
   "WHITTLES",
   "WHITTLING",
-  "WHITTLINGS",
+
   "WHIZ",
   "WHIZES",
   "WHO",
@@ -30941,7 +30931,7 @@
   "WHOPPER",
   "WHOPPERS",
   "WHOPPING",
-  "WHOPPINGS",
+
   "WHORE",
   "WHORES",
   "WHOS",
@@ -30980,7 +30970,7 @@
   "WIGGLES",
   "WIGGLIES",
   "WIGGLING",
-  "WIGGLINGS",
+
   "WIGGLY",
   "WIGGY",
   "WIGS",
@@ -30990,7 +30980,7 @@
   "WILDER",
   "WILDERS",
   "WILDEST",
-  "WILDESTS",
+
   "WILDFIRE",
   "WILDFIRES",
   "WILDLIES",
@@ -31002,18 +30992,18 @@
   "WILL",
   "WILLED",
   "WILLFUL",
-  "WILLFULLIES",
+
   "WILLFULLY",
   "WILLFULS",
   "WILLIES",
   "WILLING",
-  "WILLINGLIES",
+
   "WILLINGLY",
-  "WILLINGS",
+
   "WILLOW",
   "WILLOWS",
   "WILLPOWER",
-  "WILLPOWERS",
+
   "WILLS",
   "WILLY",
   "WILT",
@@ -31055,13 +31045,13 @@
   "WINGING",
 
   "WINGMAN",
-  "WINGMANS",
+  "WINGMEN",
   "WINGS",
   "WINING",
-  "WININGS",
+
   "WINK",
   "WINKING",
-  "WINKINGS",
+
   "WINKLE",
   "WINKLES",
   "WINKS",
@@ -31079,8 +31069,7 @@
   "WIPER",
   "WIPERS",
   "WIPES",
-  "WIPING",
-  "WIPINGS",
+
   "WIRE",
   "WIRED",
   "WIRELESS",
@@ -31088,32 +31077,32 @@
   "WIRETAP",
   "WIRETAPS",
   "WIRING",
-  "WIRINGS",
+
   "WIS",
   "WISDOM",
   "WISDOMS",
   "WISE",
-  "WISEASS",
+
   "WISED",
-  "WISELIES",
+
   "WISELY",
   "WISER",
   "WISERS",
   "WISEST",
-  "WISESTS",
+
   "WISH",
   "WISHED",
   "WISHES",
   "WISHFUL",
   "WISHFULS",
   "WISHING",
-  "WISHINGS",
+
   "WIT",
   "WITCH",
   "WITCHES",
   "WITCHIES",
   "WITCHING",
-  "WITCHINGS",
+
   "WITCHY",
   "WITH",
   "WITHDRAW",
@@ -31122,16 +31111,16 @@
   "WITHDRAWING",
   "WITHDRAWS",
   "WITHDREW",
-  "WITHDREWS",
+
   "WITHER",
   "WITHERED",
   "WITHERING",
-  "WITHERINGS",
+
   "WITHERS",
   "WITHHELD",
-  "WITHHELDS",
+
   "WITHHOLD",
-  "WITHHOLDS",
+  "WITHHOLDING",
   "WITHIN",
   "WITHINS",
   "WITHOUT",
@@ -31143,7 +31132,7 @@
   "WITNESS",
   "WITNESSED",
   "WITS",
-  "WITTIES",
+
   "WITTY",
   "WIVES",
   "WIZARD",
@@ -31156,7 +31145,7 @@
   "WOK",
   "WOKE",
   "WOKEN",
-  "WOKENS",
+
   "WOKES",
   "WOKS",
   "WOLF",
@@ -31166,23 +31155,23 @@
   "WOLVES",
   "WOMAN",
   "WOMANHOOD",
-  "WOMANHOODS",
+  "WOMANKIND",
   "WOMANIZER",
   "WOMANIZERS",
-  "WOMANLIES",
+
   "WOMANLY",
-  "WOMANS",
+
   "WOMB",
   "WOMBS",
   "WOMEN",
-  "WOMENS",
+
   "WON",
   "WONDER",
   "WONDERED",
   "WONDERFUL",
-  "WONDERFULS",
+
   "WONDERING",
-  "WONDERINGS",
+
   "WONDERS",
   "WONDROUS",
   "WONKIES",
@@ -31211,7 +31200,7 @@
   "WOOF",
   "WOOFS",
   "WOOING",
-  "WOOINGS",
+
   "WOOL",
   "WOOLLIES",
   "WOOLLY",
@@ -31225,7 +31214,7 @@
   "WORD",
   "WORDED",
   "WORDING",
-  "WORDINGS",
+
   "WORDS",
   "WORE",
 
@@ -31242,9 +31231,8 @@
   "WORKLOAD",
   "WORKLOADS",
   "WORKMAN",
-  "WORKMANS",
   "WORKMEN",
-  "WORKMENS",
+
   "WORKOUT",
   "WORKOUTS",
   "WORKPLACE",
@@ -31255,7 +31243,7 @@
   "WORKUP",
   "WORKUPS",
   "WORLD",
-  "WORLDLIES",
+
   "WORLDLY",
   "WORLDS",
   "WORLDWIDE",
@@ -31287,13 +31275,13 @@
   "WORSHIPED",
   "WORSHIPS",
   "WORST",
-  "WORSTS",
+
   "WORTH",
   "WORTHIES",
   "WORTHLESS",
-  "WORTHS",
+
   "WORTHY",
-  "WOS",
+
   "WOULD",
 
   "WOUND",
@@ -31328,7 +31316,7 @@
   "WREAK",
   "WREAKED",
   "WREAKING",
-  "WREAKINGS",
+
   "WREAKS",
   "WREATHS",
   "WRECK",
@@ -31376,12 +31364,12 @@
   "WRITERS",
   "WRITES",
   "WRITHING",
-  "WRITHINGS",
+
   "WRITING",
   "WRITINGS",
   "WRITS",
   "WRITTEN",
-  "WRITTENS",
+
   "WRONG",
   "WRONGED",
   "WRONGFUL",
@@ -31392,7 +31380,7 @@
   "WROUGHT",
   "WROUGHTS",
   "WRUNG",
-  "WRUNGS",
+
   "WRY",
   "WUSS",
   "WUSSIES",
@@ -31400,8 +31388,12 @@
   "WUTHERING",
   "WYNN",
   "WYNNS",
+  "XRAY",
   "XEROX",
   "XEROXES",
+  "XYLOPHONE",
+  "XYLAN",
+  "XYLEM",
   "YA",
   "YACHT",
   "YACHTS",
@@ -31424,11 +31416,11 @@
   "YANK",
   "YANKED",
   "YANKING",
-  "YANKINGS",
+
   "YANKS",
   "YAP",
   "YAPPING",
-  "YAPPINGS",
+
   "YAPS",
   "YARD",
   "YARDS",
@@ -31440,7 +31432,7 @@
   "YAW",
   "YAWN",
   "YAWNING",
-  "YAWNINGS",
+
   "YAWNS",
   "YAWS",
   "YAY",
@@ -31469,7 +31461,7 @@
   "YELLER",
   "YELLERS",
   "YELLING",
-  "YELLINGS",
+
   "YELLOW",
   "YELLOWS",
   "YELLS",
@@ -31486,7 +31478,7 @@
   "YETS",
   "YIELD",
   "YIELDING",
-  "YIELDINGS",
+
   "YIELDS",
   "YIKES",
   "YIN",
@@ -31524,7 +31516,7 @@
   "YOU",
   "YOUNG",
   "YOUNGER",
-  "YOUNGERS",
+
   "YOUNGEST",
 
   "YOUNGS",
@@ -31538,7 +31530,7 @@
   "YOUSE",
   "YOUTH",
   "YOUTHFUL",
-  "YOUTHFULS",
+
   "YOUTHS",
   "YUAN",
   "YUANS",
@@ -31581,7 +31573,7 @@
   "ZEROES",
   "ZEROS",
   "ZEST",
-  "ZESTIES",
+
   "ZESTS",
   "ZESTY",
   "ZETA",
@@ -31592,6 +31584,7 @@
   "ZILLIONS",
   "ZINFANDEL",
   "ZINFANDELS",
+  "ZINC",
   "ZING",
   "ZINGS",
   "ZIP",
@@ -31613,6 +31606,7 @@
   "ZONE",
   "ZONED",
   "ZONES",
+  "ZONK",
   "ZONING",
   "ZONINGS",
   "ZONKED",
@@ -31620,7 +31614,10 @@
   "ZOOM",
   "ZOOMER",
   "ZOOMING",
-  "ZOOMINGS",
+
   "ZOOMS",
-  "ZOOS"
+  "ZOOS",
+  "ZYGOTE",
+  "ZYGOTES",
+  "ZYGOTIC"
 ]

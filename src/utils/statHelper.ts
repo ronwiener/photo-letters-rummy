@@ -6,6 +6,7 @@ export interface MatchResultArgs {
   wordsPlayedThisMatch: { word: string; score: number; playerId: string }[];
   humanScore: number;
   computerScore: number;
+  bingosCount: number;
 }
 
 export const calculateUpdatedStats = (
@@ -51,5 +52,6 @@ export const calculateUpdatedStats = (
       (prevStats.accumulatorWins || 0) +
       (didWin && result.scoringMode === "accumulator" ? 1 : 0),
     biggestMarginOfVictory: newBiggestMargin,
+    bingos: (prevStats.bingos || 0) + (result.bingosCount || 0), // 👈 Accrue Bingos here
   };
 };

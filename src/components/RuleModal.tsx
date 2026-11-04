@@ -298,10 +298,12 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
-                <h3 className="font-extrabold text-cyan-400 uppercase text-[11px] mb-1">
+              <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 space-y-2">
+                <h3 className="font-extrabold text-cyan-400 uppercase text-[11px]">
                   2. Word Length Bonuses
                 </h3>
+
+                {/* 📏 Grid for Word Length Tiers */}
                 <div className="grid grid-cols-2 gap-1.5 text-[11px]">
                   <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
                     <span>2 Letters</span>
@@ -324,9 +326,37 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                     <span className="font-bold text-cyan-400">+16 pts</span>
                   </div>
                   <div className="flex justify-between bg-neutral-900 p-1.5 rounded border border-neutral-800">
-                    <span>7+ Letters</span>
-                    <span className="font-bold text-cyan-400">+25+ pts</span>
+                    <span>7 Letters</span>
+                    <span className="font-bold text-cyan-400">+25 pts</span>
                   </div>
+
+                  {/* 🌟 8+ Letter Scaling Tier */}
+                  <div className="col-span-2 flex justify-between items-center bg-neutral-900 p-1.5 rounded border border-neutral-800">
+                    <span>8+ Letters (Board Word)</span>
+                    <span className="font-bold text-cyan-400">
+                      +35 pts (+10 per letter after 7)
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-[10px] text-neutral-400 italic leading-tight px-0.5">
+                  Adding letters to an existing word that extends it to 8 or
+                  more letters gives you the additional bonus points.
+                </p>
+
+                {/* 🎯 BINGO BONUS SECTION */}
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-2.5 text-amber-200 mt-2">
+                  <div className="flex items-center gap-1.5 font-bold text-amber-400 text-[11px] mb-1">
+                    <span>🎉</span>
+                    <h4>8 Letters "Bingo" Bonus (+50 Pts)</h4>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-slate-300">
+                    Play all <strong className="text-white">8 letters</strong>{" "}
+                    directly from your hand in a single turn to earn an extra{" "}
+                    <strong className="text-amber-400">
+                      +50 point Bingo bonus
+                    </strong>
+                  </p>
                 </div>
               </div>
 

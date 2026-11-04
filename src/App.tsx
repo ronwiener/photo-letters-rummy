@@ -137,7 +137,12 @@ export function App() {
     const wordsPlayedSnapshot = [...matchWordsRef.current];
     matchWordsRef.current = [];
 
-    // 1. Immediately record career stats (wins, losses, margins, etc.)
+    // 🎯 Count total human Bingos scored during this match
+    const humanBingosThisMatch = wordsPlayedSnapshot.filter(
+      (word) => word.playerId === "human" && word.isBingo,
+    ).length;
+
+    // 1. Immediately record career stats (wins, losses, margins, bingos, etc.)
     updateStats((currentStats: GameStatistics) =>
       calculateUpdatedStats(currentStats, {
         didWin: didHumanWin,
@@ -147,10 +152,11 @@ export function App() {
         ),
         humanScore: finalHumanScore,
         computerScore: finalComputerScore,
+        bingosCount: humanBingosThisMatch, // 👈 Satisfies MatchResultArgs requirement
       }),
     );
 
-    // 2. Pause 1.2s to let board state settle, then display the game-over modal
+    // 2. Pause 2.5s to let board state settle, then display the game-over modal
     setTimeout(() => {
       setGameState((prev) => ({
         ...prev,
@@ -164,7 +170,12 @@ export function App() {
   };
 
   const matchWordsRef = useRef<
-    { word: string; score: number; playerId: "human" | "computer" }[]
+    {
+      word: string;
+      score: number;
+      playerId: "human" | "computer";
+      isBingo?: boolean;
+    }[]
   >([]);
 
   const handleScoringModeChange = (mode: ScoringMode) => {
@@ -690,20 +701,34 @@ export function App() {
       }
 
       const isOpponentWord = targetBoardWord.playedBy !== "human";
+      const previousOwner = targetBoardWord.playedBy;
+      const previousScore = targetBoardWord.scoreAwarded || 0;
       const cardsAddedCount = newCardsFromHand.length;
 
-      // 🧮 SCORING CALCULATION
-      let pointsAwarded = 0;
+      // 🧮 SCORING CALCULATION & BINGO CHECK
+      let basePoints = 0;
       if (isOpponentWord) {
-        pointsAwarded = calculateStealScore(stagedCards, cardsAddedCount);
+        basePoints = calculateStealScore(stagedCards, cardsAddedCount);
       } else {
-        pointsAwarded = calculateWordPoints(stagedCards);
+        basePoints = calculateWordPoints(stagedCards);
+      }
+
+      // 🌟 BINGO BONUS: Check if all 8 tiles in the hand were used in this move
+      const isEightLetterBingo =
+        newCardsFromHand.length === gameState.humanHand.length &&
+        gameState.humanHand.length === 8;
+      const bingoBonus = isEightLetterBingo ? 50 : 0;
+      const pointsAwarded = basePoints + bingoBonus;
+
+      if (isEightLetterBingo) {
+        setAiStatusText(`🎉 BINGO! Used all 8 letters for a +50 bonus!`);
       }
 
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
         playerId: "human",
+        isBingo: isEightLetterBingo,
       });
 
       const existingHistory = targetBoardWord.history || [];
@@ -720,9 +745,13 @@ export function App() {
           {
             action: isOpponentWord ? "stolen" : "created",
             player: "human",
-            description: isOpponentWord
-              ? `⚡ Stole "${targetBoardWord.word}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
-              : `Extended "${targetBoardWord.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
+            description: isEightLetterBingo
+              ? isOpponentWord
+                ? `🎉 BINGO! Stole "${targetBoardWord.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `🎉 BINGO! Extended "${targetBoardWord.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+              : isOpponentWord
+                ? `⚡ Stole "${targetBoardWord.word}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `Extended "${targetBoardWord.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
             timestamp: Date.now(),
           },
         ],
@@ -745,28 +774,29 @@ export function App() {
       const remainingHand = rawRemainingHand.slice(0, 8);
       updatedDeck = newDeck;
 
-      const previousOwner = targetBoardWord.playedBy;
-      const previousScore = targetBoardWord.scoreAwarded || 0;
-
       // 🛡️ UPDATED GAME-OVER CHECK (Requires empty hand OR 2 consecutive passes)
       const isMatchOver =
         updatedDeck.length === 0 &&
         (remainingHand.length === 0 || (gameState.consecutivePasses ?? 0) >= 4);
 
       // 🧮 ACCURATE SCORING & SCORING MODE RESOLUTION
-      let finalMatchScores = {
+      // Declare with explicit key types and let mutability
+      let finalMatchScores: Record<"human" | "computer", number> = {
         human: gameState.matchScores.human + pointsAwarded,
         computer: gameState.matchScores.computer,
       };
 
       if (isOpponentWord && previousOwner && previousOwner !== "human") {
         if (gameState.scoringMode === "cutthroat") {
-          finalMatchScores[previousOwner] = Math.max(
+          // 🛡️ Safely decrement previous owner's score without type errors
+          const currentOwnerScore =
+            finalMatchScores[previousOwner as "human" | "computer"] ?? 0;
+
+          finalMatchScores[previousOwner as "human" | "computer"] = Math.max(
             0,
-            finalMatchScores[previousOwner] - previousScore,
+            currentOwnerScore - previousScore,
           );
         }
-        // Accumulator / Standard: previous owner keeps points, no deduction made.
       }
 
       let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
@@ -789,7 +819,6 @@ export function App() {
           matchWinner = "tie";
         }
 
-        // 🎯 Replace the manual stats block and setGameState with triggerGameOver
         triggerGameOver(
           matchWinner,
           finalMatchScores.human,
@@ -799,7 +828,7 @@ export function App() {
         );
       }
 
-      if (!isMatchOver) {
+      if (!isMatchOver && !isEightLetterBingo) {
         setAiStatusText(
           `${gameState.botName} is taking her turn after your word play...`,
         );
@@ -823,12 +852,24 @@ export function App() {
       }));
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
-      const pointsAwarded = calculateWordPoints(stagedCards);
+      const basePoints = calculateWordPoints(stagedCards);
+
+      // 🌟 BINGO BONUS: Check if all 8 tiles in the hand were used
+      const isEightLetterBingo =
+        stagedCards.length === gameState.humanHand.length &&
+        gameState.humanHand.length === 8;
+      const bingoBonus = isEightLetterBingo ? 50 : 0;
+      const pointsAwarded = basePoints + bingoBonus;
+
+      if (isEightLetterBingo) {
+        setAiStatusText(`🎉 BINGO! Used all 8 letters for a +50 bonus!`);
+      }
 
       matchWordsRef.current.push({
         word: proposedWordText,
         score: pointsAwarded,
         playerId: "human",
+        isBingo: isEightLetterBingo,
       });
 
       const newPlayedWord: PlayedWord = {
@@ -841,7 +882,9 @@ export function App() {
           {
             action: "created",
             player: "human",
-            description: `Created new word "${proposedWordText}" for ${pointsAwarded} points.`,
+            description: isEightLetterBingo
+              ? `🎉 BINGO! Created "${proposedWordText}" using all 8 tiles (+${pointsAwarded} pts)!`
+              : `Created new word "${proposedWordText}" for ${pointsAwarded} points.`,
             timestamp: Date.now(),
           },
         ],
@@ -890,7 +933,6 @@ export function App() {
           matchWinner = "tie";
         }
 
-        // 🎯 Replace the manual stats block and state updates with your helper
         triggerGameOver(
           matchWinner,
           finalMatchScores.human,
@@ -900,7 +942,7 @@ export function App() {
         );
       }
 
-      if (!isMatchOver) {
+      if (!isMatchOver && !isEightLetterBingo) {
         setAiStatusText(`${gameState.botName} is taking her turn...`);
       }
 
@@ -1025,6 +1067,11 @@ export function App() {
       const wordsPlayedSnapshot = [...matchWordsRef.current];
       matchWordsRef.current = [];
 
+      // 🎯 Calculate total human Bingos scored during this match
+      const humanBingosThisMatch = wordsPlayedSnapshot.filter(
+        (word) => word.playerId === "human" && word.isBingo,
+      ).length;
+
       updateStats((currentStats: GameStatistics) =>
         calculateUpdatedStats(currentStats, {
           didWin: didHumanWin,
@@ -1034,6 +1081,7 @@ export function App() {
           ),
           humanScore: adjustedHumanScore,
           computerScore: adjustedCompScore,
+          bingosCount: humanBingosThisMatch, // 👈 Satisfies MatchResultArgs requirement
         }),
       );
 
@@ -1200,10 +1248,16 @@ export function App() {
             );
 
             const cardsAddedCount = stealCandidate.cardsFromHand.length;
-            const pointsAwarded = calculateStealScore(
+            const basePoints = calculateStealScore(
               correctlyOrderedStealCards,
               cardsAddedCount,
             );
+
+            // 🌟 BINGO CHECK FOR STEALS/EXTENSIONS (Must use all 8 tiles from hand)
+            const isEightLetterBingo =
+              stealCandidate.cardsFromHand.length === 8;
+            const bingoBonus = isEightLetterBingo ? 50 : 0;
+            const pointsAwarded = basePoints + bingoBonus;
 
             compMatchScore += pointsAwarded;
 
@@ -1212,10 +1266,10 @@ export function App() {
               word: stealCandidate.newWordText,
               score: pointsAwarded,
               playerId: "computer",
+              isBingo: isEightLetterBingo,
             });
 
             if (previousOwner === "human") {
-              // 🛡️ PRESERVE ORIGINAL WORD NAME ACROSS MULTI-STEALS
               const stolenWordText =
                 targetWord.originalWord ||
                 (targetWord as any).word ||
@@ -1227,12 +1281,16 @@ export function App() {
               if (gameState.scoringMode === "cutthroat") {
                 humanMatchScore = Math.max(0, humanMatchScore - previousScore);
               }
-              statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (+${pointsAwarded} pts)!`;
+              statusAnnouncement = isEightLetterBingo
+                ? `🎉 ${gameState.botName} scored a BINGO using all 8 letters! Stole "${stolenWordText}" into "${newWordText}" (+${pointsAwarded} pts)!`
+                : `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (+${pointsAwarded} pts)!`;
             } else {
               const baseWordText =
                 targetWord?.originalWord || targetWord?.word || "word";
               const newWordText = stealCandidate?.newWordText || "a new word";
-              statusAnnouncement = `${gameState.botName} expanded her word "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)`;
+              statusAnnouncement = isEightLetterBingo
+                ? `🎉 ${gameState.botName} scored an 8-letter BINGO! Expanded "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)!`
+                : `${gameState.botName} expanded her word "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)`;
             }
 
             newBoard = newBoard.map((w) => {
@@ -1244,14 +1302,15 @@ export function App() {
                   cards: correctlyOrderedStealCards,
                   playedBy: "computer" as const,
                   scoreAwarded: pointsAwarded,
-                  // 🛡️ PERMANENTLY PRESERVE originalWord ON FIRST CREATION/STEAL
                   originalWord: targetWord.originalWord || targetWord.word,
                   history: [
                     ...existingHistory,
                     {
                       action: "stolen" as const,
                       player: "computer" as const,
-                      description: `${gameState.botName} stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
+                      description: isEightLetterBingo
+                        ? `🎉 ${gameState.botName} scored a BINGO! Stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`
+                        : `${gameState.botName} stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
                       timestamp: Date.now(),
                     },
                   ],
@@ -1283,7 +1342,14 @@ export function App() {
               aiPlayedWord = true;
 
               if (playResult.type === "new_word") {
-                compMatchScore += playResult.score;
+                const basePoints = playResult.score;
+
+                // 🌟 BINGO CHECK FOR STANDARD NEW WORD PLAY (Must use all 8 tiles from hand)
+                const isEightLetterBingo = playResult.cardsUsed.length === 8;
+                const bingoBonus = isEightLetterBingo ? 50 : 0;
+                const totalPoints = basePoints + bingoBonus;
+
+                compMatchScore += totalPoints;
 
                 const sanitizedNewCards = sanitizeAiCards(
                   playResult.cardsUsed,
@@ -1291,29 +1357,35 @@ export function App() {
                   0,
                 );
 
-                statusAnnouncement = `${gameState.botName} played "${playResult.wordText}" (+${playResult.score} pts)!`;
+                statusAnnouncement = isEightLetterBingo
+                  ? `🎉 ${gameState.botName} hit an 8-letter BINGO playing "${playResult.wordText}" (+${totalPoints} pts)!`
+                  : `${gameState.botName} played "${playResult.wordText}" (+${playResult.score} pts)!`;
 
                 newBoard.push({
                   id: `word-ai-${Date.now()}-${Math.random()}`,
                   word: playResult.wordText,
-                  originalWord: playResult.wordText, // 🛡️ Save original root name
+                  originalWord: playResult.wordText,
                   cards: sanitizedNewCards,
                   playedBy: "computer",
-                  scoreAwarded: playResult.score,
+                  scoreAwarded: totalPoints,
                   history: [
                     {
                       action: "created",
                       player: "computer",
-                      description: `${gameState.botName} created "${playResult.wordText}" (+${playResult.score} pts)`,
+                      description: isEightLetterBingo
+                        ? `🎉 ${gameState.botName} hit an 8-letter BINGO creating "${playResult.wordText}" (+${totalPoints} pts)`
+                        : `${gameState.botName} created "${playResult.wordText}" (+${totalPoints} pts)`,
                       timestamp: Date.now(),
                     },
                   ],
                 });
+
                 // 📊 RECORD MONICA'S PLAY FOR MATCH HISTORY
                 matchWordsRef.current.push({
                   word: playResult.wordText,
-                  score: playResult.score,
+                  score: totalPoints,
                   playerId: "computer",
+                  isBingo: isEightLetterBingo,
                 });
               } else if (
                 !isFirstTurn &&
@@ -1344,10 +1416,15 @@ export function App() {
                   (c) => !originalCardIds.has(c.id),
                 ).length;
 
-                const pointsAwarded = calculateStealScore(
+                const basePoints = calculateStealScore(
                   correctlyOrderedExtensionCards,
                   cardsAddedCount,
                 );
+
+                // 🌟 BINGO CHECK FOR EXTENSIONS (Must use all 8 tiles from hand)
+                const isEightLetterBingo = playResult.cardsUsed.length === 8;
+                const bingoBonus = isEightLetterBingo ? 50 : 0;
+                const pointsAwarded = basePoints + bingoBonus;
 
                 compMatchScore += pointsAwarded;
 
@@ -1355,6 +1432,7 @@ export function App() {
                   word: playResult.wordText,
                   score: pointsAwarded,
                   playerId: "computer",
+                  isBingo: isEightLetterBingo,
                 });
 
                 if (previousOwner === "human") {
@@ -1368,9 +1446,13 @@ export function App() {
                       humanMatchScore - previousScore,
                     );
                   }
-                  statusAnnouncement = `⚡ ${gameState.botName} stole your word "${stolenRootName}" and expanded it to "${playResult.wordText}" (+${pointsAwarded} pts)!`;
+                  statusAnnouncement = isEightLetterBingo
+                    ? `🎉 ${gameState.botName} scored a BINGO! Stole your word "${stolenRootName}" into "${playResult.wordText}" (+${pointsAwarded} pts)!`
+                    : `⚡ ${gameState.botName} stole your word "${stolenRootName}" and expanded it to "${playResult.wordText}" (+${pointsAwarded} pts)!`;
                 } else {
-                  statusAnnouncement = `${gameState.botName} extended a word to "${playResult.wordText}" (+${pointsAwarded} pts)`;
+                  statusAnnouncement = isEightLetterBingo
+                    ? `🎉 ${gameState.botName} scored an 8-letter BINGO expanding a word to "${playResult.wordText}" (+${pointsAwarded} pts)!`
+                    : `${gameState.botName} extended a word to "${playResult.wordText}" (+${pointsAwarded} pts)`;
                 }
 
                 newBoard = newBoard.map((w): PlayedWord => {
@@ -1383,13 +1465,15 @@ export function App() {
                       playedBy: "computer",
                       scoreAwarded: pointsAwarded,
                       originalWord:
-                        existingWordObj?.originalWord || existingWordObj?.word, // 🛡️ Preserve root name
+                        existingWordObj?.originalWord || existingWordObj?.word,
                       history: [
                         ...existingHistory,
                         {
                           action: "stolen",
                           player: "computer",
-                          description: `${gameState.botName} stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`,
+                          description: isEightLetterBingo
+                            ? `🎉 ${gameState.botName} scored a BINGO! Stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`
+                            : `${gameState.botName} stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`,
                           timestamp: Date.now(),
                         },
                       ],
@@ -1460,7 +1544,7 @@ export function App() {
             // 🛡️ Evaluate deck and hand states accurately
             const isDeckEmpty = currentDeck.length === 0;
             const isHandEmpty =
-              compHand.length === 0 || gameState.humanHand.length === 0; // Use gameState or prev if destructured
+              compHand.length === 0 || gameState.humanHand.length === 0;
             const hasTwoPasses =
               (aiPlayedWord ? 0 : (gameState.consecutivePasses ?? 0) + 1) >= 4;
 

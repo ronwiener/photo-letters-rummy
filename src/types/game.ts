@@ -47,6 +47,7 @@ export interface GameStatistics {
   wins: number;
   losses: number;
   biggestMarginOfVictory: number;
+  bingos: number;
 }
 
 export const DEFAULT_STATS: GameStatistics = {
@@ -60,6 +61,7 @@ export const DEFAULT_STATS: GameStatistics = {
   cutthroatWins: 0,
   accumulatorWins: 0,
   biggestMarginOfVictory: 0,
+  bingos: 0,
 };
 
 export type PlayerId = "human" | "computer";

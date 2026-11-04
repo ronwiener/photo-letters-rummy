@@ -62,15 +62,25 @@ export const StatsModal: React.FC<StatsModalProps> = ({
 
           {/* Mode-Specific Win Breakdowns */}
           <div className="flex justify-between bg-neutral-800/30 p-2 rounded-lg ml-3 border-l-2 border-emerald-500/40">
-            <span className="text-neutral-400">• High Risk Wins:</span>
+            <span className="text-neutral-400">High Risk Wins:</span>
             <span className="font-bold text-emerald-300">
               {stats.cutthroatWins}
             </span>
           </div>
           <div className="flex justify-between bg-neutral-800/30 p-2 rounded-lg ml-3 border-l-2 border-emerald-500/40">
-            <span className="text-neutral-400">• Low Risk Wins:</span>
+            <span className="text-neutral-400">Low Risk Wins:</span>
             <span className="font-bold text-emerald-300">
               {stats.accumulatorWins}
+            </span>
+          </div>
+
+          {/* 🌟 Total Bingos Stat Row */}
+          <div className="flex justify-between bg-neutral-800/50 p-2.5 rounded-xl">
+            <span className="text-neutral-400">
+              Total Bingos (8 letter words):
+            </span>
+            <span className="font-bold text-amber-400">
+              {stats.bingos || 0}
             </span>
           </div>
 
@@ -104,7 +114,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             </button>
           </div>
 
-          {/* 👈 2. Reset Stats Button */}
+          {/* 🗑️ Reset Stats Button */}
           {onResetStats && (
             <button
               onClick={onResetStats}
