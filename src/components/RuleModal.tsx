@@ -102,9 +102,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   2. Turn Actions
                 </h3>
                 <p>
-                  You are allowed only one action per turn. On the very 1st turn
-                  whether it's Monica or you, there is a choice of three
-                  actions:
+                  On the very 1st turn of game play, whether it's Monica or you,
+                  there is a choice of three actions:
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-neutral-300 mt-1">
                   <li>
@@ -121,8 +120,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   </li>
                 </ul>
                 <p className="font-bold text-pink-300 text-[11px] mt-2">
-                  On subsequent turns, once there is a word played the option of
-                  a word steal is now available.
+                  On subsequent turns all three actions are in play and once
+                  there is a word played, the option of a word steal is now
+                  possible.
                 </p>
               </div>
             </div>
@@ -174,7 +174,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-rose-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Hiigh Risk
+                    <strong>High Risk</strong>
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing a word transfers ownership to you{" "}
@@ -185,7 +185,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
 
                 <div className="bg-neutral-900 p-2 rounded-lg border border-neutral-800">
                   <h4 className="font-extrabold text-emerald-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    Low Risk
+                    <strong>Low Risk</strong>
                   </h4>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
                     Stealing awards full score value to the thief, but the
@@ -204,8 +204,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   ★ Playing a Wild Card
                 </h3>
                 <p className="text-neutral-200">
-                  When staging a Wild Card, a picker allows you to assign it any
-                  letter from <strong>A to Z</strong>.
+                  When staging a Wild Card, a letter picker allows you to assign
+                  it any letter from <strong>A to Z</strong>.
                 </p>
               </div>
 
@@ -255,7 +255,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </h3>
                 <p className="text-cyan-100 text-xs leading-relaxed">
                   Words are scored by adding individual base letter values plus
-                  any word length bonus. Words can be{" "}
+                  any word length bonuses and stealing points. Words must be{" "}
                   <strong>2 or more letters</strong>.
                 </p>
               </div>
@@ -369,7 +369,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   . The opponent has the base point values of all remaining hand
                   cards deducted from their total (plus <strong>-30 pts</strong>{" "}
                   per wild card). On stalemates, both players receive hand
-                  deductions.
+                  deductions based on remaining letter point values.
                 </p>
               </div>
             </div>

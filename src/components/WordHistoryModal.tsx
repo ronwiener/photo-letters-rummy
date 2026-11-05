@@ -48,9 +48,6 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
             <h3 className="text-lg font-black text-cyan-400 tracking-wider">
               WORD INSPECTOR
             </h3>
-            <span className="text-[10px] text-neutral-400 uppercase font-semibold">
-              Rule 9 History & Details
-            </span>
           </div>
           <button
             onClick={onClose}

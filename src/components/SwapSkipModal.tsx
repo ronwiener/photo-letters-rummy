@@ -44,7 +44,7 @@ export const SwapSkipModal: React.FC<SwapSkipModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 max-w-md w-full shadow-2xl text-center">
         <h3 className="text-lg font-bold text-slate-100 mb-1">
-          Swap / Skip Turn
+          Swap Letters/ Pass Turn
         </h3>
         <p className="text-xs text-slate-400 mb-4">
           Choose the tiles you want to change. Select no tiles to skip your
@@ -93,7 +93,7 @@ export const SwapSkipModal: React.FC<SwapSkipModalProps> = ({
                 : "bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-500"
             }`}
           >
-            {isSwapping ? `Swap (${selectedIds.length})` : "Skip Turn"}
+            {isSwapping ? `Swap (${selectedIds.length})` : "Pass"}
           </button>
         </div>
 

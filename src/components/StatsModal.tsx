@@ -24,14 +24,8 @@ export const StatsModal: React.FC<StatsModalProps> = ({
         {/* Modal Title & Close */}
         <div className="flex justify-between items-center border-b border-neutral-800 pb-2">
           <h3 className="text-sm font-black uppercase tracking-wider text-neutral-300">
-            Career Statistics
+            Statistics
           </h3>
-          <button
-            onClick={onClose}
-            className="text-neutral-400 hover:text-white font-bold text-sm cursor-pointer"
-          >
-            ✕
-          </button>
         </div>
 
         {/* Expanded Career Statistics Display */}
