@@ -22,7 +22,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               Official Guide
             </span>
             <h2 className="text-xl font-black text-white">
-              How to Play WORD WARS
+              How to Play WORD WAR
             </h2>
           </div>
         </div>

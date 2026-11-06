@@ -43,7 +43,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           Word Card Game
         </span>
         <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
-          WORD WARS
+          WORD WAR
         </h1>
         <h2 className="text-base text-neutral-400 mt-2 max-w-xs leading-relaxed">
           Colorful and fun word building card game. Create your own word or
