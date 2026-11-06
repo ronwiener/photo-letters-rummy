@@ -63,7 +63,6 @@ const BLOCKED_WORDS = new Set<string>([
   "oie",
   "steth",
   "zax",
-  "qat",
   "pyx",
   "cwm",
 ]);

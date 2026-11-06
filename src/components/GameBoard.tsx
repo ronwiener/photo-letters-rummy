@@ -108,7 +108,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {/* Shared Neon Word Board */}
 
-      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3 scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
+      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3">
         {wordBoard.length === 0 ? (
           <p className="text-[11px] text-neutral-500 italic my-auto">
             No words played yet. Be the first to build one!
@@ -116,7 +116,6 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         ) : (
           wordBoard.map((played) => {
             const isSelected = targetBoardWord?.id === played.id;
-            const isShortWord = played.cards.length <= 3;
 
             return (
               <button
@@ -126,14 +125,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   onSelectWordForModification &&
                   onSelectWordForModification(played)
                 }
-                className={`flex p-0.5 rounded-lg transition-all duration-200 active:scale-95 cursor-pointer flex-shrink-0 max-w-full overflow-x-auto ${
-                  isShortWord ? "w-auto" : "w-full sm:w-auto justify-center"
-                } ${
+                className={`flex p-0.5 rounded-lg transition-colors duration-150 cursor-pointer flex-shrink-0 transform-gpu ${
                   isSelected
-                    ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50 shadow-[0_0_15px_rgba(251,191,36,0.8)] scale-105 z-10"
+                    ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50"
                     : played.playedBy === "human"
-                      ? "border border-cyan-400 bg-cyan-950/50 shadow-[0_0_8px_rgba(6,182,212,0.3)] hover:border-cyan-300"
-                      : "border border-pink-400 bg-pink-950/50 shadow-[0_0_8px_rgba(236,72,153,0.3)] hover:border-pink-300"
+                      ? "border border-cyan-400 bg-cyan-950/50 hover:border-cyan-300"
+                      : "border border-pink-400 bg-pink-950/50 hover:border-pink-300"
                 }`}
                 title={
                   isSelected
