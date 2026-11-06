@@ -77,7 +77,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 : "text-neutral-400 hover:text-neutral-200"
             }`}
           >
-            Match Rules
+            End Game
           </button>
         </div>
 
@@ -111,8 +111,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                     from their hand. All words must be two or more letters.
                   </li>
                   <li>
-                    <strong>Trade Letters:</strong> Swap hand cards back into
-                    the deck for fresh ones (ends turn).
+                    <strong>Trade Letters:</strong> Swap any or all of your
+                    cards back into the deck for new ones (ends turn).
                   </li>
                   <li>
                     <strong>Pass Turn:</strong> Skip your turn if you have no
@@ -160,8 +160,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   </h4>
                   <p className="text-neutral-300 text-xs leading-relaxed">
                     Adding <strong>2 or more cards</strong> from your hand
-                    awards <strong>2x Double Points</strong> for the complete
-                    new word value!
+                    awards <strong>Double Points</strong> for the whole word!
                   </p>
                 </div>
               </div>
@@ -204,8 +203,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   ★ Playing a Wild Card
                 </h3>
                 <p className="text-neutral-200">
-                  When staging a Wild Card, a letter picker allows you to assign
-                  it any letter from <strong>A to Z</strong>.
+                  A Wild Card can represent any letter from{" "}
+                  <strong>A to Z</strong>.
                 </p>
               </div>
 
@@ -215,8 +214,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </h3>
                 <p className="text-neutral-300 mb-2">
                   If a Wild Card on the board is acting as a letter (e.g.{" "}
-                  <strong>"E"</strong>) and you hold that exact natural letter
-                  card in your hand:
+                  <strong>"E"</strong>) and you hold that letter card in your
+                  hand:
                 </p>
 
                 <ol className="list-decimal list-inside text-neutral-300 text-xs flex flex-col gap-1 my-2 bg-neutral-900/80 p-2.5 rounded-lg border border-neutral-800">
@@ -229,7 +228,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   </li>
                   <li>
                     Your letter replaces the Wild on the board, and the Wild
-                    Card returns to your hand!
+                    Card moves to your hand!
                   </li>
                 </ol>
               </div>
@@ -241,7 +240,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 <p className="text-neutral-300">
                   Wild Cards add <strong>0 base points</strong> to played words
                   and carry a heavy <strong>-30 point penalty</strong> if left
-                  in your hand at round end.
+                  in your hand at the end of the round.
                 </p>
               </div>
             </div>
@@ -379,7 +378,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div className="flex flex-col gap-3">
               <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800">
                 <h3 className="font-extrabold text-pink-400 uppercase text-[11px] mb-1">
-                  Game End Conditions
+                  End of Game Conditions
                 </h3>
                 <ul className="list-disc list-inside space-y-1 text-neutral-300">
                   <li>
@@ -388,8 +387,10 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   </li>
                   <li>
                     <strong>Stalemate:</strong> Triggers after{" "}
-                    <strong>8 consecutive passes total</strong> (or 4 passes
-                    when the deck is empty).
+                    <strong>
+                      both players have passed 2 times because they cannot make
+                      a play.
+                    </strong>
                   </li>
                   <li>
                     <strong>

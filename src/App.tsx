@@ -711,7 +711,7 @@ export function App() {
       const previousScore = targetBoardWord.scoreAwarded || 0;
       const cardsAddedCount = newCardsFromHand.length;
 
-      // 🧮 SCORING CALCULATION & BINGO CHECK
+      // 🧮 SCORING CALCULATION
       let basePoints = 0;
       if (isOpponentWord) {
         basePoints = calculateStealScore(stagedCards, cardsAddedCount);
@@ -719,10 +719,8 @@ export function App() {
         basePoints = calculateWordPoints(stagedCards);
       }
 
-      // 🌟 BINGO BONUS: Check if all 8 tiles in the hand were used in this move
-      const isEightLetterBingo =
-        newCardsFromHand.length === gameState.humanHand.length &&
-        gameState.humanHand.length === 8;
+      // 🌟 BINGO BONUS: Universal check (8 cards from hand in one turn)
+      const isEightLetterBingo = newCardsFromHand.length === 8;
       const bingoBonus = isEightLetterBingo ? 50 : 0;
       const pointsAwarded = basePoints + bingoBonus;
 
@@ -780,13 +778,11 @@ export function App() {
       const remainingHand = rawRemainingHand.slice(0, 8);
       updatedDeck = newDeck;
 
-      // 🛡️ UPDATED GAME-OVER CHECK (Requires empty hand OR 2 consecutive passes)
+      // 🛡️ UPDATED GAME-OVER CHECK
       const isMatchOver =
         updatedDeck.length === 0 &&
         (remainingHand.length === 0 || (gameState.consecutivePasses ?? 0) >= 4);
 
-      // 🧮 ACCURATE SCORING & SCORING MODE RESOLUTION
-      // Declare with explicit key types and let mutability
       let finalMatchScores: Record<"human" | "computer", number> = {
         human: gameState.matchScores.human + pointsAwarded,
         computer: gameState.matchScores.computer,
@@ -794,7 +790,6 @@ export function App() {
 
       if (isOpponentWord && previousOwner && previousOwner !== "human") {
         if (gameState.scoringMode === "cutthroat") {
-          // 🛡️ Safely decrement previous owner's score without type errors
           const currentOwnerScore =
             finalMatchScores[previousOwner as "human" | "computer"] ?? 0;
 
@@ -807,7 +802,6 @@ export function App() {
 
       let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
 
-      // 🛡️ UNIFIED MATCH-OVER PENALTY DEDUCTION
       if (isMatchOver) {
         const humanPenalty = calculateHandPenalty(remainingHand);
         const compPenalty = calculateHandPenalty(gameState.computerHand);
@@ -860,10 +854,8 @@ export function App() {
       // --- STANDARD NEW WORD PLAY ---
       const basePoints = calculateWordPoints(stagedCards);
 
-      // 🌟 BINGO BONUS: Check if all 8 tiles in the hand were used
-      const isEightLetterBingo =
-        stagedCards.length === gameState.humanHand.length &&
-        gameState.humanHand.length === 8;
+      // 🌟 BINGO BONUS: Universal check for standalone words (8 cards staged = 8 cards from hand)
+      const isEightLetterBingo = stagedCards.length === 8;
       const bingoBonus = isEightLetterBingo ? 50 : 0;
       const pointsAwarded = basePoints + bingoBonus;
 
@@ -909,7 +901,6 @@ export function App() {
       const remainingHand = rawRemainingHand.slice(0, 8);
       updatedDeck = newDeck;
 
-      // 🛡️ UPDATED GAME-OVER CHECK (Requires empty hand OR 2 consecutive passes)
       const isMatchOver =
         updatedDeck.length === 0 &&
         (remainingHand.length === 0 || (gameState.consecutivePasses ?? 0) >= 4);
@@ -921,7 +912,6 @@ export function App() {
 
       let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
 
-      // 🛡️ UNIFIED MATCH-OVER PENALTY DEDUCTION
       if (isMatchOver) {
         const humanPenalty = calculateHandPenalty(remainingHand);
         const compPenalty = calculateHandPenalty(gameState.computerHand);
@@ -1903,6 +1893,7 @@ export function App() {
             onSelectWordForModification={handleInspectWord}
           />
         </div>
+
         {/* Workspace Staging Area */}
         <div className="mt-1 shrink-0">
           <Workspace

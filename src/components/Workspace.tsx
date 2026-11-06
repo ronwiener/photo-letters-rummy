@@ -82,7 +82,11 @@ export const Workspace: React.FC<WorkspaceProps> = ({
             </span>
           ) : (
             <span className="flex items-center gap-1 tracking-wide">
-              <span>✨</span> Play Word (+{potentialScore} pts)
+              <span>✨</span> Play Word (+
+              {potentialScore + (stagedCards.length === 8 ? 50 : 0)} pts)
+              {stagedCards.length === 8 && (
+                <span className="text-amber-300 ml-0.5">🎉 50 Bingo!</span>
+              )}
             </span>
           )}
         </button>
