@@ -172,7 +172,7 @@ export function App() {
         isGameOver: true,
         winner,
       }));
-    }, 3000);
+    }, 4000);
   };
 
   const matchWordsRef = useRef<
@@ -1565,15 +1565,15 @@ export function App() {
             }));
 
             setIsAiThinking(false);
-          }, 3500); // Hold action message for 3.5s before prompting player turn
+          }, 4000); // Hold action message for 3.5s before prompting player turn
 
           return () => clearTimeout(timer3);
         },
-        wildSwapOccurred ? 3500 : 1500,
+        wildSwapOccurred ? 4500 : 3500,
       ); // Wait after wild swap if one occurred
 
       return () => clearTimeout(timer2);
-    }, 4500);
+    }, 5000);
 
     return () => {
       clearTimeout(timer0);
