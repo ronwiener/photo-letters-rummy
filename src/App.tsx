@@ -109,6 +109,8 @@ export function App() {
     console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
   }, [isStatsModalOpen]);
 
+  const aiTimerRef = useRef<(() => void) | null>(null);
+
   const updateStats = (
     newStatsUpdater: (prev: GameStatistics) => GameStatistics,
   ): void => {
@@ -1082,10 +1084,15 @@ export function App() {
 
     setIsAiThinking(true);
 
+    let timer0: NodeJS.Timeout;
+    let timer1: NodeJS.Timeout;
+    let timer2: NodeJS.Timeout;
+    let timer3: NodeJS.Timeout;
+
     // 🕒 Delay before Monica replaces the Coin Toss announcement message
     const initialDelay = gameState.isFirstTurn ? 2200 : 0;
 
-    const timer0 = setTimeout(() => {
+    timer0 = setTimeout(() => {
       setAiStatusText(`${gameState.botName} is looking for plays...`);
     }, initialDelay);
 
@@ -1111,7 +1118,7 @@ export function App() {
       });
     };
 
-    const timer1 = setTimeout(() => {
+    timer1 = setTimeout(() => {
       let compHand = [...gameState.computerHand];
       let currentDeck = [...gameState.deck];
       // Immutably clone wordBoard structure
@@ -1165,7 +1172,7 @@ export function App() {
       }
 
       // Step 2: Word Evaluation & Play Execution
-      const timer2 = setTimeout(
+      timer2 = setTimeout(
         () => {
           let compMatchScore = gameState.matchScores.computer;
           let humanMatchScore = gameState.matchScores.human;
@@ -1508,7 +1515,7 @@ export function App() {
           setAiStatusText(statusAnnouncement);
 
           // 🕒 TIMER 3: DELAY HANDOVER PROMPT TO PLAYER SO TOAST STAYS VISIBLE
-          const timer3 = setTimeout(() => {
+          timer3 = setTimeout(() => {
             // 🛡️ Evaluate deck and hand states accurately
             const isDeckEmpty = currentDeck.length === 0;
             const isHandEmpty =
@@ -1545,7 +1552,7 @@ export function App() {
               );
 
               setIsAiThinking(false);
-              return; // Stop here, don't run the normal turn-switch state update
+              return;
             }
 
             // Otherwise, continue with normal turn handoff if match is NOT over
@@ -1565,19 +1572,25 @@ export function App() {
             }));
 
             setIsAiThinking(false);
-          }, 4000); // Hold action message for 3.5s before prompting player turn
-
-          return () => clearTimeout(timer3);
+          }, 4000);
         },
         wildSwapOccurred ? 4500 : 3500,
-      ); // Wait after wild swap if one occurred
-
-      return () => clearTimeout(timer2);
+      );
     }, 5000);
 
-    return () => {
+    // 🛡️ Assign cancellation to `aiTimerRef` so starting a new match instantly kills active timeouts
+    aiTimerRef.current = () => {
       clearTimeout(timer0);
       clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+      setIsAiThinking(false);
+    };
+
+    return () => {
+      if (aiTimerRef.current) {
+        aiTimerRef.current();
+      }
     };
   }, [gameState.currentTurn]);
 
@@ -1668,17 +1681,22 @@ export function App() {
 
   // --- START NEW MATCH HANDLER ---
   const handleStartNewMatch = () => {
-    const deal = dealNewGame();
+    // 🛑 Instantly cancel all pending AI timers and unlock UI state
+    if (aiTimerRef.current) {
+      aiTimerRef.current();
+      aiTimerRef.current = null;
+    }
 
-    // 🎲 50/50 coin toss to decide who starts the new match
-    const openingTurn: PlayerId = Math.random() < 0.5 ? "human" : "computer";
+    setIsAiThinking(false); // Ensure thinking state clears out
+
+    const deal = dealNewGame();
+    const openingTurn = Math.random() < 0.5 ? "human" : "computer";
 
     const starterDisplayName = openingTurn === "human" ? " You!" : " Monica!";
     const tossMsg = `🎲 Coin Toss: Winner is${starterDisplayName} ${
       openingTurn === "human" ? "Make your move." : "Monica will start."
     }`;
 
-    // Set initial announcement message
     setAiStatusText(tossMsg);
 
     setGameState({
@@ -1698,7 +1716,6 @@ export function App() {
       winner: null,
     });
 
-    // Reset workspace staging state
     setStagedCards([]);
     setTargetBoardWord(null);
   };
