@@ -98,14 +98,14 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`min-h-12 p-1 rounded-lg border transition-all flex items-center justify-center gap-1 overflow-x-auto scrollbar-none ${
+            className={`min-h-[72px] sm:min-h-[84px] p-2.5 sm:p-3 rounded-xl border transition-all flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none touch-manipulation ${
               snapshot.isDraggingOver
-                ? "bg-cyan-950/40 border-cyan-400/80 border-dashed"
-                : "bg-neutral-950/80 border-cyan-500/30"
+                ? "bg-cyan-950/50 border-cyan-400 border-dashed shadow-inner"
+                : "bg-neutral-950/90 border-cyan-500/40"
             }`}
           >
             {stagedCards.length === 0 && !snapshot.isDraggingOver ? (
-              <p className="text-[10px] text-neutral-500 italic text-center">
+              <p className="text-xs sm:text-sm text-neutral-400 italic text-center px-2">
                 Tap cards from your hand to build a word
               </p>
             ) : (
@@ -117,12 +117,14 @@ export const Workspace: React.FC<WorkspaceProps> = ({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       onClick={() => onRemoveCard(card)}
-                      className={`shrink-0 cursor-grab active:cursor-grabbing transition-all touch-none ${
-                        snapshot.isDragging ? "z-50 scale-105 opacity-80" : ""
+                      className={`shrink-0 cursor-grab active:cursor-grabbing transition-transform touch-none ${
+                        snapshot.isDragging
+                          ? "z-50 scale-110 opacity-90 shadow-2xl"
+                          : ""
                       }`}
                       title="Drag to reorder, or tap to return to hand"
                     >
-                      <CardComponent card={card} size="sm" state="active" />
+                      <CardComponent card={card} size="md" state="active" />
                     </div>
                   )}
                 </Draggable>

@@ -142,37 +142,29 @@ export function findMonicaPlay(
 ): AiPlayResult | null {
   const checkWord = _customIsValidWord || isValidWord;
 
-  // Strict validation helper across all difficulties
+  // Clean validation helper without bulky obscure filters
   const isAllowedWord = (word: string): boolean => {
     const cleanWord = word.toUpperCase().trim();
 
     // Allow 2-letter words across all difficulties (must be at least 2 characters)
     if (cleanWord.length < 2) return false;
 
-    // Filter blacklisted obscure words
-    if (OBSCURE_WORD_FILTER.has(cleanWord)) return false;
-
     return checkWord(cleanWord);
   };
 
-  // 🎯 TONED-DOWN MEDIUM PARAMETERS (Preserving your custom values)
   const maxWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 6 : 8;
-
-  // Separate steal/extension cap so Monica can tack onto longer words on Medium/Pro (up to 8 letters)
   const maxStealWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 8 : 8;
 
   const maxSingleTurnScore =
     difficulty === "easy" ? 30 : difficulty === "medium" ? 40 : 250;
   const stealChance =
-    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.35 : 0.75;
+    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.3 : 0.75;
 
   const validPlays: AiPlayResult[] = [];
 
-  // -------------------------------------------------------------
-  // 1. STEAL / ANAGRAM REARRANGEMENT ATTEMPTS (Targeting human words)
-  // -------------------------------------------------------------
+  // 1. STEAL / EXTENSION SEARCH
   const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
   if (humanWords.length > 0 && Math.random() < stealChance) {
@@ -187,7 +179,6 @@ export function findMonicaPlay(
         const combos = getSubsets(handCards, len);
 
         for (const combo of combos) {
-          // Resolve cards to letters using maxStealWordLength
           const resolvedCombo = assignWildcardsForSteal(
             combo,
             boardItem.word,
@@ -199,8 +190,6 @@ export function findMonicaPlay(
           const addedLetters = resolvedCombo.letters.join("");
           const cardsAddedCount = combo.length;
           const fullCardsArray = [...boardItem.cards, ...resolvedCombo.cards];
-
-          // FULL ANAGRAM REARRANGEMENT SEARCH checked against maxStealWordLength
           const combinedLetters = (boardItem.word + addedLetters).toUpperCase();
 
           if (combinedLetters.length <= maxStealWordLength) {
@@ -218,7 +207,6 @@ export function findMonicaPlay(
                 cardsAddedCount,
               );
               const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-
               const reorderedCards = reorderCardsToMatchWord(
                 fullCardsArray,
                 anagramWord,
@@ -238,9 +226,7 @@ export function findMonicaPlay(
     }
   }
 
-  // -------------------------------------------------------------
   // 2. STANDALONE WORD PLAY FROM HAND
-  // -------------------------------------------------------------
   function searchHandPermutations(
     currentCombination: Card[],
     remainingCards: Card[],
@@ -281,48 +267,41 @@ export function findMonicaPlay(
 
   if (validPlays.length === 0) return null;
 
-  // Sort ALL valid moves by score descending
   validPlays.sort((a, b) => b.score - a.score);
 
-  // 🧠 DIFFICULTY SELECTION LOGIC
   if (difficulty === "easy") {
-    // Pick the lowest scoring play
     return validPlays[validPlays.length - 1];
   }
 
   if (difficulty === "medium") {
-    // 1. Pass / trade if best available play is under 10 pts (40% chance)
     if (validPlays[0].score < 10 && Math.random() < 0.4) {
-      return null; // Triggers pass/trade turn logic
+      return null;
     }
 
-    // 2. Filter out low-value wildcard plays (< 14 pts) to hoard wildcards
     const filteredPlays = validPlays.filter((play) => {
       const usedWild = play.cardsUsed.some(
         (c) => c.isWild || c.letter === "WILD",
       );
       if (usedWild && play.score < 14) {
-        return false; // Skip low-scoring wildcard plays
+        return false;
       }
       return true;
     });
 
     const candidatePool = filteredPlays.length > 0 ? filteredPlays : validPlays;
 
-    // 3. 50% chance to pick a mid-tier play from the pool
-    const pickSubOptimal = Math.random() < 0.5 && candidatePool.length > 3;
+    // 60% chance to pick a natural, mid-tier play from the candidate pool
+    const pickSubOptimal = Math.random() < 0.6 && candidatePool.length > 3;
     if (pickSubOptimal) {
       const midIndex = Math.floor(candidatePool.length / 2);
       return candidatePool[midIndex];
     }
 
-    // 4. Otherwise pick randomly from top 6 candidates
     const topCandidatesCount = Math.min(6, candidatePool.length);
     const randomIndex = Math.floor(Math.random() * topCandidatesCount);
     return candidatePool[randomIndex];
   }
 
-  // Pro Mode: Always take the #1 highest scoring play
   return validPlays[0];
 }
 
