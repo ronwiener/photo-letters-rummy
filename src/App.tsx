@@ -1084,10 +1084,10 @@ export function App() {
 
     setIsAiThinking(true);
 
-    let timer0: NodeJS.Timeout;
-    let timer1: NodeJS.Timeout;
-    let timer2: NodeJS.Timeout;
-    let timer3: NodeJS.Timeout;
+    let timer0: ReturnType<typeof setTimeout>;
+    let timer1: ReturnType<typeof setTimeout>;
+    let timer2: ReturnType<typeof setTimeout>;
+    let timer3: ReturnType<typeof setTimeout>;
 
     // 🕒 Delay before Monica replaces the Coin Toss announcement message
     const initialDelay = gameState.isFirstTurn ? 2200 : 0;
