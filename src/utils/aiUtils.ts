@@ -146,8 +146,8 @@ export function findMonicaPlay(
   const isAllowedWord = (word: string): boolean => {
     const cleanWord = word.toUpperCase().trim();
 
-    // Disallow 2-letter words for Monica unless on Pro mode
-    if (cleanWord.length < 3 && difficulty !== "pro") return false;
+    // Allow 2-letter words across all difficulties (must be at least 2 characters)
+    if (cleanWord.length < 2) return false;
 
     // Filter blacklisted obscure words
     if (OBSCURE_WORD_FILTER.has(cleanWord)) return false;
@@ -155,13 +155,18 @@ export function findMonicaPlay(
     return checkWord(cleanWord);
   };
 
-  // 🎯 TONED-DOWN MEDIUM PARAMETERS
+  // 🎯 TONED-DOWN MEDIUM PARAMETERS (Preserving your custom values)
   const maxWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 6 : 8;
+
+  // Separate steal/extension cap so Monica can tack onto longer words on Medium/Pro (up to 8 letters)
+  const maxStealWordLength =
+    difficulty === "easy" ? 5 : difficulty === "medium" ? 8 : 8;
+
   const maxSingleTurnScore =
-    difficulty === "easy" ? 30 : difficulty === "medium" ? 50 : 250;
+    difficulty === "easy" ? 30 : difficulty === "medium" ? 40 : 250;
   const stealChance =
-    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.4 : 0.75;
+    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.35 : 0.75;
 
   const validPlays: AiPlayResult[] = [];
 
@@ -171,8 +176,8 @@ export function findMonicaPlay(
   const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
   if (humanWords.length > 0 && Math.random() < stealChance) {
-    const maxStealCards = difficulty === "pro" ? 3 : 2;
-
+    const maxStealCards =
+      difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
     for (const boardItem of humanWords) {
       for (
         let len = 1;
@@ -182,12 +187,12 @@ export function findMonicaPlay(
         const combos = getSubsets(handCards, len);
 
         for (const combo of combos) {
-          // Resolve cards to letters
+          // Resolve cards to letters using maxStealWordLength
           const resolvedCombo = assignWildcardsForSteal(
             combo,
             boardItem.word,
             isAllowedWord,
-            maxWordLength,
+            maxStealWordLength,
           );
           if (!resolvedCombo) continue;
 
@@ -195,14 +200,14 @@ export function findMonicaPlay(
           const cardsAddedCount = combo.length;
           const fullCardsArray = [...boardItem.cards, ...resolvedCombo.cards];
 
-          // FULL ANAGRAM REARRANGEMENT SEARCH
+          // FULL ANAGRAM REARRANGEMENT SEARCH checked against maxStealWordLength
           const combinedLetters = (boardItem.word + addedLetters).toUpperCase();
 
-          if (combinedLetters.length <= maxWordLength) {
+          if (combinedLetters.length <= maxStealWordLength) {
             const validAnagrams = getValidAnagrams(
               combinedLetters,
               isAllowedWord,
-              maxWordLength,
+              maxStealWordLength,
             );
 
             for (const anagramWord of validAnagrams) {
@@ -286,17 +291,17 @@ export function findMonicaPlay(
   }
 
   if (difficulty === "medium") {
-    // 1. Pass / trade if best available play is under 12 pts (30% chance)
-    if (validPlays[0].score < 12 && Math.random() < 0.3) {
+    // 1. Pass / trade if best available play is under 10 pts (40% chance)
+    if (validPlays[0].score < 10 && Math.random() < 0.4) {
       return null; // Triggers pass/trade turn logic
     }
 
-    // 2. Filter out low-value wildcard plays (< 20 pts) to hoard wildcards
+    // 2. Filter out low-value wildcard plays (< 14 pts) to hoard wildcards
     const filteredPlays = validPlays.filter((play) => {
       const usedWild = play.cardsUsed.some(
         (c) => c.isWild || c.letter === "WILD",
       );
-      if (usedWild && play.score < 12) {
+      if (usedWild && play.score < 14) {
         return false; // Skip low-scoring wildcard plays
       }
       return true;
@@ -304,15 +309,15 @@ export function findMonicaPlay(
 
     const candidatePool = filteredPlays.length > 0 ? filteredPlays : validPlays;
 
-    // 3. 35% chance to pick a mid-tier play from the pool
-    const pickSubOptimal = Math.random() < 0.35 && candidatePool.length > 3;
+    // 3. 50% chance to pick a mid-tier play from the pool
+    const pickSubOptimal = Math.random() < 0.5 && candidatePool.length > 3;
     if (pickSubOptimal) {
       const midIndex = Math.floor(candidatePool.length / 2);
       return candidatePool[midIndex];
     }
 
-    // 4. Otherwise pick randomly from top 5 candidates
-    const topCandidatesCount = Math.min(5, candidatePool.length);
+    // 4. Otherwise pick randomly from top 6 candidates
+    const topCandidatesCount = Math.min(6, candidatePool.length);
     const randomIndex = Math.floor(Math.random() * topCandidatesCount);
     return candidatePool[randomIndex];
   }
@@ -371,6 +376,7 @@ function getValidAnagrams(
 }
 
 // Helper: Assign letters to wildcards when attempting steals
+// Helper: Assign letters to wildcards when attempting steals
 function assignWildcardsForSteal(
   cards: Card[],
   baseWord: string,
@@ -383,6 +389,17 @@ function assignWildcardsForSteal(
   const processedCards = cards.map((c) => ({ ...c }));
   const letters: string[] = [];
 
+  // 1. Gather all non-wildcard letters from this hand combination
+  const staticHandLetters = processedCards
+    .filter(
+      (c) =>
+        !c.isWild &&
+        c.letter !== "WILD" &&
+        !c.id?.toUpperCase().includes("WILD"),
+    )
+    .map((c) => (c.letter || "").toUpperCase())
+    .join("");
+
   for (const card of processedCards) {
     const isWild =
       card.isWild === true ||
@@ -392,9 +409,10 @@ function assignWildcardsForSteal(
     if (isWild && !card.assignedLetter) {
       let foundValid = false;
 
-      // Test every letter to see if a genuine dictionary word can be formed
       for (const char of ALPHABET) {
-        const testPool = (baseWord + char).toUpperCase();
+        // Construct full combined letter pool (Board Word + Static Hand Tiles + Current Wildcard Test)
+        const testPool = (baseWord + staticHandLetters + char).toUpperCase();
+
         if (testPool.length <= maxLen) {
           const validAnagrams = getValidAnagrams(testPool, validator, maxLen);
           if (validAnagrams.length > 0) {
