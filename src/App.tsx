@@ -236,8 +236,49 @@ export function App() {
   const handleDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
-    // Dropped outside any valid droppable area
-    if (!destination) return;
+    // -------------------------------------------------------------
+    // 🛡️ SAFETY CHECK: OUT-OF-BOUNDS / INVALID DROP RECOVERY
+    // -------------------------------------------------------------
+    if (!destination) {
+      const sourceId = source.droppableId;
+
+      // If dragged from workspace out of bounds, safely return it to the hand
+      if (sourceId === "workspace-rack") {
+        const droppedCard = stagedCards[source.index];
+        if (!droppedCard) return;
+
+        const isWildCard =
+          droppedCard.isWild ||
+          droppedCard.letter === "WILD" ||
+          droppedCard.id?.toUpperCase().includes("WILD") ||
+          droppedCard.photoUrl?.toLowerCase().includes("wild");
+
+        const cardToReturn: Card = isWildCard
+          ? {
+              ...droppedCard,
+              assignedLetter: undefined,
+              isWild: true,
+              letter: "WILD" as any,
+            }
+          : droppedCard;
+
+        // 1. Remove from staged cards
+        setStagedCards((prev) => prev.filter((c) => c.id !== droppedCard.id));
+
+        // 2. Safely add back to player hand
+        setGameState((prev) => {
+          const updatedHand = Array.from(prev.humanHand);
+          if (!updatedHand.some((c) => c.id === cardToReturn.id)) {
+            updatedHand.push(cardToReturn);
+          }
+          return {
+            ...prev,
+            humanHand: updatedHand,
+          };
+        });
+      }
+      return;
+    }
 
     const sourceId = source.droppableId;
     const destId = destination.droppableId;
@@ -269,14 +310,16 @@ export function App() {
       return;
     }
 
+    // -------------------------------------------------------------
     // 3. STAGING A CARD FROM PLAYER HAND TO WORKSPACE
+    // -------------------------------------------------------------
     if (sourceId === "player-hand" && destId === "workspace-rack") {
       const draggedCard = gameState.humanHand[source.index];
       if (!draggedCard) return;
 
       if (stagedCards.some((c) => c.id === draggedCard.id)) return;
 
-      // 🌟 BULLETPROOF WILD CARD CHECK (matches your handleStageCard logic)
+      // 🌟 BULLETPROOF WILD CARD CHECK
       const isWildCard =
         draggedCard.isWild === true ||
         draggedCard.letter === "WILD" ||
@@ -305,9 +348,7 @@ export function App() {
       setStagedCards(newStaged);
       return;
     }
-    // -------------------------------------------------------------
-    // 4. RETURNING A CARD FROM WORKSPACE BACK TO HAND (Un-staging)
-    // -------------------------------------------------------------
+
     // -------------------------------------------------------------
     // 4. RETURNING A CARD FROM WORKSPACE BACK TO HAND (Un-staging)
     // -------------------------------------------------------------

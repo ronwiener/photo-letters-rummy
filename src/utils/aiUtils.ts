@@ -101,9 +101,9 @@ export function findMonicaPlay(
     difficulty === "easy" ? 5 : difficulty === "medium" ? 8 : 8;
 
   const maxSingleTurnScore =
-    difficulty === "easy" ? 30 : difficulty === "medium" ? 40 : 250;
+    difficulty === "easy" ? 30 : difficulty === "medium" ? 36 : 150;
   const stealChance =
-    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.3 : 0.75;
+    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.25 : 0.5;
 
   const validPlays: AiPlayResult[] = [];
 
