@@ -45,7 +45,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
           WORD WAR
         </h1>
-        <h2 className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-xs leading-relaxed">
+        <h2 className="text-sm sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
           Colorful and fun word building card game. Create your own word or
           steal your opponent's word by rearranging or adding on. Highest point
           total at the end of the game is the winner!
