@@ -32,13 +32,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col justify-start items-center p-6 gap-6 relative overflow-hidden">
+    <div className="min-h-screen bg-neutral-950 text-white flex flex-col justify-center items-center p-6 gap-6 relative overflow-hidden">
       {/* Background Glow Accents */}
       <div className="absolute -top-24 -left-24 w-72 h-72 bg-cyan-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Title Header */}
-      <div className="flex flex-col items-center text-center mt-6 z-10">
+      <div className="flex flex-col items-center text-center z-10">
         <span className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-2">
           Word Card Game
         </span>
