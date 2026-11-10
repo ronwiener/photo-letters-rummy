@@ -55,7 +55,7 @@ export const LETTER_PHOTO_COUNTS: Record<AssetKey, number> = {
   S: 29,
   T: 24,
   U: 13,
-  V: 15,
+  V: 13,
   W: 9,
   X: 7,
   Y: 8,

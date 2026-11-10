@@ -682,8 +682,20 @@ export function App() {
     let updatedDeck = [...gameState.deck];
 
     if (!isStandaloneWord && targetBoardWord) {
+      // 🛡️ Guard: Ensure target word still exists in current game state
+      const activeTarget = gameState.wordBoard.find(
+        (w) => w.id === targetBoardWord.id,
+      );
+      if (!activeTarget) {
+        alert(
+          "The target word was modified or removed. Please select a word again.",
+        );
+        setTargetBoardWord(null);
+        return;
+      }
+
       // --- MODIFICATION, EXTENSION & STEALING LOGIC (Turn 2+) ---
-      const originalCardIds = new Set(targetBoardWord.cards.map((c) => c.id));
+      const originalCardIds = new Set(activeTarget.cards.map((c) => c.id));
       const currentStagedIds = new Set(stagedCards.map((c) => c.id));
 
       const newCardsFromHand = stagedCards.filter(
@@ -697,7 +709,7 @@ export function App() {
         return;
       }
 
-      const missingOriginalCards = targetBoardWord.cards.some(
+      const missingOriginalCards = activeTarget.cards.some(
         (c) => !currentStagedIds.has(c.id),
       );
 
@@ -708,9 +720,9 @@ export function App() {
         return;
       }
 
-      const isOpponentWord = targetBoardWord.playedBy !== "human";
-      const previousOwner = targetBoardWord.playedBy;
-      const previousScore = targetBoardWord.scoreAwarded || 0;
+      const isOpponentWord = activeTarget.playedBy !== "human";
+      const previousOwner = activeTarget.playedBy;
+      const previousScore = activeTarget.scoreAwarded || 0;
       const cardsAddedCount = newCardsFromHand.length;
 
       // 🧮 SCORING CALCULATION
@@ -737,34 +749,33 @@ export function App() {
         isBingo: isEightLetterBingo,
       });
 
-      const existingHistory = targetBoardWord.history || [];
+      const existingHistory = activeTarget.history || [];
       const updatedPlayedWord: PlayedWord = {
-        id: targetBoardWord.id,
+        id: activeTarget.id,
         word: proposedWordText,
         cards: [...stagedCards],
         playedBy: "human",
-        originalWord:
-          targetBoardWord.originalWord || (targetBoardWord as any).word,
-        scoreAwarded: (targetBoardWord.scoreAwarded || 0) + pointsAwarded,
+        originalWord: activeTarget.originalWord || (activeTarget as any).word,
+        scoreAwarded: (activeTarget.scoreAwarded || 0) + pointsAwarded,
         history: [
           ...existingHistory,
           {
-            action: isOpponentWord ? "stolen" : "created",
+            action: isOpponentWord ? "stolen" : "extended",
             player: "human",
             description: isEightLetterBingo
               ? isOpponentWord
-                ? `🎉 BINGO! Stole "${targetBoardWord.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
-                : `🎉 BINGO! Extended "${targetBoardWord.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                ? `🎉 BINGO! Stole "${activeTarget.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `🎉 BINGO! Extended "${activeTarget.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
               : isOpponentWord
-                ? `⚡ Stole "${targetBoardWord.word}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
-                : `Extended "${targetBoardWord.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
+                ? `⚡ Stole "${activeTarget.word}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `Extended "${activeTarget.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
             timestamp: Date.now(),
           },
         ],
       };
 
       const updatedWordBoard = gameState.wordBoard.map((w) =>
-        w.id === targetBoardWord.id ? updatedPlayedWord : w,
+        w.id === activeTarget.id ? updatedPlayedWord : w,
       );
 
       const usedHandCardIds = new Set(newCardsFromHand.map((c) => c.id));
@@ -951,6 +962,7 @@ export function App() {
         humanHand: remainingHand,
         deck: updatedDeck,
         isFirstTurn: false,
+        hasPlayedThisTurn: false,
         currentTurn: isMatchOver ? "human" : "computer",
         consecutivePasses: 0,
         isGameOver: isMatchOver,
@@ -1230,7 +1242,7 @@ export function App() {
 
             // 🌟 BINGO CHECK FOR STEALS/EXTENSIONS (Must use all 8 tiles from hand)
             const isEightLetterBingo =
-              stealCandidate.cardsFromHand.length === 8;
+              (stealCandidate.cardsFromHand?.length || 0) === 8;
             const bingoBonus = isEightLetterBingo ? 50 : 0;
             const pointsAwarded = basePoints + bingoBonus;
 
@@ -1281,7 +1293,9 @@ export function App() {
                   history: [
                     ...existingHistory,
                     {
-                      action: "stolen" as const,
+                      action: (previousOwner === "human"
+                        ? "stolen"
+                        : "extended") as any,
                       player: "computer" as const,
                       description: isEightLetterBingo
                         ? `🎉 ${gameState.botName} scored a BINGO! Stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`
@@ -1387,17 +1401,19 @@ export function App() {
                 const originalCardIds = new Set(
                   existingWordObj?.cards.map((c) => c.id) || [],
                 );
-                const cardsAddedCount = correctlyOrderedExtensionCards.filter(
-                  (c) => !originalCardIds.has(c.id),
-                ).length;
+                const cardsAddedFromHand =
+                  correctlyOrderedExtensionCards.filter(
+                    (c) => !originalCardIds.has(c.id),
+                  );
+                const cardsAddedCount = cardsAddedFromHand.length;
 
                 const basePoints = calculateStealScore(
                   correctlyOrderedExtensionCards,
                   cardsAddedCount,
                 );
 
-                // 🌟 BINGO CHECK FOR EXTENSIONS (Must use all 8 tiles from hand)
-                const isEightLetterBingo = playResult.cardsUsed.length === 8;
+                // 🌟 BINGO CHECK FOR EXTENSIONS (Must use all 8 tiles strictly from hand)
+                const isEightLetterBingo = cardsAddedFromHand.length === 8;
                 const bingoBonus = isEightLetterBingo ? 50 : 0;
                 const pointsAwarded = basePoints + bingoBonus;
 
@@ -1444,7 +1460,9 @@ export function App() {
                       history: [
                         ...existingHistory,
                         {
-                          action: "stolen",
+                          action: (previousOwner === "human"
+                            ? "stolen"
+                            : "extended") as any,
                           player: "computer",
                           description: isEightLetterBingo
                             ? `🎉 ${gameState.botName} scored a BINGO! Stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`
@@ -1520,10 +1538,10 @@ export function App() {
             const isDeckEmpty = currentDeck.length === 0;
             const isHandEmpty =
               compHand.length === 0 || gameState.humanHand.length === 0;
-            const hasTwoPasses =
+            const hasFourPasses =
               (aiPlayedWord ? 0 : (gameState.consecutivePasses ?? 0) + 1) >= 4;
 
-            const isMatchOver = isDeckEmpty && (isHandEmpty || hasTwoPasses);
+            const isMatchOver = isDeckEmpty && (isHandEmpty || hasFourPasses);
 
             if (isMatchOver) {
               const humanPenalty = calculateHandPenalty(gameState.humanHand);
@@ -1565,6 +1583,7 @@ export function App() {
               computerHand: compHand,
               deck: currentDeck,
               isFirstTurn: false,
+              hasPlayedThisTurn: false,
               currentTurn: "human",
               consecutivePasses: aiPlayedWord
                 ? 0

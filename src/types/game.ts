@@ -68,7 +68,7 @@ export type PlayerId = "human" | "computer";
 export type ScoringMode = "cutthroat" | "accumulator";
 
 export interface HistoryEntry {
-  action: "created" | "stolen";
+  action: "created" | "stolen" | "extended";
   player: PlayerId;
   description: string;
   timestamp: number;

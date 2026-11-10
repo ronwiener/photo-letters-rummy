@@ -32,20 +32,20 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col justify-between items-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-neutral-950 text-white flex flex-col justify-start items-center p-6 gap-6 relative overflow-hidden">
       {/* Background Glow Accents */}
       <div className="absolute -top-24 -left-24 w-72 h-72 bg-cyan-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Title Header */}
-      <div className="flex flex-col items-center text-center mt-12 z-10">
-        <span className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-3">
+      <div className="flex flex-col items-center text-center mt-6 z-10">
+        <span className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-2">
           Word Card Game
         </span>
         <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
           WORD WAR
         </h1>
-        <h2 className="text-base text-neutral-400 mt-2 max-w-xs leading-relaxed">
+        <h2 className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-xs leading-relaxed">
           Colorful and fun word building card game. Create your own word or
           steal your opponent's word by rearranging or adding on. Highest point
           total at the end of the game is the winner!
@@ -53,11 +53,11 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       </div>
 
       {/* Main Options Card */}
-      <div className="w-full max-w-xs flex flex-col gap-5 z-10 bg-neutral-900/80 p-6 rounded-3xl border border-neutral-800 backdrop-blur-md shadow-2xl">
+      <div className="w-full max-w-xs flex flex-col gap-4 z-10 bg-neutral-900/80 p-5 rounded-3xl border border-neutral-800 backdrop-blur-md shadow-2xl">
         {/* Play Button */}
         <button
           onClick={onStartMatch}
-          className="w-full py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all cursor-pointer transform active:scale-95"
+          className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all cursor-pointer transform active:scale-95"
         >
           🎮 Play vs {botName}
         </button>
@@ -65,7 +65,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         {/* Rules Button */}
         <button
           onClick={onOpenRules}
-          className="w-full py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
+          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
         >
           📖 How to Play & Rules
         </button>
@@ -75,13 +75,13 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             e.stopPropagation();
             onOpenStats();
           }}
-          className="w-full py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
+          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
         >
           📊 Statistics
         </button>
 
         {/* AI Opponent Difficulty Selector */}
-        <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-2 text-center">
+        <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-1.5 text-center">
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">
             {botName} AI Difficulty
           </span>
@@ -103,7 +103,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </div>
 
         {/* 🗡️ GAME SCORING MODE TOGGLE */}
-        <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-2 text-center">
+        <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-1.5 text-center">
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">
             Game Play Style
           </span>
