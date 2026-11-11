@@ -95,19 +95,22 @@ export function findMonicaPlay(
     return checkWord(cleanWord);
   };
 
+  // 🌟 Easy mode restricted to shorter, simpler words (max 4 letters)
   const maxWordLength =
-    difficulty === "easy" ? 5 : difficulty === "medium" ? 6 : 8;
+    difficulty === "easy" ? 4 : difficulty === "medium" ? 6 : 8;
   const maxStealWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 8 : 8;
 
   const maxSingleTurnScore =
-    difficulty === "easy" ? 30 : difficulty === "medium" ? 36 : 150;
+    difficulty === "easy" ? 18 : difficulty === "medium" ? 36 : 150;
+
+  // 🌟 EASY MODE STEAL CHANCE SET TO 10% (0.10) FOR RARE, LIGHTWEIGHT STEALS
   const stealChance =
-    difficulty === "easy" ? 0.15 : difficulty === "medium" ? 0.25 : 0.5;
+    difficulty === "easy" ? 0.1 : difficulty === "medium" ? 0.25 : 0.5;
 
   const validPlays: AiPlayResult[] = [];
 
-  // 1. STEAL / EXTENSION SEARCH
+  // 1. STEAL / EXTENSION SEARCH (10% chance on Easy)
   const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
   if (humanWords.length > 0 && Math.random() < stealChance) {
@@ -212,8 +215,15 @@ export function findMonicaPlay(
 
   validPlays.sort((a, b) => b.score - a.score);
 
+  // 🌟 EASY MODE: 30% chance to pass/trade, otherwise pick from modest words
   if (difficulty === "easy") {
-    return validPlays[validPlays.length - 1];
+    if (Math.random() < 0.3 && validPlays.length > 2) {
+      return null; // Simulates a casual pass or trade
+    }
+    // Pick from the lower half of scores so she plays simple, casual words
+    const modestPool = validPlays.slice(Math.floor(validPlays.length / 2));
+    const randomIndex = Math.floor(Math.random() * modestPool.length);
+    return modestPool[randomIndex] || validPlays[validPlays.length - 1];
   }
 
   if (difficulty === "medium") {

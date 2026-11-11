@@ -108,9 +108,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {/* Shared Neon Word Board */}
 
-      <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-col gap-3 items-center">
+      <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-3 items-center">
         {wordBoard.length === 0 ? (
-          <p className="text-[11px] text-neutral-500 italic my-auto">
+          <p className="text-[11px] text-neutral-500 italic my-auto text-center">
             No words played yet. Be the first to build one!
           </p>
         ) : (
@@ -125,7 +125,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   onSelectWordForModification &&
                   onSelectWordForModification(played)
                 }
-                className={`flex items-center p-1 rounded-xl transition-colors duration-150 cursor-pointer max-w-full overflow-x-auto scrollbar-none touch-pan-x transform-gpu ${
+                className={`max-w-full flex items-center p-1.5 rounded-xl transition-colors duration-150 cursor-pointer flex-shrink-0 self-center ${
                   isSelected
                     ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50"
                     : played.playedBy === "human"
@@ -138,16 +138,18 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                     : "Tap to extend or steal this word"
                 }
               >
-                {/* Inner wrapper forces single-row layout and enables horizontal scroll */}
-                <div className="flex items-center gap-1 min-w-max">
-                  {played.cards.map((card, idx) => (
-                    <CardComponent
-                      key={`${played.id}-${card.id}-${idx}`}
-                      card={card}
-                      size="md"
-                      state="active"
-                    />
-                  ))}
+                {/* Scroll container nested inside with padding to protect end cards from clipping */}
+                <div className="w-full overflow-x-auto scrollbar-none touch-pan-x px-1 py-0.5">
+                  <div className="flex items-center gap-1.5 min-w-max">
+                    {played.cards.map((card, idx) => (
+                      <CardComponent
+                        key={`${played.id}-${card.id}-${idx}`}
+                        card={card}
+                        size="md"
+                        state="active"
+                      />
+                    ))}
+                  </div>
                 </div>
               </button>
             );
