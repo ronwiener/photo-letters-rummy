@@ -108,7 +108,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
       {/* Shared Neon Word Board */}
 
-      <div className="bg-neutral-900/60 p-2.5 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-wrap content-start items-start justify-center gap-x-3.5 gap-y-2.5 sm:gap-x-4 sm:gap-y-3">
+      <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-[160px] overflow-y-auto overflow-x-hidden flex flex-col gap-3 items-center">
         {wordBoard.length === 0 ? (
           <p className="text-[11px] text-neutral-500 italic my-auto">
             No words played yet. Be the first to build one!
@@ -125,7 +125,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   onSelectWordForModification &&
                   onSelectWordForModification(played)
                 }
-                className={`flex p-0.5 rounded-lg transition-colors duration-150 cursor-pointer flex-shrink-0 transform-gpu ${
+                className={`flex items-center p-1 rounded-xl transition-colors duration-150 cursor-pointer max-w-full overflow-x-auto scrollbar-none touch-pan-x transform-gpu ${
                   isSelected
                     ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50"
                     : played.playedBy === "human"
@@ -138,14 +138,17 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                     : "Tap to extend or steal this word"
                 }
               >
-                {played.cards.map((card, idx) => (
-                  <CardComponent
-                    key={`${played.id}-${card.id}-${idx}`}
-                    card={card}
-                    size="md"
-                    state="active"
-                  />
-                ))}
+                {/* Inner wrapper forces single-row layout and enables horizontal scroll */}
+                <div className="flex items-center gap-1 min-w-max">
+                  {played.cards.map((card, idx) => (
+                    <CardComponent
+                      key={`${played.id}-${card.id}-${idx}`}
+                      card={card}
+                      size="md"
+                      state="active"
+                    />
+                  ))}
+                </div>
               </button>
             );
           })
