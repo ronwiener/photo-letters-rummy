@@ -10,18 +10,6 @@ export interface AiPlayResult {
   targetWordId?: string;
 }
 
-/**
- * Helper to get all letters from a card array, substituting wildcards dynamically if needed
- */
-function resolveCardLetters(cards: Card[]): string[] {
-  return cards.map((c) => {
-    if (c.isWild) {
-      return (c.assignedLetter || "A").toUpperCase();
-    }
-    return (c.letter || "").toUpperCase();
-  });
-}
-
 // Helper: Re-orders cards array to match the character order of the target anagram word string
 export function reorderCardsToMatchWord(
   cards: Card[],
@@ -85,17 +73,13 @@ export function findMonicaPlay(
 ): AiPlayResult | null {
   const checkWord = _customIsValidWord || isValidWord;
 
-  // Clean validation helper without bulky obscure filters
   const isAllowedWord = (word: string): boolean => {
     const cleanWord = word.toUpperCase().trim();
-
-    // Allow 2-letter words across all difficulties (must be at least 2 characters)
     if (cleanWord.length < 2) return false;
-
     return checkWord(cleanWord);
   };
 
-  // 🌟 Easy mode restricted to shorter, simpler words (max 4 letters)
+  // Preserved difficulty constants
   const maxWordLength =
     difficulty === "easy" ? 4 : difficulty === "medium" ? 6 : 8;
   const maxStealWordLength =
@@ -104,18 +88,22 @@ export function findMonicaPlay(
   const maxSingleTurnScore =
     difficulty === "easy" ? 18 : difficulty === "medium" ? 36 : 150;
 
-  // 🌟 EASY MODE STEAL CHANCE SET TO 10% (0.10) FOR RARE, LIGHTWEIGHT STEALS
+  // 🌟 EASY MODE STEAL CHANCE SET TO 10% (0.1), MEDIUM TO 15% (0.15)
   const stealChance =
-    difficulty === "easy" ? 0.1 : difficulty === "medium" ? 0.25 : 0.5;
+    difficulty === "easy" ? 0.1 : difficulty === "medium" ? 0.15 : 0.5;
 
   const validPlays: AiPlayResult[] = [];
 
-  // 1. STEAL / EXTENSION SEARCH (10% chance on Easy)
+  // -------------------------------------------------------------
+  // 1. STEAL / EXTENSION SEARCH
+  // -------------------------------------------------------------
   const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
   if (humanWords.length > 0 && Math.random() < stealChance) {
+    // Limit Medium mode to 1-card extensions so she doesn't aggressively overhaul board words
     const maxStealCards =
       difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
+
     for (const boardItem of humanWords) {
       for (
         let len = 1;
@@ -172,89 +160,82 @@ export function findMonicaPlay(
     }
   }
 
-  // 2. STANDALONE WORD PLAY FROM HAND
-  function searchHandPermutations(
-    currentCombination: Card[],
-    remainingCards: Card[],
-  ) {
-    if (
-      currentCombination.length >= 2 &&
-      currentCombination.length <= maxWordLength
-    ) {
-      const candidateWord = resolveCardLetters(currentCombination).join("");
+  // -------------------------------------------------------------
+  // 2. STANDALONE NEW WORD SEARCH FROM HAND
+  // -------------------------------------------------------------
+  const maxHandSearchLen = Math.min(maxWordLength, handCards.length);
 
-      if (isAllowedWord(candidateWord)) {
-        const rawScore = calculateWordPoints(currentCombination);
-        const cappedScore = Math.min(rawScore, maxSingleTurnScore);
-        validPlays.push({
-          type: "new_word",
-          cardsUsed: [...currentCombination],
-          wordText: candidateWord,
-          score: cappedScore,
-        });
-      }
-    }
+  for (let len = 2; len <= maxHandSearchLen; len++) {
+    const combos = getSubsets(handCards, len);
 
-    if (currentCombination.length >= maxWordLength) return;
-
-    for (let i = 0; i < remainingCards.length; i++) {
-      const nextRemaining = [
-        ...remainingCards.slice(0, i),
-        ...remainingCards.slice(i + 1),
-      ];
-      searchHandPermutations(
-        [...currentCombination, remainingCards[i]],
-        nextRemaining,
+    for (const combo of combos) {
+      const resolvedCombos = resolveWildcardsForHand(
+        combo,
+        isAllowedWord,
+        maxWordLength,
       );
+
+      for (const resolved of resolvedCombos) {
+        const lettersStr = resolved.letters.join("").toUpperCase();
+        const validAnagrams = getValidAnagrams(
+          lettersStr,
+          isAllowedWord,
+          maxWordLength,
+        );
+
+        for (const anagramWord of validAnagrams) {
+          if (!isAllowedWord(anagramWord)) continue;
+
+          // FIXED: Corrected from calculateWordScore to calculateWordPoints
+          const rawScore = calculateWordPoints(resolved.cards);
+          const cappedScore = Math.min(rawScore, maxSingleTurnScore);
+          const reorderedCards = reorderCardsToMatchWord(
+            resolved.cards,
+            anagramWord,
+          );
+
+          validPlays.push({
+            type: "new_word", // FIXED: Updated from "new" to "new_word" matching AiPlayResult interface
+            cardsUsed: reorderedCards,
+            wordText: anagramWord,
+            score: cappedScore,
+          });
+        }
+      }
     }
   }
 
-  searchHandPermutations([], handCards);
+  // -------------------------------------------------------------
+  // 3. SORT & APPLY DIFFICULTY SELECTION LOGIC
+  // -------------------------------------------------------------
+  if (validPlays.length === 0) {
+    return null;
+  }
 
-  if (validPlays.length === 0) return null;
-
+  // Sort highest-scoring moves first
   validPlays.sort((a, b) => b.score - a.score);
 
-  // 🌟 EASY MODE: 30% chance to pass/trade, otherwise pick from modest words
+  // EASY MODE: Conservative pass chance & pick from lower/mid pool
   if (difficulty === "easy") {
-    if (Math.random() < 0.3 && validPlays.length > 2) {
-      return null; // Simulates a casual pass or trade
-    }
-    // Pick from the lower half of scores so she plays simple, casual words
-    const modestPool = validPlays.slice(Math.floor(validPlays.length / 2));
-    const randomIndex = Math.floor(Math.random() * modestPool.length);
-    return modestPool[randomIndex] || validPlays[validPlays.length - 1];
-  }
-
-  if (difficulty === "medium") {
-    if (validPlays[0].score < 10 && Math.random() < 0.4) {
+    if (validPlays[0].score < 8 && Math.random() < 0.3) {
       return null;
     }
-
-    const filteredPlays = validPlays.filter((play) => {
-      const usedWild = play.cardsUsed.some(
-        (c) => c.isWild || c.letter === "WILD",
-      );
-      if (usedWild && play.score < 14) {
-        return false;
-      }
-      return true;
-    });
-
-    const candidatePool = filteredPlays.length > 0 ? filteredPlays : validPlays;
-
-    // 60% chance to pick a natural, mid-tier play from the candidate pool
-    const pickSubOptimal = Math.random() < 0.6 && candidatePool.length > 3;
-    if (pickSubOptimal) {
-      const midIndex = Math.floor(candidatePool.length / 2);
-      return candidatePool[midIndex];
-    }
-
-    const topCandidatesCount = Math.min(6, candidatePool.length);
-    const randomIndex = Math.floor(Math.random() * topCandidatesCount);
-    return candidatePool[randomIndex];
+    const easyPool = validPlays.slice(0, Math.min(5, validPlays.length));
+    return easyPool[Math.floor(Math.random() * easyPool.length)];
   }
 
+  // MEDIUM MODE:
+  // 1. 60% conservative pass/trade chance when best play is < 10 points
+  // 2. Pick randomly from top 4 moves instead of always playing the #1 obscure max-score word
+  if (difficulty === "medium") {
+    if (validPlays[0].score < 10 && Math.random() < 0.6) {
+      return null;
+    }
+    const mediumPool = validPlays.slice(0, Math.min(4, validPlays.length));
+    return mediumPool[Math.floor(Math.random() * mediumPool.length)];
+  }
+
+  // PRO MODE: Always play the strongest available move
   return validPlays[0];
 }
 
@@ -307,7 +288,60 @@ function getValidAnagrams(
   return Array.from(results);
 }
 
-// Helper: Assign letters to wildcards when attempting steals
+// Helper: Resolve wildcards for standalone hand play
+function resolveWildcardsForHand(
+  cards: Card[],
+  validator: (word: string) => boolean,
+  maxLen: number,
+): { cards: Card[]; letters: string[] }[] {
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let results: { cards: Card[]; letters: string[] }[] = [
+    { cards: cards.map((c) => ({ ...c })), letters: [] },
+  ];
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const isWild =
+      card.isWild === true ||
+      card.letter === "WILD" ||
+      card.id?.toUpperCase().includes("WILD");
+
+    if (isWild) {
+      const nextResults: { cards: Card[]; letters: string[] }[] = [];
+      for (const res of results) {
+        for (const char of ALPHABET) {
+          const clonedCards = res.cards.map((c, idx) => {
+            if (idx === i) {
+              return {
+                ...c,
+                isWild: true,
+                letter: "WILD" as any,
+                assignedLetter: char,
+              };
+            }
+            return { ...c };
+          });
+          nextResults.push({
+            cards: clonedCards,
+            letters: [...res.letters, char],
+          });
+        }
+      }
+      results = nextResults;
+    } else {
+      const char = (card.letter || "").toUpperCase();
+      for (const res of results) {
+        res.letters.push(char);
+      }
+    }
+  }
+
+  return results.filter((res) => {
+    const word = res.letters.join("");
+    return word.length <= maxLen && validator(word);
+  });
+}
+
 // Helper: Assign letters to wildcards when attempting steals
 function assignWildcardsForSteal(
   cards: Card[],

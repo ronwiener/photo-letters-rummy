@@ -79,7 +79,11 @@ export const CardComponent: React.FC<CardComponentProps> = ({
       {/* 🌟 POINT BADGE FOR REGULAR CARDS */}
       {!isWild && (
         <div
-          className="absolute bottom-0 right-0 -translate-x-1/2 z-10 text-yellow-300 font-bold text-[9px] select-none pointer-events-none"
+          className={`absolute bottom-0.5 z-10 text-yellow-300 font-bold text-[11px] leading-none select-none pointer-events-none ${
+            (card.assignedLetter || card.letter || "").toUpperCase() === "Q"
+              ? "left-0 translate-x-1/2"
+              : "right-0 -translate-x-1/2"
+          }`}
           style={{
             textShadow:
               "1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 1px 2px rgba(0,0,0,0.8)",
@@ -91,7 +95,13 @@ export const CardComponent: React.FC<CardComponentProps> = ({
 
       {/* 🌟 WILD CARD STAR BADGE */}
       {isWild && (
-        <div className="absolute bottom-1 right-1 z-10 pointer-events-none text-amber-300 text-[10px] font-black drop-shadow-[0_2px_2px_rgba(0,0,0,0.99)]">
+        <div
+          className={`absolute bottom-1 z-10 pointer-events-none text-amber-300 text-[11px] leading-none font-black drop-shadow-[0_2px_2px_rgba(0,0,0,0.99)] ${
+            (card.assignedLetter || card.letter || "").toUpperCase() === "Q"
+              ? "left-1"
+              : "right-1"
+          }`}
+        >
           ★
         </div>
       )}

@@ -242,41 +242,38 @@ export function App() {
     if (!destination) {
       const sourceId = source.droppableId;
 
-      // If dragged from workspace out of bounds, safely return it to the hand
+      // 1. Dragged out of bounds from WORKSPACE -> Keep inside workspace!
       if (sourceId === "workspace-rack") {
         const droppedCard = stagedCards[source.index];
         if (!droppedCard) return;
 
-        const isWildCard =
-          droppedCard.isWild ||
-          droppedCard.letter === "WILD" ||
-          droppedCard.id?.toUpperCase().includes("WILD") ||
-          droppedCard.photoUrl?.toLowerCase().includes("wild");
+        setStagedCards((prev) => {
+          // Prevent duplicate insertions
+          if (prev.some((c) => c.id === droppedCard.id)) return prev;
+          const updated = Array.from(prev);
+          updated.splice(source.index, 0, droppedCard);
+          return updated;
+        });
+        return;
+      }
 
-        const cardToReturn: Card = isWildCard
-          ? {
-              ...droppedCard,
-              assignedLetter: undefined,
-              isWild: true,
-              letter: "WILD" as any,
-            }
-          : droppedCard;
+      // 2. Dragged out of bounds from PLAYER HAND -> Keep inside player hand!
+      if (sourceId === "player-hand") {
+        const droppedCard = gameState.humanHand[source.index];
+        if (!droppedCard) return;
 
-        // 1. Remove from staged cards
-        setStagedCards((prev) => prev.filter((c) => c.id !== droppedCard.id));
-
-        // 2. Safely add back to player hand
         setGameState((prev) => {
+          if (prev.humanHand.some((c) => c.id === droppedCard.id)) return prev;
           const updatedHand = Array.from(prev.humanHand);
-          if (!updatedHand.some((c) => c.id === cardToReturn.id)) {
-            updatedHand.push(cardToReturn);
-          }
+          updatedHand.splice(source.index, 0, droppedCard);
           return {
             ...prev,
             humanHand: updatedHand,
           };
         });
+        return;
       }
+
       return;
     }
 
@@ -2074,20 +2071,38 @@ export function App() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 justify-center">
+          {/* Action Buttons: Featured Top Primary + 50/50 Split Bottom */}
+          <div className="w-full flex flex-col gap-2.5 pt-1">
+            {/* 🏠 Primary Action: Return to Main Menu */}
             <button
-              onClick={() => setIsStatsModalOpen(true)}
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl shadow transition text-xs cursor-pointer"
+              type="button"
+              onClick={() => {
+                setGameState((prev) => ({ ...prev, isGameOver: false }));
+                setIsGameActive(false);
+              }}
+              className="w-full py-3 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
             >
-              📊 View Statistics
+              🏠 Return to Main Menu
             </button>
-            <button
-              onClick={() => handleStartNewMatch()}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl shadow transition text-xs cursor-pointer"
-            >
-              🔄 New Game
-            </button>
+
+            {/* Secondary Actions: Split 50/50 Row */}
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                onClick={() => handleStartNewMatch()}
+                className="py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                🔄 Start New Game
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsStatsModalOpen(true)}
+                className="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                📊 View Statistics
+              </button>
+            </div>
           </div>
         </div>
       )}
