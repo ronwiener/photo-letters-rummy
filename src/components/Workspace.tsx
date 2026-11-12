@@ -47,7 +47,8 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           {stagedCards.length > 0 && (
             <button
               onClick={onClearWorkspace}
-              className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-600 active:scale-95 transition-all cursor-pointer"
+              disabled={!isHumanTurn || isAiThinking}
+              className="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white border-2 border-white shadow-[0_0_10px_rgba(255,255,255,0.3)] active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
             >
               Clear
             </button>
@@ -57,9 +58,9 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           <button
             onClick={onOpenSwapSkip}
             disabled={!isHumanTurn || isAiThinking}
-            className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-amber-950/80 hover:bg-amber-900/90 text-amber-200 border border-amber-500/60 shadow-[0_0_8px_rgba(245,158,11,0.2)] active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            className="px-2.5 py-1  ml-3 text-[11px] font-bold rounded-lg bg-indigo-950 hover:bg-indigo-900 text-white border border-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.3)] active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
           >
-            <span>🔀</span> Swap / Pass
+            Swap / Pass
           </button>
         </div>
 

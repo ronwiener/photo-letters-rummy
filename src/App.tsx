@@ -94,7 +94,7 @@ export function App() {
   const [isGameActive, setIsGameActive] = useState<boolean>(false);
   const [isRulesOpen, setIsRulesOpen] = useState<boolean>(false);
   const [pendingWildCard, setPendingWildCard] = useState<Card | null>(null);
-
+  const [gameKey, setGameKey] = useState(0);
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
   const [selectedTradeCardIds, setSelectedTradeCardIds] = useState<string[]>(
     [],
@@ -1649,7 +1649,7 @@ export function App() {
         aiTimerRef.current();
       }
     };
-  }, [gameState.currentTurn]);
+  }, [gameState.currentTurn, gameKey]);
 
   const handleConfirmSwapOrSkip = (selectedCardIds: string[]) => {
     if (selectedCardIds.length === 0) {
@@ -1753,6 +1753,8 @@ export function App() {
     const tossMsg = `🎲 Coin Toss: Winner is${starterDisplayName} ${
       openingTurn === "human" ? "Make your move." : "Monica will start."
     }`;
+
+    setGameKey((prev) => prev + 1);
 
     setAiStatusText(tossMsg);
 
