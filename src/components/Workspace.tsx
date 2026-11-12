@@ -57,7 +57,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           <button
             onClick={onOpenSwapSkip}
             disabled={!isHumanTurn || isAiThinking}
-            className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            className="px-2 py-0.5 text-[11px] font-bold rounded-lg bg-amber-950/80 hover:bg-amber-900/90 text-amber-200 border border-amber-500/60 shadow-[0_0_8px_rgba(245,158,11,0.2)] active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
           >
             <span>🔀</span> Swap / Pass
           </button>

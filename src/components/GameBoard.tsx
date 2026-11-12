@@ -107,53 +107,54 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Shared Neon Word Board */}
-
-      <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-3 items-center">
+      <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
         {wordBoard.length === 0 ? (
           <p className="text-[11px] text-neutral-500 italic my-auto text-center">
             No words played yet. Be the first to build one!
           </p>
         ) : (
-          wordBoard.map((played) => {
-            const isSelected = targetBoardWord?.id === played.id;
+          <div className="my-auto flex flex-col gap-3 w-full">
+            {wordBoard.map((played) => {
+              const isSelected = targetBoardWord?.id === played.id;
 
-            return (
-              <button
-                key={played.id}
-                type="button"
-                onClick={() =>
-                  onSelectWordForModification &&
-                  onSelectWordForModification(played)
-                }
-                className={`max-w-full flex items-center p-1.5 rounded-xl transition-colors duration-150 cursor-pointer flex-shrink-0 self-center ${
-                  isSelected
-                    ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50"
-                    : played.playedBy === "human"
-                      ? "border border-cyan-400 bg-cyan-950/50 hover:border-cyan-300"
-                      : "border border-pink-400 bg-pink-950/50 hover:border-pink-300"
-                }`}
-                title={
-                  isSelected
-                    ? "Currently selected for extension"
-                    : "Tap to extend or steal this word"
-                }
-              >
-                {/* Scroll container nested inside with padding to protect end cards from clipping */}
-                <div className="w-full overflow-x-auto scrollbar-none touch-pan-x px-1 py-0.5">
-                  <div className="flex items-center gap-1.5 min-w-max">
-                    {played.cards.map((card, idx) => (
-                      <CardComponent
-                        key={`${played.id}-${card.id}-${idx}`}
-                        card={card}
-                        size="md"
-                        state="active"
-                      />
-                    ))}
+              return (
+                <button
+                  key={played.id}
+                  type="button"
+                  onClick={() =>
+                    onSelectWordForModification &&
+                    onSelectWordForModification(played)
+                  }
+                  className={`max-w-full flex items-center p-1.5 rounded-xl transition-colors duration-150 cursor-pointer shrink-0 self-center ${
+                    isSelected
+                      ? "border-2 border-amber-400 bg-amber-500/30 ring-2 ring-amber-400/50"
+                      : played.playedBy === "human"
+                        ? "border border-cyan-400 bg-cyan-950/50 hover:border-cyan-300"
+                        : "border border-pink-400 bg-pink-950/50 hover:border-pink-300"
+                  }`}
+                  title={
+                    isSelected
+                      ? "Currently selected for extension"
+                      : "Tap to extend or steal this word"
+                  }
+                >
+                  {/* Scroll container nested inside with padding to protect end cards from clipping */}
+                  <div className="w-full overflow-x-auto scrollbar-none touch-pan-x px-1 py-0.5">
+                    <div className="flex items-center gap-1.5 min-w-max">
+                      {played.cards.map((card, idx) => (
+                        <CardComponent
+                          key={`${played.id}-${card.id}-${idx}`}
+                          card={card}
+                          size="md"
+                          state="active"
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </button>
-            );
-          })
+                </button>
+              );
+            })}
+          </div>
         )}
       </div>
 
