@@ -1777,8 +1777,10 @@ export function App() {
     setTargetBoardWord(null);
   };
 
-  // 🧮 Compute exact potential score for the submit button preview
+  // 🧮 Compute exact potential score and true Bingo status for the submit button preview
   let potentialScore = 0;
+  let isPreviewBingo = false;
+
   if (stagedCards.length >= 2) {
     const proposedWordText = getConstructedWord(stagedCards);
     if (isValidWord(proposedWordText)) {
@@ -1793,8 +1795,12 @@ export function App() {
         potentialScore = isOpponentWord
           ? calculateStealScore(stagedCards, cardsAddedCount)
           : calculateWordPoints(stagedCards);
+
+        // 🌟 Only a Bingo if all 8 cards came from the player's hand
+        isPreviewBingo = newCardsFromHand.length === 8;
       } else {
         potentialScore = calculateWordPoints(stagedCards);
+        isPreviewBingo = stagedCards.length === 8;
       }
     }
   }
@@ -1975,6 +1981,7 @@ export function App() {
             onRemoveCard={handleUnstageCard}
             onClearWorkspace={handleClearWorkspace}
             onSubmitWord={handleSubmitWord}
+            isPreviewBingo={isPreviewBingo}
             onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
             isHumanTurn={gameState.currentTurn === "human"}
             isAiThinking={isAiThinking}

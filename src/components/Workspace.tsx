@@ -11,6 +11,7 @@ interface WorkspaceProps {
   onReorderCards?: (newCards: Card[]) => void;
   onClearWorkspace: () => void;
   onSubmitWord: () => void;
+  isPreviewBingo?: boolean;
   onOpenSwapSkip: () => void;
   isHumanTurn: boolean;
   isAiThinking: boolean;
@@ -22,6 +23,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
   onRemoveCard,
   onClearWorkspace,
   potentialScore,
+  isPreviewBingo = false,
   onSubmitWord,
   onOpenSwapSkip,
   isHumanTurn,
@@ -83,8 +85,8 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           ) : (
             <span className="flex items-center gap-1 tracking-wide">
               <span>✨</span> Play Word (+
-              {potentialScore + (stagedCards.length === 8 ? 50 : 0)} pts)
-              {stagedCards.length === 8 && (
+              {potentialScore + (isPreviewBingo ? 50 : 0)} pts)
+              {isPreviewBingo && (
                 <span className="text-amber-300 ml-0.5">🎉 50 Bingo!</span>
               )}
             </span>

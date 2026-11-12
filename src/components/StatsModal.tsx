@@ -102,7 +102,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
             )}
             <button
               onClick={onClose}
-              className="flex-1 py-2 px-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs rounded-xl border border-neutral-700 transition-colors cursor-pointer"
+              className="flex-1 py-2 px-3 bg-cyan-950/80 hover:bg-cyan-900/90 text-cyan-200 font-bold text-xs rounded-xl border border-cyan-500/60 shadow-[0_0_10px_rgba(6,182,212,0.25)] transition-all active:scale-95 cursor-pointer"
             >
               Close
             </button>
@@ -114,7 +114,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({
               onClick={onResetStats}
               className="w-full py-1.5 px-3 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 font-semibold text-[11px] rounded-xl border border-rose-800/50 transition-colors cursor-pointer"
             >
-              🗑️ Reset All Career Stats
+              🗑️ Reset Statistics
             </button>
           )}
         </div>

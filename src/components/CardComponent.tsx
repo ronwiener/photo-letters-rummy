@@ -49,6 +49,8 @@ export const CardComponent: React.FC<CardComponentProps> = ({
         <img
           src={card.photoUrl}
           alt={`Photo letter ${displayLetter}`}
+          loading="eager"
+          decoding="sync"
           className="letter-card-img pointer-events-none w-full h-full object-cover brightness-95 contrast-110 saturate-110"
           onError={() => setImgError(true)}
         />
