@@ -766,7 +766,11 @@ export function App() {
       // 🧮 SCORING CALCULATION
       let basePoints = 0;
       if (isOpponentWord) {
-        basePoints = calculateStealScore(stagedCards, cardsAddedCount);
+        basePoints = calculateStealScore(
+          activeTarget.cards,
+          newCardsFromHand,
+          stagedCards,
+        );
       } else {
         basePoints = calculateWordPoints(stagedCards);
       }
@@ -1272,10 +1276,10 @@ export function App() {
               stealCandidate.newWordText,
             );
 
-            const cardsAddedCount = stealCandidate.cardsFromHand.length;
             const basePoints = calculateStealScore(
+              targetWord.cards,
+              stealCandidate.cardsFromHand,
               correctlyOrderedStealCards,
-              cardsAddedCount,
             );
 
             // 🌟 BINGO CHECK FOR STEALS/EXTENSIONS (Must use all 8 tiles from hand)
@@ -1443,11 +1447,18 @@ export function App() {
                   correctlyOrderedExtensionCards.filter(
                     (c) => !originalCardIds.has(c.id),
                   );
-                const cardsAddedCount = cardsAddedFromHand.length;
+                // BEFORE:
+                // const cardsAddedCount = cardsAddedFromHand.length;
+                // const basePoints = calculateStealScore(
+                //   correctlyOrderedExtensionCards,
+                //   cardsAddedCount,
+                // );
 
+                // AFTER:
                 const basePoints = calculateStealScore(
+                  existingWordObj?.cards || [],
+                  cardsAddedFromHand,
                   correctlyOrderedExtensionCards,
-                  cardsAddedCount,
                 );
 
                 // 🌟 BINGO CHECK FOR EXTENSIONS (Must use all 8 tiles strictly from hand)
@@ -1792,10 +1803,13 @@ export function App() {
           (c) => !originalCardIds.has(c.id),
         );
         const isOpponentWord = targetBoardWord.playedBy !== "human";
-        const cardsAddedCount = newCardsFromHand.length;
 
         potentialScore = isOpponentWord
-          ? calculateStealScore(stagedCards, cardsAddedCount)
+          ? calculateStealScore(
+              targetBoardWord.cards,
+              newCardsFromHand,
+              stagedCards,
+            )
           : calculateWordPoints(stagedCards);
 
         // 🌟 Only a Bingo if all 8 cards came from the player's hand

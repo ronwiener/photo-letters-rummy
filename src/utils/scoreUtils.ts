@@ -70,18 +70,28 @@ export function calculateWordPoints(
 }
 
 /**
- * Calculates steal score based on full new word cards and cards added from hand:
- * - 1 Card Added: Base points for the full new word.
- * - 2+ Cards Added: DOUBLE points (2x) for the full new word.
+ * Calculates steal score: Original root letter points (1x) + Added cards letter points (2x)
+ * + Full new word length bonus.
  */
 export function calculateStealScore(
+  originalCards: { isWild?: boolean; letter?: string }[],
+  addedCards: { isWild?: boolean; letter?: string }[],
   fullWordCards: { isWild?: boolean; letter?: string }[],
-  cardsAddedCount: number,
 ): number {
-  const basePoints = calculateWordPoints(fullWordCards);
+  // 1. Sum letter points of the original inherited word (always 1x)
+  const originalLetterSum = originalCards.reduce(
+    (sum, card) => sum + getCardPointValue(card),
+    0,
+  );
 
-  // 1 card added = 1x base points; 2+ cards added = 2x double points
-  return cardsAddedCount >= 2 ? basePoints * 2 : basePoints;
+  // 2. Sum letter points of newly added cards from hand and double them (2x)
+  const doubledAddedPoints =
+    addedCards.reduce((sum, card) => sum + getCardPointValue(card), 0) * 2;
+
+  // 3. Add the full length bonus of the final updated word
+  const lengthBonus = getLengthBonus(fullWordCards.length);
+
+  return originalLetterSum + doubledAddedPoints + lengthBonus;
 }
 
 /**

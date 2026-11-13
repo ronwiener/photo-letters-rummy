@@ -142,25 +142,17 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
-              {/* 1-Letter vs 2+ Letter Scoring Breakdown */}
+              {/* Steal Scoring Breakdown */}
               <div className="bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 space-y-2">
                 <div>
-                  <h4 className="font-extrabold text-cyan-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    1 Letter Added = Base Word Score
-                  </h4>
-                  <p className="text-neutral-300 text-xs leading-relaxed">
-                    Adding <strong>1 card</strong> from your hand earns you the
-                    standard point value of the newly formed word.
-                  </p>
-                </div>
-
-                <div className="pt-1.5 border-t border-neutral-800/80">
                   <h4 className="font-extrabold text-pink-400 uppercase text-[10px] tracking-wider mb-0.5">
-                    2+ Letters Added = Double Points (2x)
+                    Steal Bonus = 2x Added Letters
                   </h4>
                   <p className="text-neutral-300 text-xs leading-relaxed">
-                    Adding <strong>2 or more cards</strong> from your hand
-                    awards <strong>Double Points</strong> for the whole word!
+                    Every card you add from your hand to steal a word earns{" "}
+                    <strong>Double Letter Points (2x)</strong>, plus the
+                    original root word's letter value (1x) and the full new word
+                    length bonus!
                   </p>
                 </div>
               </div>
@@ -195,7 +187,6 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-
           {activeTab === "wilds" && (
             <div className="flex flex-col gap-3">
               <div className="bg-amber-950/30 p-3 rounded-xl border border-amber-500/30">
