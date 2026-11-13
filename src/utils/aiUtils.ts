@@ -122,7 +122,6 @@ export function findMonicaPlay(
           if (!resolvedCombo) continue;
 
           const addedLetters = resolvedCombo.letters.join("");
-          const cardsAddedCount = combo.length;
           const fullCardsArray = [...boardItem.cards, ...resolvedCombo.cards];
           const combinedLetters = (boardItem.word + addedLetters).toUpperCase();
 
@@ -137,8 +136,9 @@ export function findMonicaPlay(
               if (!isAllowedWord(anagramWord)) continue;
 
               const rawScore = calculateStealScore(
+                boardItem.cards,
+                resolvedCombo.cards,
                 fullCardsArray,
-                cardsAddedCount,
               );
               const cappedScore = Math.min(rawScore, maxSingleTurnScore);
               const reorderedCards = reorderCardsToMatchWord(
@@ -186,7 +186,6 @@ export function findMonicaPlay(
         for (const anagramWord of validAnagrams) {
           if (!isAllowedWord(anagramWord)) continue;
 
-          // FIXED: Corrected from calculateWordScore to calculateWordPoints
           const rawScore = calculateWordPoints(resolved.cards);
           const cappedScore = Math.min(rawScore, maxSingleTurnScore);
           const reorderedCards = reorderCardsToMatchWord(
@@ -195,7 +194,7 @@ export function findMonicaPlay(
           );
 
           validPlays.push({
-            type: "new_word", // FIXED: Updated from "new" to "new_word" matching AiPlayResult interface
+            type: "new_word",
             cardsUsed: reorderedCards,
             wordText: anagramWord,
             score: cappedScore,
