@@ -70,6 +70,7 @@ export function findMonicaPlay(
   wordBoard: PlayedWord[],
   difficulty: "easy" | "medium" | "pro",
   _customIsValidWord?: (word: string) => boolean,
+  deckCount: number = 0,
 ): AiPlayResult | null {
   const checkWord = _customIsValidWord || isValidWord;
 
@@ -207,27 +208,21 @@ export function findMonicaPlay(
   // -------------------------------------------------------------
   // 3. SORT & APPLY DIFFICULTY SELECTION LOGIC
   // -------------------------------------------------------------
-  if (validPlays.length === 0) {
-    return null;
-  }
-
   // Sort highest-scoring moves first
   validPlays.sort((a, b) => b.score - a.score);
 
-  // EASY MODE: Conservative pass chance & pick from lower/mid pool
+  // EASY MODE: Only pass/trade on < 8 pts if cards remain in the draw deck
   if (difficulty === "easy") {
-    if (validPlays[0].score < 8 && Math.random() < 0.3) {
+    if (deckCount > 0 && validPlays[0].score < 8 && Math.random() < 0.3) {
       return null;
     }
     const easyPool = validPlays.slice(0, Math.min(5, validPlays.length));
     return easyPool[Math.floor(Math.random() * easyPool.length)];
   }
 
-  // MEDIUM MODE:
-  // 1. 60% conservative pass/trade chance when best play is < 10 points
-  // 2. Pick randomly from top 4 moves instead of always playing the #1 obscure max-score word
+  // MEDIUM MODE: Only pass/trade on < 10 pts if cards remain in the draw deck
   if (difficulty === "medium") {
-    if (validPlays[0].score < 10 && Math.random() < 0.6) {
+    if (deckCount > 0 && validPlays[0].score < 10 && Math.random() < 0.6) {
       return null;
     }
     const mediumPool = validPlays.slice(0, Math.min(4, validPlays.length));

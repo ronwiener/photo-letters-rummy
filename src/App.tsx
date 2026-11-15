@@ -16,6 +16,7 @@ import {
   calculateWordPoints,
   calculateStealScore,
   calculateHandPenalty,
+  LETTER_VALUES,
 } from "./utils/scoreUtils";
 import { WordHistoryModal } from "./components/WordHistoryModal";
 
@@ -480,32 +481,34 @@ export function App() {
       (c) => c.id === card.id,
     );
 
+    // 🛡️ GUARD: Do nothing if the player taps a stolen board word letter in the workspace
+    if (isOriginalBoardCard) {
+      return;
+    }
+
     setStagedCards((prev) => prev.filter((c) => c.id !== card.id));
 
-    // Only return to hand if it came from the player's hand, NOT the board word
-    if (!isOriginalBoardCard) {
-      // 🛡️ Bulletproof wild reset when unstaging back to hand
-      const isWildCard = card.isWild || card.letter === "WILD";
-      const cardToReturn = isWildCard
-        ? {
-            ...card,
-            assignedLetter: undefined,
-            isWild: true,
-            letter: "WILD" as any,
-          }
-        : card;
+    // 🛡️ Bulletproof wild reset when unstaging back to hand
+    const isWildCard = card.isWild || card.letter === "WILD";
+    const cardToReturn = isWildCard
+      ? {
+          ...card,
+          assignedLetter: undefined,
+          isWild: true,
+          letter: "WILD" as any,
+        }
+      : card;
 
-      setGameState((prev) => {
-        // 🛡️ SAFETY GUARD: Prevent duplicate IDs in humanHand
-        const filteredHand = prev.humanHand.filter(
-          (c) => c.id !== cardToReturn.id,
-        );
-        return {
-          ...prev,
-          humanHand: [...filteredHand, cardToReturn],
-        };
-      });
-    }
+    setGameState((prev) => {
+      // 🛡️ SAFETY GUARD: Prevent duplicate IDs in humanHand
+      const filteredHand = prev.humanHand.filter(
+        (c) => c.id !== cardToReturn.id,
+      );
+      return {
+        ...prev,
+        humanHand: [...filteredHand, cardToReturn],
+      };
+    });
   };
 
   // -------------------------------------------------------------
@@ -2033,21 +2036,26 @@ export function App() {
                 <span className="text-[10px] text-slate-400 block mb-0.5">
                   Leftover Penalties:
                 </span>
+                {/* Human Player Leftover Penalties */}
                 {(() => {
                   const leftover = gameState.humanLeftoverHand ?? [];
                   return leftover.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
-                      {leftover.map((c, idx) => (
-                        <span
-                          key={c.id || `${c.letter}-${idx}`}
-                          className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
-                        >
-                          <span>{c.letter}</span>
-                          <span className="text-rose-400/80 text-[9px]">
-                            (-{c.points})
+                      {leftover.map((c, idx) => {
+                        const cardPoints =
+                          c.points ?? LETTER_VALUES[c.letter] ?? 0;
+                        return (
+                          <span
+                            key={c.id || `${c.letter}-${idx}`}
+                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                          >
+                            <span>{c.letter}</span>
+                            <span className="text-rose-400/80 text-[9px]">
+                              (-{cardPoints})
+                            </span>
                           </span>
-                        </span>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <p className="text-[10px] text-slate-400">
@@ -2068,21 +2076,26 @@ export function App() {
                 <span className="text-[10px] text-slate-400 block mb-0.5">
                   Leftover Penalties:
                 </span>
+                {/* Monica Leftover Penalties */}
                 {(() => {
-                  const leftover = gameState.computerLeftoverHand ?? [];
+                  const leftover = gameState.humanLeftoverHand ?? [];
                   return leftover.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
-                      {leftover.map((c, idx) => (
-                        <span
-                          key={c.id || `${c.letter}-${idx}`}
-                          className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
-                        >
-                          <span>{c.letter}</span>
-                          <span className="text-rose-400/80 text-[9px]">
-                            (-{c.points})
+                      {leftover.map((c, idx) => {
+                        const cardPoints =
+                          c.points ?? LETTER_VALUES[c.letter] ?? 0;
+                        return (
+                          <span
+                            key={c.id || `${c.letter}-${idx}`}
+                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                          >
+                            <span>{c.letter}</span>
+                            <span className="text-rose-400/80 text-[9px]">
+                              (-{cardPoints})
+                            </span>
                           </span>
-                        </span>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <p className="text-[10px] text-slate-400">

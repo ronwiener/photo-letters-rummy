@@ -81,10 +81,10 @@ export const CardComponent: React.FC<CardComponentProps> = ({
       {/* 🌟 POINT BADGE FOR REGULAR CARDS */}
       {!isWild && (
         <div
-          className={`absolute bottom-0.5 z-10 text-yellow-300 font-bold text-[11px] leading-none select-none pointer-events-none ${
+          className={`absolute bottom-0 z-10 text-yellow-300 font-bold text-[11px] leading-none select-none pointer-events-none ${
             (card.assignedLetter || card.letter || "").toUpperCase() === "Q"
-              ? "left-0 translate-x-1/2"
-              : "right-0 -translate-x-1/2"
+              ? "left-0 bottom-0"
+              : "right-0 bottom-0"
           }`}
           style={{
             textShadow:

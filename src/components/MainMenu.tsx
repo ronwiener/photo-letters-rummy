@@ -45,7 +45,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
           WORD WAR
         </h1>
-        <h2 className="text-sm sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
+        <h2 className="text-base sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
           Colorful and fun word building card game. Create your own word or
           steal your opponent's word by rearranging or adding on. Highest point
           total at the end of the game is the winner!
@@ -57,7 +57,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         {/* Play Button */}
         <button
           onClick={onStartMatch}
-          className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-black text-sm uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all cursor-pointer transform active:scale-95"
+          className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-black text-base uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all cursor-pointer transform active:scale-95"
         >
           🎮 Play vs {botName}
         </button>
@@ -65,7 +65,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         {/* Rules Button */}
         <button
           onClick={onOpenRules}
-          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
+          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-sm uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
         >
           📖 How to Play & Rules
         </button>
@@ -75,14 +75,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             e.stopPropagation();
             onOpenStats();
           }}
-          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
+          className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-sm uppercase tracking-wider rounded-2xl border border-neutral-700 transition-all cursor-pointer"
         >
           📊 Statistics
         </button>
 
         {/* AI Opponent Difficulty Selector */}
         <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-1.5 text-center">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">
+          <span className="text-[12px] font-extrabold uppercase tracking-widest text-neutral-400">
             {botName} AI Difficulty
           </span>
           <div className="grid grid-cols-3 gap-1.5 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
@@ -90,7 +90,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               <button
                 key={diff}
                 onClick={() => onSelectDifficulty(diff)}
-                className={`py-1.5 rounded-lg text-xs font-black uppercase transition-all cursor-pointer ${
+                className={`py-1.5 rounded-lg text-sm font-black uppercase transition-all cursor-pointer ${
                   aiDifficulty === diff
                     ? "bg-pink-600 text-white shadow-[0_0_10px_rgba(219,39,119,0.5)]"
                     : "text-neutral-500 hover:text-neutral-300"
@@ -104,14 +104,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
         {/* 🗡️ GAME SCORING MODE TOGGLE */}
         <div className="pt-2 border-t border-neutral-800/80 flex flex-col gap-1.5 text-center">
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400">
+          <span className="text-[12px] font-extrabold uppercase tracking-widest text-neutral-400">
             Game Play Style
           </span>
           <div className="grid grid-cols-2 gap-1.5 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
             <button
               type="button"
               onClick={() => handleModeClick("cutthroat")}
-              className={`py-1.5 px-2 rounded-lg text-[11px] font-black uppercase transition-all cursor-pointer ${
+              className={`py-1.5 px-2 rounded-lg text-[14px] font-black uppercase transition-all cursor-pointer ${
                 scoringMode === "cutthroat"
                   ? "bg-rose-600 text-white shadow-[0_0_10px_rgba(225,29,72,0.5)]"
                   : "text-neutral-500 hover:text-neutral-300"
@@ -122,7 +122,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             <button
               type="button"
               onClick={() => handleModeClick("accumulator")}
-              className={`py-1.5 px-2 rounded-lg text-[11px] font-black uppercase transition-all cursor-pointer ${
+              className={`py-1.5 px-2 rounded-lg text-[14px] font-black uppercase transition-all cursor-pointer ${
                 scoringMode === "accumulator"
                   ? "bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                   : "text-neutral-500 hover:text-neutral-300"
