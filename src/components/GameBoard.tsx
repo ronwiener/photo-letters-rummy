@@ -9,12 +9,16 @@ interface GameBoardProps {
   targetBoardWord?: PlayedWord | null;
   onOpenWordsModal: () => void;
   onSelectWordForModification?: (playedWord: PlayedWord) => void;
+  onOpenRules: () => void;
+  onReturnToMenu: () => void;
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({
   gameState,
   onCardClick,
   onOpenWordsModal,
+  onOpenRules,
+  onReturnToMenu,
   targetBoardWord,
   onSelectWordForModification,
 }) => {
@@ -34,37 +38,69 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
   return (
     <div className="flex flex-col gap-1.5 w-full h-full">
-      {/* Top Section: Balanced Side-by-Side Scores Bar */}
-      <div className="flex items-center justify-between bg-neutral-900/80 py-1.5 px-3 rounded-xl border border-neutral-800 shadow-sm">
+      {/* Top Section: Single-Line Balanced Scores Bar & Action Buttons */}
+      <div className="flex items-center justify-between gap-1 bg-neutral-900/80 py-1.5 px-2.5 rounded-xl border border-neutral-800 shadow-sm">
         {/* Human Player Score */}
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-[11px] text-neutral-400 uppercase font-bold tracking-wider">
+        <div className="flex items-baseline gap-1 whitespace-nowrap">
+          <span className="text-xs text-neutral-300 uppercase font-bold tracking-wide">
             You
           </span>
           <span className="text-base font-extrabold text-cyan-400">
-            {gameState?.matchScores?.human ?? 0}{" "}
-            <span className="text-[10px] font-semibold text-neutral-500">
+            {gameState?.matchScores?.human ?? 0}
+            <span className="text-[11px] font-semibold text-neutral-400 ml-0.5">
               pts
             </span>
           </span>
         </div>
 
-        <div className="h-3.5 w-px bg-neutral-800" />
+        {/* 🎮 Compact Single-Line Rules & Menu Buttons with Larger Gap */}
+        <div className="flex items-center gap-3 bg-neutral-800/70 p-1 rounded-lg border border-neutral-700/50 shrink-0">
+          <button
+            type="button"
+            onClick={onOpenRules}
+            className="px-2.5 py-1 bg-neutral-900/80 hover:bg-neutral-700 text-cyan-300 rounded text-xs font-extrabold whitespace-nowrap border border-cyan-500/20 transition-colors cursor-pointer flex items-center gap-1"
+            title="View Rules"
+          >
+            <span>Rules</span>
+          </button>
 
-        {/* Monica Score & Hand Count */}
-        <div className="flex items-baseline gap-1.5">
-          <span className="text-base font-extrabold text-pink-400">
-            {gameState?.matchScores?.computer ?? 0}{" "}
-            <span className="text-[10px] font-semibold text-neutral-500">
-              pts
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Return to main menu? Your current match progress will be lost.",
+                )
+              ) {
+                onReturnToMenu();
+              }
+            }}
+            className="px-2.5 py-1 bg-neutral-900/80 hover:bg-neutral-700 text-neutral-300 rounded text-xs font-extrabold whitespace-nowrap border border-neutral-700/60 transition-colors cursor-pointer flex items-center gap-1"
+            title="Main Menu"
+          >
+            <span>Menu</span>
+          </button>
+        </div>
+
+        {/* Monica Score & Compact Hand Pill */}
+        <div className="flex items-center gap-1.5 whitespace-nowrap">
+          <div className="flex items-baseline gap-1">
+            <span className="text-base font-extrabold text-pink-400">
+              {gameState?.matchScores?.computer ?? 0}
+              <span className="text-[11px] font-semibold text-neutral-400 ml-0.5">
+                pts
+              </span>
             </span>
-          </span>
-          <span className="text-[11px] text-neutral-400 uppercase font-bold tracking-wider">
-            {botName}
-          </span>
+            <span className="text-xs text-neutral-300 uppercase font-bold tracking-wide">
+              {gameState.botName}
+            </span>
+          </div>
 
-          {/* Monica's Card Count Badge */}
-          <span className="px-1.5 py-0.2 bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[10px] font-extrabold rounded-full ml-0.5">
+          {/* Compact Hand Count Pill */}
+          <span
+            className="px-1.5 py-0.5 bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[11px] font-extrabold rounded-full"
+            title={`${gameState.botName} has ${gameState?.computerHand?.length ?? 0} cards`}
+          >
             {gameState?.computerHand?.length ?? 0}{" "}
             {gameState?.computerHand?.length === 1 ? "card" : "cards"}
           </span>
@@ -72,14 +108,14 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Middle Section: Compact Deck Counter & Words Played Summary */}
-      <div className="flex items-center justify-between px-2.5 py-1 bg-neutral-900/80 rounded-lg border border-neutral-800 text-[11px] text-neutral-300">
+      <div className="flex items-center justify-between px-3 py-1.5 bg-neutral-900/80 rounded-lg border border-neutral-800 text-xs text-neutral-200">
         {/* Unified Deck Counter Badge */}
-        <div className="flex items-center gap-1 font-medium">
-          <span className="text-neutral-400 font-bold uppercase text-[9px] tracking-wide">
+        <div className="flex items-center gap-1.5 font-medium">
+          <span className="text-neutral-300 font-bold uppercase text-[14px] tracking-wide">
             Deck:
           </span>
           <span
-            className={`px-1.5 py-0.2 text-[10px] font-black border rounded-full ${getDeckBadgeColor(
+            className={`px-2 py-0.5 text-sm font-black border rounded-full ${getDeckBadgeColor(
               deckCount,
             )}`}
           >
@@ -90,26 +126,26 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         {/* CENTER: Words Played Button */}
         <button
           onClick={onOpenWordsModal}
-          className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-medium text-slate-200 rounded-lg border border-slate-700 transition-all shadow-sm cursor-pointer"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-sm font-semibold text-slate-100 rounded-lg border border-slate-700 transition-all shadow-sm cursor-pointer"
         >
           📖 Words List
         </button>
 
         {/* Played Words Count */}
-        <div className="flex items-center gap-1 font-medium">
-          <span className="text-neutral-400 font-bold uppercase text-[9px] tracking-wide">
+        <div className="flex items-center gap-1.5 font-medium">
+          <span className="text-neutral-300 font-bold uppercase text-[12px] tracking-wide">
             Words Played:
           </span>
-          <span className="text-[10px] font-black text-emerald-400 bg-neutral-800/80 px-1.5 py-0.2 rounded border border-neutral-700">
+          <span className="text-sm font-black text-emerald-400 bg-neutral-800/80 px-2 py-0.5 rounded border border-neutral-700">
             {wordBoard.length}
           </span>
         </div>
       </div>
 
-      {/* Shared Neon Word Board */}
+      {/* Shared Neon Word Board (Unchanged internal styles) */}
       <div className="bg-neutral-900/60 p-3 rounded-xl border border-neutral-800 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
         {wordBoard.length === 0 ? (
-          <p className="text-[11px] text-neutral-500 italic my-auto text-center">
+          <p className="text-xs text-neutral-400 italic my-auto text-center">
             No words played yet. Be the first to build one!
           </p>
         ) : (
@@ -159,8 +195,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Human Hand Header */}
-      <div className="flex justify-between items-center px-1 mt-0.5">
-        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+      <div className="flex justify-between items-center px-1.5 mt-1">
+        <span className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
           Your Hand ({humanHand.length} cards)
         </span>
       </div>
@@ -171,7 +207,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`max-w-2xl mx-auto shrink-0 flex flex-row flex-nowrap justify-center items-center gap-1 p-1.5 rounded-xl border overflow-x-auto transition-all ${
+            className={`max-w-2xl mx-auto shrink-0 flex flex-row flex-nowrap justify-center items-center gap-1 p-2 rounded-xl border overflow-x-auto transition-all ${
               snapshot.isDraggingOver
                 ? "bg-neutral-900 border-amber-400/60"
                 : "bg-neutral-900/60 border-neutral-800"

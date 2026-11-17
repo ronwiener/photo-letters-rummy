@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Browser } from "@capacitor/browser";
 
 interface RulesModalProps {
   isOpen: boolean;
@@ -400,6 +401,17 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
         >
           Got It, Let's Play!
+        </button>
+        <button
+          type="button"
+          onClick={async () => {
+            await Browser.open({
+              url: "https://photoletterrummy.netlify.app/privacy",
+            });
+          }}
+          className="text-xs text-amber-400/90 hover:text-amber-300 underline underline-offset-2 transition cursor-pointer"
+        >
+          🔒 Read Game Privacy Policy
         </button>
       </div>
     </div>

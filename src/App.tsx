@@ -795,6 +795,8 @@ export function App() {
       });
 
       const existingHistory = activeTarget.history || [];
+      // 1. Capture the immediate current word before it gets overwritten
+      const previousWordText = activeTarget.word;
       const updatedPlayedWord: PlayedWord = {
         id: activeTarget.id,
         word: proposedWordText,
@@ -809,11 +811,11 @@ export function App() {
             player: "human",
             description: isEightLetterBingo
               ? isOpponentWord
-                ? `🎉 BINGO! Stole "${activeTarget.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
-                : `🎉 BINGO! Extended "${activeTarget.word}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                ? `🎉 BINGO! Stole "${previousWordText}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `🎉 BINGO! Extended "${previousWordText}" with all 8 tiles into "${proposedWordText}" (+${pointsAwarded} pts)!`
               : isOpponentWord
-                ? `⚡ Stole "${activeTarget.word}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
-                : `Extended "${activeTarget.word}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
+                ? `⚡ Stole "${previousWordText}" with ${cardsAddedCount} added letter(s) into "${proposedWordText}" (+${pointsAwarded} pts)!`
+                : `Extended "${previousWordText}" into "${proposedWordText}" (+${pointsAwarded} pts).`,
             timestamp: Date.now(),
           },
         ],
@@ -1301,13 +1303,12 @@ export function App() {
               isBingo: isEightLetterBingo,
             });
 
-            if (previousOwner === "human") {
-              const stolenWordText =
-                targetWord.originalWord ||
-                (targetWord as any).word ||
-                getConstructedWord(targetWord.cards) ||
-                "word";
+            // Grab the immediate current word on the board right now for correct toast / naming
+            const immediatePreviousWord =
+              targetWord.word || getConstructedWord(targetWord.cards) || "word";
 
+            if (previousOwner === "human") {
+              const stolenWordText = immediatePreviousWord;
               const newWordText = stealCandidate.newWordText || "a new word";
 
               if (gameState.scoringMode === "cutthroat") {
@@ -1317,8 +1318,7 @@ export function App() {
                 ? `🎉 ${gameState.botName} scored a BINGO using all 8 letters! Stole "${stolenWordText}" into "${newWordText}" (+${pointsAwarded} pts)!`
                 : `⚡ ${gameState.botName} stole your word "${stolenWordText}" to make "${newWordText}" (+${pointsAwarded} pts)!`;
             } else {
-              const baseWordText =
-                targetWord?.originalWord || targetWord?.word || "word";
+              const baseWordText = immediatePreviousWord;
               const newWordText = stealCandidate?.newWordText || "a new word";
               statusAnnouncement = isEightLetterBingo
                 ? `🎉 ${gameState.botName} scored an 8-letter BINGO! Expanded "${baseWordText}" into "${newWordText}" (+${pointsAwarded} pts)!`
@@ -1343,8 +1343,8 @@ export function App() {
                         : "extended") as any,
                       player: "computer" as const,
                       description: isEightLetterBingo
-                        ? `🎉 ${gameState.botName} scored a BINGO! Stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`
-                        : `${gameState.botName} stole "${targetWord.originalWord || targetWord.word}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
+                        ? `🎉 ${gameState.botName} scored a BINGO! Stole "${immediatePreviousWord}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`
+                        : `${gameState.botName} stole "${immediatePreviousWord}" and expanded it into "${stealCandidate.newWordText}" (+${pointsAwarded} pts)`,
                       timestamp: Date.now(),
                     },
                   ],
@@ -1450,14 +1450,7 @@ export function App() {
                   correctlyOrderedExtensionCards.filter(
                     (c) => !originalCardIds.has(c.id),
                   );
-                // BEFORE:
-                // const cardsAddedCount = cardsAddedFromHand.length;
-                // const basePoints = calculateStealScore(
-                //   correctlyOrderedExtensionCards,
-                //   cardsAddedCount,
-                // );
 
-                // AFTER:
                 const basePoints = calculateStealScore(
                   existingWordObj?.cards || [],
                   cardsAddedFromHand,
@@ -1478,11 +1471,11 @@ export function App() {
                   isBingo: isEightLetterBingo,
                 });
 
+                // Grab immediate current word prior to extension
+                const immediatePreviousWord = existingWordObj?.word || "word";
+
                 if (previousOwner === "human") {
-                  const stolenRootName =
-                    existingWordObj?.originalWord ||
-                    existingWordObj?.word ||
-                    "word";
+                  const stolenRootName = immediatePreviousWord;
                   if (gameState.scoringMode === "cutthroat") {
                     humanMatchScore = Math.max(
                       0,
@@ -1517,8 +1510,8 @@ export function App() {
                             : "extended") as any,
                           player: "computer",
                           description: isEightLetterBingo
-                            ? `🎉 ${gameState.botName} scored a BINGO! Stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`
-                            : `${gameState.botName} stole word to "${playResult.wordText}" (+${pointsAwarded} pts)`,
+                            ? `🎉 ${gameState.botName} scored a BINGO! Stole word "${immediatePreviousWord}" to "${playResult.wordText}" (+${pointsAwarded} pts)`
+                            : `${gameState.botName} stole word "${immediatePreviousWord}" to "${playResult.wordText}" (+${pointsAwarded} pts)`,
                           timestamp: Date.now(),
                         },
                       ],
@@ -1871,102 +1864,68 @@ export function App() {
   }
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-neutral-950 p-2 pb-5 flex flex-col justify-start gap-1.5 relative overflow-hidden">
+    <div className="max-w-md mx-auto h-screen bg-neutral-950 pt-safe pb-safe p-2 flex flex-col justify-start gap-1.5 relative overflow-hidden">
       {/* Scoreboard, Deck Badge & Menu Bar */}
-      <div className="flex flex-col gap-1 py-1.5 px-3 bg-neutral-900/90 rounded-xl border border-neutral-800 shadow-md">
-        {/* Scoreboard Row */}
-        <div className="flex justify-between items-center text-xs pb-0.5 border-b border-neutral-800/80">
-          {/* Deck Remaining Badge / Score Indicator */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/30">
-              Deck: {gameState.deck.length}
-            </span>
-          </div>
 
-          {/* Rules & Main Menu Navigation Buttons */}
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setIsRulesOpen(true)}
-              className="px-2 py-0.5 bg-neutral-800 hover:bg-neutral-700 text-cyan-300 rounded text-[10px] font-extrabold border border-cyan-500/30 cursor-pointer transition-colors"
-              title="View Rules"
-            >
-              📖 Rules
-            </button>
-            <button
-              onClick={() => {
-                if (
-                  window.confirm(
-                    "Return to main menu? Your current match progress will be lost.",
-                  )
-                ) {
-                  setIsGameActive(false);
-                }
-              }}
-              className="px-2 py-0.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded text-[10px] font-extrabold border border-neutral-700 cursor-pointer transition-colors"
-              title="Main Menu"
-            >
-              🏠 Menu
-            </button>
-          </div>
-        </div>
+      {/* Sticky Banner Wrapper */}
+      <div className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-800/80 shadow-lg">
+        <div className="text-center">
+          <div
+            className={`w-full max-w-xl mx-auto p-1.5 rounded-xl text-center transition-all duration-300 shadow-md ${
+              gameState.currentTurn === "computer"
+                ? "bg-amber-100 border border-amber-400 text-amber-900"
+                : "bg-emerald-950/80 border border-emerald-500/50 text-emerald-100"
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span
+                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                    gameState.currentTurn === "computer"
+                      ? "bg-amber-400"
+                      : "bg-emerald-400"
+                  }`}
+                ></span>
+                <span
+                  className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                    gameState.currentTurn === "computer"
+                      ? "bg-amber-500"
+                      : "bg-emerald-500"
+                  }`}
+                ></span>
+              </span>
 
-        {/* Sticky Banner Wrapper */}
-        <div className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-800/80 shadow-lg">
-          <div className="text-center">
-            <div
-              className={`w-full max-w-xl mx-auto p-1.5 rounded-xl text-center transition-all duration-300 shadow-md ${
-                gameState.currentTurn === "computer"
-                  ? "bg-amber-100 border border-amber-400 text-amber-900"
-                  : "bg-emerald-950/80 border border-emerald-500/50 text-emerald-100"
-              }`}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span
-                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                      gameState.currentTurn === "computer"
-                        ? "bg-amber-400"
-                        : "bg-emerald-400"
-                    }`}
-                  ></span>
-                  <span
-                    className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                      gameState.currentTurn === "computer"
-                        ? "bg-amber-500"
-                        : "bg-emerald-500"
-                    }`}
-                  ></span>
-                </span>
-
-                <h2 className="text-xs font-extrabold tracking-wide">
-                  {gameState.currentTurn === "computer"
-                    ? isAiThinking
-                      ? aiStatusText
-                      : `${gameState.botName}'s Turn...`
-                    : gameState.isFirstTurn && aiStatusText
-                      ? aiStatusText
-                      : "👉 YOUR TURN!"}
-                </h2>
-              </div>
-
-              {/* Dynamic Sub-message based on turn rules */}
-              {gameState.currentTurn === "human" && (
-                <p className="text-[10px] text-emerald-400/90 font-medium mt-0.5">
-                  {gameState.isFirstTurn
-                    ? "Turn 1: Play 1 word, trade letters, or pass."
-                    : "Play 1 word, steal, trade letters, or end turn."}
-                </p>
-              )}
+              <h2 className="text-xs font-extrabold tracking-wide">
+                {gameState.currentTurn === "computer"
+                  ? isAiThinking
+                    ? aiStatusText
+                    : `${gameState.botName}'s Turn...`
+                  : gameState.isFirstTurn && aiStatusText
+                    ? aiStatusText
+                    : "👉 YOUR TURN!"}
+              </h2>
             </div>
+
+            {/* Dynamic Sub-message based on turn rules */}
+            {gameState.currentTurn === "human" && (
+              <p className="text-[10px] text-emerald-400/90 font-medium mt-0.5">
+                {gameState.isFirstTurn
+                  ? "Turn 1: Play 1 word, trade letters, or pass."
+                  : "Play 1 word, steal, trade letters, or end turn."}
+              </p>
+            )}
           </div>
         </div>
       </div>
+
       <DragDropContext onDragEnd={handleDragEnd}>
         {/* Main Shared Playing Field */}
         <div className="flex-1 min-h-0 flex flex-col">
           <GameBoard
             gameState={gameState}
             targetBoardWord={targetBoardWord}
+            onOpenRules={() => setIsRulesOpen(true)}
+            onReturnToMenu={() => setIsGameActive(false)}
             onOpenWordsModal={() => {
               console.log("📖 Words List button clicked!");
               setIsWordsModalOpen(true);
@@ -2012,7 +1971,7 @@ export function App() {
       {/* 🏁 GAME-OVER OVERLAY BANNER */}
       {gameState.isGameOver && (
         <div className="absolute inset-x-4 top-20 z-50 bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-5 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
-          <h2 className="text-2xl font-extrabold tracking-wide mb-1">
+          <h2 className="text-3xl font-extrabold tracking-wide mb-1.5">
             {gameState.winner === "human"
               ? "🎉 You Won the Match!"
               : gameState.winner === "computer"
@@ -2020,37 +1979,39 @@ export function App() {
                 : "🤝 It's a Tie / Stalemate!"}
           </h2>
 
-          <p className="text-slate-300 text-xs mb-3">
-            Final scores include penalties for unplayed tiles left in hand.
+          <p className="text-slate-300 text-sm mb-4">
+            Final scores with letter penalties incurred.
           </p>
 
           {/* Final Score Breakdown & Leftover Hands */}
-          <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3 rounded-xl mb-4 text-left border border-slate-700 text-xs">
+          <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3.5 rounded-xl mb-4 text-left border border-slate-700 text-sm">
             {/* Human Player */}
             <div>
-              <p className="font-bold text-amber-400">You</p>
-              <p className="text-xl font-black">
+              <p className="font-bold text-amber-400 text-base">You</p>
+              <p className="text-2xl font-black">
                 {gameState.matchScores.human} pts
               </p>
-              <div className="mt-1">
-                <span className="text-[10px] text-slate-400 block mb-0.5">
-                  Leftover Penalties:
+              <div className="mt-2">
+                <span className="text-xs font-semibold text-slate-400 block mb-1">
+                  Letter Penalties:
                 </span>
                 {/* Human Player Leftover Penalties */}
                 {(() => {
                   const leftover = gameState.humanLeftoverHand ?? [];
                   return leftover.length > 0 ? (
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1.5">
                       {leftover.map((c, idx) => {
                         const cardPoints =
                           c.points ?? LETTER_VALUES[c.letter] ?? 0;
                         return (
                           <span
                             key={c.id || `${c.letter}-${idx}`}
-                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
                           >
-                            <span>{c.letter}</span>
-                            <span className="text-rose-400/80 text-[9px]">
+                            <span className="text-sm font-black">
+                              {c.letter}
+                            </span>
+                            <span className="text-rose-400 text-xs">
                               (-{cardPoints})
                             </span>
                           </span>
@@ -2058,9 +2019,7 @@ export function App() {
                       })}
                     </div>
                   ) : (
-                    <p className="text-[10px] text-slate-400">
-                      None (0 penalty)
-                    </p>
+                    <p className="text-xs text-slate-400">None (0 penalty)</p>
                   );
                 })()}
               </div>
@@ -2068,29 +2027,33 @@ export function App() {
 
             {/* Computer / Bot Player */}
             <div>
-              <p className="font-bold text-amber-400">{gameState.botName}</p>
-              <p className="text-xl font-black">
+              <p className="font-bold text-amber-400 text-base">
+                {gameState.botName}
+              </p>
+              <p className="text-2xl font-black">
                 {gameState.matchScores.computer} pts
               </p>
-              <div className="mt-1">
-                <span className="text-[10px] text-slate-400 block mb-0.5">
-                  Leftover Penalties:
+              <div className="mt-2">
+                <span className="text-xs font-semibold text-slate-400 block mb-1">
+                  Letter Penalties:
                 </span>
                 {/* Monica Leftover Penalties */}
                 {(() => {
                   const leftover = gameState.humanLeftoverHand ?? [];
                   return leftover.length > 0 ? (
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1.5">
                       {leftover.map((c, idx) => {
                         const cardPoints =
                           c.points ?? LETTER_VALUES[c.letter] ?? 0;
                         return (
                           <span
                             key={c.id || `${c.letter}-${idx}`}
-                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"
+                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
                           >
-                            <span>{c.letter}</span>
-                            <span className="text-rose-400/80 text-[9px]">
+                            <span className="text-sm font-black">
+                              {c.letter}
+                            </span>
+                            <span className="text-rose-400 text-xs">
                               (-{cardPoints})
                             </span>
                           </span>
@@ -2098,9 +2061,7 @@ export function App() {
                       })}
                     </div>
                   ) : (
-                    <p className="text-[10px] text-slate-400">
-                      None (0 penalty)
-                    </p>
+                    <p className="text-xs text-slate-400">None (0 penalty)</p>
                   );
                 })()}
               </div>
@@ -2116,7 +2077,7 @@ export function App() {
                 setGameState((prev) => ({ ...prev, isGameOver: false }));
                 setIsGameActive(false);
               }}
-              className="w-full py-3 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
             >
               🏠 Return to Main Menu
             </button>
@@ -2126,7 +2087,7 @@ export function App() {
               <button
                 type="button"
                 onClick={() => handleStartNewMatch()}
-                className="py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
               >
                 🔄 Start New Game
               </button>
@@ -2134,7 +2095,7 @@ export function App() {
               <button
                 type="button"
                 onClick={() => setIsStatsModalOpen(true)}
-                className="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                className="py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
               >
                 📊 View Statistics
               </button>
