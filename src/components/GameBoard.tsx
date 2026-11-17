@@ -25,7 +25,6 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   const humanHand = gameState?.humanHand ?? [];
   const wordBoard = gameState?.wordBoard ?? [];
   const deckCount = gameState?.deck?.length ?? 0;
-  const botName = gameState?.botName ?? "Monica";
 
   // Color coding for unified deck badge level
   const getDeckBadgeColor = (count: number) => {
