@@ -109,7 +109,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({
           >
             {stagedCards.length === 0 && !snapshot.isDraggingOver ? (
               <p className="text-xs sm:text-sm text-neutral-400 italic text-center px-2">
-                Tap cards from your hand to build a word
+                Tap/Drag cards from your hand to build a word
               </p>
             ) : (
               stagedCards.map((card, index) => (

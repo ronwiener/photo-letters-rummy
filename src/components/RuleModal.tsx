@@ -325,7 +325,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
                   <div className="col-span-2 flex justify-between items-center bg-neutral-900 p-1.5 rounded border border-neutral-800">
                     <span>8+ Letters (Board Word)</span>
                     <span className="font-bold text-cyan-400">
-                      +35 pts (+10 per letter after 7)
+                      35 pts for 8 letters, with +10 pts for every letter beyond
+                      8.
                     </span>
                   </div>
                 </div>

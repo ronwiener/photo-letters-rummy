@@ -39,10 +39,16 @@ export const MainMenu: React.FC<MainMenuProps> = ({
 
       {/* Title Header */}
       <div className="flex flex-col items-center text-center z-10">
-        <span className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-2">
+        <span className="text-xs font-white uppercase tracking-[0.3em] text-white-400 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-500/30 mb-2">
           Word Card Game
         </span>
-        <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-amber-300 to-pink-500 drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
+        <h1
+          style={{
+            WebkitTextStroke: "1.5px #ffffff",
+            paintOrder: "stroke fill",
+          }}
+          className="text-5xl font-black tracking-tight text-red-600 drop-shadow-[0_0_25px_rgba(239,68,68,0.5)]"
+        >
           WORD WAR
         </h1>
         <h2 className="text-base sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
@@ -57,9 +63,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         {/* Play Button */}
         <button
           onClick={onStartMatch}
-          className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-black text-base uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all cursor-pointer transform active:scale-95"
+          className="w-full py-3.5 bg-white hover:bg-neutral-100 text-red-600 font-black text-base uppercase tracking-wider rounded-2xl shadow-[0_0_25px_rgba(239,68,68,0.3)] transition-all cursor-pointer transform active:scale-95"
         >
-          🎮 Play vs {botName}
+          Play vs {botName}
         </button>
 
         {/* Rules Button */}
@@ -92,7 +98,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                 onClick={() => onSelectDifficulty(diff)}
                 className={`py-1.5 rounded-lg text-sm font-black uppercase transition-all cursor-pointer ${
                   aiDifficulty === diff
-                    ? "bg-pink-600 text-white shadow-[0_0_10px_rgba(219,39,119,0.5)]"
+                    ? "bg-red-600 text-white shadow-[0_0_10px_rgba(219,39,119,0.5)]"
                     : "text-neutral-500 hover:text-neutral-300"
                 }`}
               >
@@ -113,7 +119,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               onClick={() => handleModeClick("cutthroat")}
               className={`py-1.5 px-2 rounded-lg text-[14px] font-black uppercase transition-all cursor-pointer ${
                 scoringMode === "cutthroat"
-                  ? "bg-rose-600 text-white shadow-[0_0_10px_rgba(225,29,72,0.5)]"
+                  ? "bg-red-600 text-white shadow-[0_0_10px_rgba(225,29,72,0.5)]"
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >
@@ -124,7 +130,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               onClick={() => handleModeClick("accumulator")}
               className={`py-1.5 px-2 rounded-lg text-[14px] font-black uppercase transition-all cursor-pointer ${
                 scoringMode === "accumulator"
-                  ? "bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                  ? "bg-white text-red-600 shadow-[0_0_10px_rgba(255,255,255,0.4)]"
                   : "text-neutral-500 hover:text-neutral-300"
               }`}
             >

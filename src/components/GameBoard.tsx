@@ -36,78 +36,43 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1.5 w-full h-full">
-      {/* Top Section: Single-Line Balanced Scores Bar & Action Buttons */}
-      <div className="flex items-center justify-between gap-1 bg-neutral-900/80 py-1.5 px-2.5 rounded-xl border border-neutral-800 shadow-sm">
-        {/* Human Player Score */}
-        <div className="flex items-baseline gap-1 whitespace-nowrap">
+    <div className="flex-1 min-h-0 flex flex-col gap-1.5 w-full">
+      {/* Top Section: Mirror-balanced Scores Bar */}
+      <div className="flex items-center justify-between gap-2 bg-neutral-900/90 py-2 px-3 rounded-xl border border-neutral-800 shadow-md">
+        {/* Human Player Score (Label left, Score right) */}
+        <div className="flex items-baseline gap-1.5 whitespace-nowrap bg-neutral-800/50 px-3 py-1 rounded-lg border border-neutral-700/40">
           <span className="text-xs text-neutral-300 uppercase font-bold tracking-wide">
             You
           </span>
           <span className="text-base font-extrabold text-cyan-400">
             {gameState?.matchScores?.human ?? 0}
-            <span className="text-[11px] font-semibold text-neutral-400 ml-0.5">
-              pts
-            </span>
+          </span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            style={{
+              WebkitTextStroke: "1px #ffffff",
+              paintOrder: "stroke fill",
+            }}
+            className="text-base font-black uppercase tracking-[0.2em] text-red-600 drop-shadow-[0_2px_3px_rgba(0,0,0,0.9)]"
+          >
+            WORD WAR
           </span>
         </div>
 
-        {/* 🎮 Compact Single-Line Rules & Menu Buttons with Larger Gap */}
-        <div className="flex items-center gap-3 bg-neutral-800/70 p-1 rounded-lg border border-neutral-700/50 shrink-0">
-          <button
-            type="button"
-            onClick={onOpenRules}
-            className="px-2.5 py-1 bg-neutral-900/80 hover:bg-neutral-700 text-cyan-300 rounded text-xs font-extrabold whitespace-nowrap border border-cyan-500/20 transition-colors cursor-pointer flex items-center gap-1"
-            title="View Rules"
-          >
-            <span>Rules</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (
-                window.confirm(
-                  "Return to main menu? Your current match progress will be lost.",
-                )
-              ) {
-                onReturnToMenu();
-              }
-            }}
-            className="px-2.5 py-1 bg-neutral-900/80 hover:bg-neutral-700 text-neutral-300 rounded text-xs font-extrabold whitespace-nowrap border border-neutral-700/60 transition-colors cursor-pointer flex items-center gap-1"
-            title="Main Menu"
-          >
-            <span>Menu</span>
-          </button>
-        </div>
-
-        {/* Monica Score & Compact Hand Pill */}
-        <div className="flex items-center gap-1.5 whitespace-nowrap">
-          <div className="flex items-baseline gap-1">
-            <span className="text-base font-extrabold text-pink-400">
-              {gameState?.matchScores?.computer ?? 0}
-              <span className="text-[11px] font-semibold text-neutral-400 ml-0.5">
-                pts
-              </span>
-            </span>
-            <span className="text-xs text-neutral-300 uppercase font-bold tracking-wide">
-              {gameState.botName}
-            </span>
-          </div>
-
-          {/* Compact Hand Count Pill */}
-          <span
-            className="px-1.5 py-0.5 bg-pink-500/20 border border-pink-500/40 text-pink-300 text-[11px] font-extrabold rounded-full"
-            title={`${gameState.botName} has ${gameState?.computerHand?.length ?? 0} cards`}
-          >
-            {gameState?.computerHand?.length ?? 0}{" "}
-            {gameState?.computerHand?.length === 1 ? "card" : "cards"}
+        {/* Monica Score - Mirrored (Name left, Score right) */}
+        <div className="flex items-baseline gap-1.5 whitespace-nowrap bg-neutral-800/50 px-3 py-1 rounded-lg border border-neutral-700/40">
+          <span className="text-xs text-neutral-300 uppercase font-bold tracking-wide">
+            {gameState.botName}
+          </span>
+          <span className="text-base font-extrabold text-pink-400">
+            {gameState?.matchScores?.computer ?? 0}
           </span>
         </div>
       </div>
 
-      {/* Middle Section: Compact Deck Counter & Words Played Summary */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-neutral-900/80 rounded-lg border border-neutral-800 text-xs text-neutral-200">
+      {/* Middle Section: Deck Counter, Words List Button, & Relocated Rules/Menu */}
+      <div className="flex items-center justify-between px-2.5 py-1.5 bg-neutral-900/80 rounded-lg border border-neutral-800 text-xs text-neutral-200">
         {/* Unified Deck Counter Badge */}
         <div className="flex items-center gap-1.5 font-medium">
           <span className="text-neutral-300 font-bold uppercase text-[14px] tracking-wide">
@@ -124,20 +89,39 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
         {/* CENTER: Words Played Button */}
         <button
+          type="button"
           onClick={onOpenWordsModal}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-sm font-semibold text-slate-100 rounded-lg border border-slate-700 transition-all shadow-sm cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-semibold text-slate-100 rounded-lg border border-slate-700 transition-all shadow-sm cursor-pointer"
         >
-          📖 Words List
+          Words List
         </button>
 
-        {/* Played Words Count */}
-        <div className="flex items-center gap-1.5 font-medium">
-          <span className="text-neutral-300 font-bold uppercase text-[12px] tracking-wide">
-            Words Played:
-          </span>
-          <span className="text-sm font-black text-emerald-400 bg-neutral-800/80 px-2 py-0.5 rounded border border-neutral-700">
-            {wordBoard.length}
-          </span>
+        {/* 🎮 Relocated Rules & Menu Buttons */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onOpenRules}
+            className="px-2.5 py-1 bg-neutral-800 hover:bg-neutral-700 text-cyan-300 rounded text-xs font-extrabold border border-cyan-500/30 transition-colors cursor-pointer"
+            title="View Rules"
+          >
+            Rules
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Return to main menu? Your current match progress will be lost.",
+                )
+              ) {
+                onReturnToMenu();
+              }
+            }}
+            className="px-2.5 py-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded text-xs font-extrabold border border-neutral-700 transition-colors cursor-pointer"
+            title="Main Menu"
+          >
+            Menu
+          </button>
         </div>
       </div>
 

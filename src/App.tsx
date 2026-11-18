@@ -1574,6 +1574,12 @@ export function App() {
             }
           }
 
+          // ⚠️ APPEND REMAINING HAND COUNT IF MONICA DROPS BELOW 8 CARDS
+          if (compHand.length < 8 && compHand.length > 0) {
+            const cardLabel = compHand.length === 1 ? "card" : "cards";
+            statusAnnouncement = `${statusAnnouncement} (${compHand.length} ${cardLabel} left in hand!)`;
+          }
+
           // 📢 DISPLAY ACTION STATUS
           setAiStatusText(statusAnnouncement);
 
@@ -1670,7 +1676,7 @@ export function App() {
       if (isStalemate) {
         // 🛡️ 1. CALCULATE PENALTIES FOR UNPLAYED TILES
         const humanPenalty = calculateHandPenalty(gameState.humanHand);
-        const compPenalty = calculateHandPenalty(gameState.computerHand);
+        const compPenalty = calculateHandPenalty(gameState.computerHand); // ✅ Use gameState.computerHand here
 
         const finalHumanScore = Math.max(
           0,
@@ -1694,7 +1700,7 @@ export function App() {
           finalHumanScore,
           finalCompScore,
           gameState.humanHand,
-          gameState.computerHand,
+          gameState.computerHand, // ✅ Pass gameState.computerHand so leftover tiles render correctly
         );
 
         setAiStatusText("Match ended in a stalemate!");
@@ -1864,38 +1870,38 @@ export function App() {
   }
 
   return (
-    <div className="max-w-md mx-auto h-screen bg-neutral-950 pt-safe pb-safe p-2 flex flex-col justify-start gap-1.5 relative overflow-hidden">
+    <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe p-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
       {/* Scoreboard, Deck Badge & Menu Bar */}
 
       {/* Sticky Banner Wrapper */}
-      <div className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-800/80 shadow-lg">
-        <div className="text-center">
+      <div className="shrink-0 bg-slate-950/90 backdrop-blur-md py-1 border-b border-slate-800/80 shadow-lg">
+        <div className="text-center px-2">
           <div
-            className={`w-full max-w-xl mx-auto p-1.5 rounded-xl text-center transition-all duration-300 shadow-md ${
+            className={`w-full max-w-xl mx-auto py-1 px-2 rounded-xl text-center transition-all duration-300 shadow-md ${
               gameState.currentTurn === "computer"
-                ? "bg-amber-100 border border-amber-400 text-amber-900"
-                : "bg-emerald-950/80 border border-emerald-500/50 text-emerald-100"
+                ? "bg-white border border-neutral-300 text-red-600 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                : "bg-red-950/80 border border-red-500/50 text-red-100"
             }`}
           >
             <div className="flex items-center justify-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
+              <span className="relative flex h-2 w-2 shrink-0">
                 <span
                   className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                     gameState.currentTurn === "computer"
-                      ? "bg-amber-400"
-                      : "bg-emerald-400"
+                      ? "bg-red-500"
+                      : "bg-red-400"
                   }`}
                 ></span>
                 <span
-                  className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
+                  className={`relative inline-flex rounded-full h-2 w-2 ${
                     gameState.currentTurn === "computer"
-                      ? "bg-amber-500"
-                      : "bg-emerald-500"
+                      ? "bg-red-600"
+                      : "bg-red-500"
                   }`}
                 ></span>
               </span>
 
-              <h2 className="text-xs font-extrabold tracking-wide">
+              <h2 className="text-xs font-extrabold tracking-wide leading-tight text-center">
                 {gameState.currentTurn === "computer"
                   ? isAiThinking
                     ? aiStatusText
@@ -1905,15 +1911,6 @@ export function App() {
                     : "👉 YOUR TURN!"}
               </h2>
             </div>
-
-            {/* Dynamic Sub-message based on turn rules */}
-            {gameState.currentTurn === "human" && (
-              <p className="text-[10px] text-emerald-400/90 font-medium mt-0.5">
-                {gameState.isFirstTurn
-                  ? "Turn 1: Play 1 word, trade letters, or pass."
-                  : "Play 1 word, steal, trade letters, or end turn."}
-              </p>
-            )}
           </div>
         </div>
       </div>

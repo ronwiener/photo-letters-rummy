@@ -22,20 +22,12 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-4 text-neutral-200">
         {/* Header */}
-        <div className="flex items-center gap-3 border-b border-neutral-800 pb-3">
-          <div
-            className={`w-10 h-10 rounded-2xl flex items-center justify-center text-xl font-bold ${
-              isCutthroat
-                ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-            }`}
-          >
-            {isCutthroat ? "🗡️" : "🔋"}
-          </div>
+
+        <div className="flex items-center border-b border-neutral-800 pb-3">
           <div>
             <span
               className={`text-[10px] font-black uppercase tracking-widest ${
-                isCutthroat ? "text-rose-400" : "text-emerald-400"
+                isCutthroat ? "text-red-500" : "text-white/80"
               }`}
             >
               Scoring Mode Rule
@@ -49,24 +41,26 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
         {/* Content Body */}
         <div className="flex flex-col gap-3 text-xs leading-relaxed">
           <div className="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800 space-y-2">
-            <h4 className="font-extrabold text-amber-400 uppercase text-[11px]">
+            <h4 className="font-extrabold text-white-400 uppercase text-[1px]">
               How Stealing Works
             </h4>
-            <p className="text-neutral-300">
+            <p className="text-sm leading-relaxed text-neutral-300">
               {isCutthroat ? (
                 <>
                   When you or Monica steal a word, the thief takes ownership and
                   gets full points.{" "}
-                  <strong className="text-rose-400">
+                  <strong className="text-red-500">
                     But beware the risk is high, the original owner's score is
                     reduced by the point value of the stolen word!
                   </strong>
                 </>
               ) : (
                 <>
-                  When you or Monica steal a word, the thief takes ownership and
-                  gets full points.{" "}
-                  <strong className="text-emerald-400">
+                  <span className="text-red-500">
+                    When you or Monica steal a word, the thief takes ownership
+                    and gets full points.{" "}
+                  </span>
+                  <strong className="text-white">
                     However, the original owner keeps all points they previously
                     earned from that word! Now the strategy changes, do you
                     build your own word or steal?
@@ -91,10 +85,10 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
               onConfirm();
               onClose();
             }}
-            className={`flex-1 py-2.5 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-slate-950 ${
+            className={`flex-1 py-2.5 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               isCutthroat
-                ? "bg-rose-400 hover:bg-rose-300 shadow-lg shadow-rose-950/40"
-                : "bg-emerald-400 hover:bg-emerald-300 shadow-lg shadow-emerald-950/40"
+                ? "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-950/40"
+                : "bg-white hover:bg-neutral-100 text-red-600 shadow-lg shadow-black/40"
             }`}
           >
             Select {isCutthroat ? "High Risk" : "Low Risk"}
