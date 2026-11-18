@@ -1870,9 +1870,7 @@ export function App() {
   }
 
   return (
-    <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe p-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
-      {/* Scoreboard, Deck Badge & Menu Bar */}
-
+    <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe px-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
       {/* Sticky Banner Wrapper */}
       <div className="shrink-0 bg-slate-950/90 backdrop-blur-md py-1 border-b border-slate-800/80 shadow-lg">
         <div className="text-center px-2">
