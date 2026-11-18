@@ -1096,46 +1096,6 @@ export function App() {
   };
 
   // -------------------------------------------------------------
-  // STALEMATE & ENDGAME MONITORING
-  // -------------------------------------------------------------
-  useEffect(() => {
-    if (gameState.isGameOver) return;
-
-    if (gameState.deck.length === 0 && gameState.consecutivePasses >= 4) {
-      const humanPenalty = calculateHandPenalty(gameState.humanHand);
-      const compPenalty = calculateHandPenalty(gameState.computerHand);
-
-      let adjustedHumanScore = Math.max(
-        0,
-        gameState.matchScores.human - humanPenalty,
-      );
-      let adjustedCompScore = Math.max(
-        0,
-        gameState.matchScores.computer - compPenalty,
-      );
-
-      let matchWinner: PlayerId | "tie" = "tie";
-      if (adjustedHumanScore > adjustedCompScore) matchWinner = "human";
-      else if (adjustedCompScore > adjustedHumanScore) matchWinner = "computer";
-
-      // 🚀 Hand off to our delayed trigger function!
-      triggerGameOver(
-        matchWinner,
-        adjustedHumanScore,
-        adjustedCompScore,
-        gameState.humanHand,
-        gameState.computerHand,
-      );
-    }
-  }, [
-    gameState.deck.length,
-    gameState.consecutivePasses,
-    gameState.isGameOver,
-    gameState.matchScores,
-    gameState.humanHand,
-    gameState.computerHand,
-  ]);
-  // -------------------------------------------------------------
   // MONICA AI TURN ENGINE (Continuous Phase-Less Flow & Steal Mechanics)
   // -------------------------------------------------------------
   useEffect(() => {

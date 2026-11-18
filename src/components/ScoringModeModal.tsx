@@ -22,29 +22,28 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-4 text-neutral-200">
         {/* Header */}
-
         <div className="flex items-center border-b border-neutral-800 pb-3">
           <div>
             <span
-              className={`text-[10px] font-black uppercase tracking-widest ${
+              className={`text-xs font-black uppercase tracking-widest ${
                 isCutthroat ? "text-red-500" : "text-white/80"
               }`}
             >
               Scoring Mode Rule
             </span>
-            <h3 className="text-lg font-black text-white">
+            <h3 className="text-xl font-black text-white">
               {isCutthroat ? "High Risk" : "Low Risk"}
             </h3>
           </div>
         </div>
 
         {/* Content Body */}
-        <div className="flex flex-col gap-3 text-xs leading-relaxed">
-          <div className="bg-neutral-950 p-3.5 rounded-xl border border-neutral-800 space-y-2">
-            <h4 className="font-extrabold text-white-400 uppercase text-[1px]">
+        <div className="flex flex-col gap-3 leading-relaxed">
+          <div className="bg-neutral-950 p-4 rounded-xl border border-neutral-800 space-y-2">
+            <h4 className="font-extrabold text-neutral-400 uppercase text-xs tracking-wider">
               How Stealing Works
             </h4>
-            <p className="text-sm leading-relaxed text-neutral-300">
+            <p className="text-base leading-relaxed text-neutral-300">
               {isCutthroat ? (
                 <>
                   When you or Monica steal a word, the thief takes ownership and
@@ -75,7 +74,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
         <div className="flex gap-2 pt-2">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+            className="flex-1 py-3 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-extrabold text-sm uppercase tracking-wider rounded-xl transition-all cursor-pointer"
           >
             Close
           </button>
@@ -85,7 +84,7 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
               onConfirm();
               onClose();
             }}
-            className={`flex-1 py-2.5 font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
+            className={`flex-1 py-3 font-extrabold text-sm uppercase tracking-wider rounded-xl transition-all cursor-pointer ${
               isCutthroat
                 ? "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-950/40"
                 : "bg-white hover:bg-neutral-100 text-red-600 shadow-lg shadow-black/40"
