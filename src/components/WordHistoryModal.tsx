@@ -19,25 +19,26 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
 }) => {
   if (!word) return null;
 
-  // Check if this played word contains an assigned Wild Card
-  const targetWildCard = word.cards.find(
+  // Find all assigned wild cards on this word
+  const assignedWildCards = word.cards.filter(
     (c) => (c.isWild || c.letter === "WILD") && c.assignedLetter,
   );
 
-  const assignedLetter = (targetWildCard?.assignedLetter || "").toUpperCase();
+  // Find a wild card on this word that matches a natural card in humanHand
+  const swappablePair = assignedWildCards
+    .map((wildCard) => {
+      const letter = (wildCard.assignedLetter || "").toUpperCase();
+      const handMatch = humanHand.find(
+        (c) =>
+          !c.isWild &&
+          c.letter !== "WILD" &&
+          (c.letter || "").toUpperCase() === letter,
+      );
+      return handMatch ? { wildCard, handMatch, letter } : null;
+    })
+    .find(Boolean);
 
-  // Find if player holds the matching natural letter card in hand
-  const matchingHandCard =
-    assignedLetter && humanHand.length > 0
-      ? humanHand.find(
-          (c) =>
-            !c.isWild &&
-            c.letter !== "WILD" &&
-            (c.letter || "").toUpperCase() === assignedLetter,
-        )
-      : null;
-
-  const canSwap = Boolean(targetWildCard && matchingHandCard && onSwapWildCard);
+  const canSwap = Boolean(swappablePair && onSwapWildCard);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
@@ -115,15 +116,18 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
         {/* Action Buttons */}
         <div className="flex flex-col gap-2">
           {/* Wild Card Swap Button */}
-          {canSwap && targetWildCard && matchingHandCard && (
+          {swappablePair && onSwapWildCard && (
             <button
               onClick={() => {
-                onSwapWildCard!(targetWildCard, matchingHandCard);
+                onSwapWildCard!(
+                  swappablePair.wildCard,
+                  swappablePair.handMatch,
+                );
                 onClose();
               }}
               className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.5)] border border-amber-300 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>🃏 Swap Wild Card for '{assignedLetter}'</span>
+              <span>🃏 Swap Wild Card for '{swappablePair.letter}'</span>
             </button>
           )}
 

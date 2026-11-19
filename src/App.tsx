@@ -519,21 +519,20 @@ export function App() {
     handCard: Card,
     playerId: PlayerId,
   ) => {
-    const isWild = targetWildCard.isWild || targetWildCard.letter === "WILD";
     const assigned = (targetWildCard.assignedLetter || "").toUpperCase();
-    if (!isWild || !assigned) {
-      console.warn("Blocked: Target card is not an assigned Wild Card!");
+
+    if (!targetWildCard.isWild && targetWildCard.letter !== "WILD") {
+      console.warn("Blocked: Target card is not a Wild Card!");
       return;
     }
 
-    if ((handCard.letter || "").toUpperCase() !== assigned) {
+    if (!assigned || (handCard.letter || "").toUpperCase() !== assigned) {
       console.warn(
-        `Blocked: Hand card '${handCard.letter}' does not match Wild Card assigned letter '${assigned}'!`,
+        `Blocked: Hand card does not match Wild Card assigned letter '${assigned}'!`,
       );
       return;
     }
 
-    // Reset assigned letter before returning Wild Card to hand
     const reclaimedWildCard: Card = {
       ...targetWildCard,
       assignedLetter: undefined,
@@ -541,79 +540,55 @@ export function App() {
       letter: "WILD" as any,
     };
 
-    // 1. Update Staged Cards (if target is currently in staging workspace)
-    const isStaged = stagedCards.some((c: Card) => c.id === targetWildCard.id);
-    if (isStaged) {
+    // Update Staged Cards if applicable
+    if (stagedCards.some((c: Card) => c.id === targetWildCard.id)) {
       setStagedCards((prev: Card[]) =>
         prev.map((c: Card) => (c.id === targetWildCard.id ? handCard : c)),
       );
     }
 
-    // 2. Update Board Words & Player Hands in GameState
+    // Update GameState cleanly
     setGameState((prev: GameState) => {
-      // Replace target Wild Card across all played board words in wordBoard
       const updatedWordBoard = prev.wordBoard.map((playedWord: PlayedWord) => {
-        const hasWild = playedWord.cards.some(
+        // Check by unique card id
+        const cardIndex = playedWord.cards.findIndex(
           (c: Card) => c.id === targetWildCard.id,
         );
-        if (!hasWild) return playedWord;
+        if (cardIndex === -1) return playedWord;
+
+        // Create a clean copy of the cards array and replace at the exact index
+        // This safely handles words with multiple wild cards like TANGO!
+        const newCards = [...playedWord.cards];
+        newCards[cardIndex] = handCard;
 
         return {
           ...playedWord,
-          cards: playedWord.cards.map((c: Card) =>
-            c.id === targetWildCard.id ? handCard : c,
-          ),
+          cards: newCards,
         };
       });
 
-      // Update the correct player's hand with strict ID deduplication
-      if (playerId === "human") {
-        const updatedHand = prev.humanHand
-          .filter(
-            (c: Card) => c.id !== handCard.id && c.id !== reclaimedWildCard.id,
-          )
-          .concat(reclaimedWildCard);
+      const targetHandKey = playerId === "human" ? "humanHand" : "computerHand";
+      const currentHand = prev[targetHandKey];
 
-        return {
-          ...prev,
-          wordBoard: updatedWordBoard,
-          humanHand: updatedHand,
-        };
-      } else {
-        const updatedHand = prev.computerHand
-          .filter(
-            (c: Card) => c.id !== handCard.id && c.id !== reclaimedWildCard.id,
-          )
-          .concat(reclaimedWildCard);
+      const updatedHand = currentHand
+        .filter(
+          (c: Card) => c.id !== handCard.id && c.id !== reclaimedWildCard.id,
+        )
+        .concat(reclaimedWildCard);
 
-        return {
-          ...prev,
-          wordBoard: updatedWordBoard,
-          computerHand: updatedHand,
-        };
-      }
+      return {
+        ...prev,
+        wordBoard: updatedWordBoard,
+        [targetHandKey]: updatedHand,
+      };
     });
   };
 
-  // -------------------------------------------------------------
-  // HUMAN WILD SWAP ACTION
-  // -------------------------------------------------------------
   const onHumanAttemptWildSwap = (targetWildCard: Card, handCard: Card) => {
     if (gameState.currentTurn !== "human") {
       console.warn("Blocked: You can only swap Wild Cards during your turn!");
       return;
     }
-
-    const assigned = (targetWildCard.assignedLetter || "").toUpperCase();
-    const handLetter = (handCard.letter || "").toUpperCase();
-
-    if (handLetter !== assigned) {
-      console.warn(
-        `Blocked: You must use a '${assigned}' card to swap this Wild Card!`,
-      );
-      return;
-    }
-
     handleWildSwap(targetWildCard, handCard, "human");
   };
 
@@ -863,8 +838,12 @@ export function App() {
       let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
 
       if (isMatchOver) {
+        const activeComputerHand =
+          gameState.computerHand && gameState.computerHand.length > 0
+            ? gameState.computerHand
+            : gameState.computerLeftoverHand || [];
         const humanPenalty = calculateHandPenalty(remainingHand);
-        const compPenalty = calculateHandPenalty(gameState.computerHand);
+        const compPenalty = calculateHandPenalty(activeComputerHand);
 
         finalMatchScores = {
           human: Math.max(0, finalMatchScores.human - humanPenalty),
@@ -884,7 +863,7 @@ export function App() {
           finalMatchScores.human,
           finalMatchScores.computer,
           remainingHand,
-          gameState.computerHand,
+          activeComputerHand,
         );
       }
 
@@ -894,22 +873,30 @@ export function App() {
         );
       }
 
-      setGameState((prev) => ({
-        ...prev,
-        wordBoard: updatedWordBoard,
-        matchScores: finalMatchScores,
-        humanHand: remainingHand,
-        deck: updatedDeck,
-        hasPlayedThisTurn: false,
-        consecutivePasses: 0,
-        isGameOver: isMatchOver,
-        winner: matchWinner,
-        currentTurn: isMatchOver ? "human" : "computer",
-        humanLeftoverHand: isMatchOver ? remainingHand : prev.humanLeftoverHand,
-        computerLeftoverHand: isMatchOver
-          ? prev.computerHand
-          : prev.computerLeftoverHand,
-      }));
+      setGameState((prev) => {
+        const resolvedComputerHand =
+          prev.computerHand && prev.computerHand.length > 0
+            ? prev.computerHand
+            : prev.computerLeftoverHand || [];
+        return {
+          ...prev,
+          wordBoard: updatedWordBoard,
+          matchScores: finalMatchScores,
+          humanHand: remainingHand,
+          deck: updatedDeck,
+          hasPlayedThisTurn: false,
+          consecutivePasses: 0,
+          isGameOver: isMatchOver,
+          winner: matchWinner,
+          currentTurn: isMatchOver ? "human" : "computer",
+          humanLeftoverHand: isMatchOver
+            ? remainingHand
+            : prev.humanLeftoverHand,
+          computerLeftoverHand: isMatchOver
+            ? resolvedComputerHand
+            : prev.computerLeftoverHand,
+        };
+      });
     } else if (isStandaloneWord) {
       // --- STANDARD NEW WORD PLAY ---
       const basePoints = calculateWordPoints(stagedCards);
@@ -973,8 +960,12 @@ export function App() {
       let matchWinner: "human" | "computer" | "tie" | "draw" | null = null;
 
       if (isMatchOver) {
+        const activeComputerHand =
+          gameState.computerHand && gameState.computerHand.length > 0
+            ? gameState.computerHand
+            : gameState.computerLeftoverHand || [];
         const humanPenalty = calculateHandPenalty(remainingHand);
-        const compPenalty = calculateHandPenalty(gameState.computerHand);
+        const compPenalty = calculateHandPenalty(activeComputerHand);
 
         finalMatchScores = {
           human: Math.max(0, finalMatchScores.human - humanPenalty),
@@ -994,7 +985,7 @@ export function App() {
           finalMatchScores.human,
           finalMatchScores.computer,
           remainingHand,
-          gameState.computerHand,
+          activeComputerHand,
         );
       }
 
@@ -1002,23 +993,31 @@ export function App() {
         setAiStatusText(`${gameState.botName} is taking her turn...`);
       }
 
-      setGameState((prev) => ({
-        ...prev,
-        wordBoard: [...prev.wordBoard, newPlayedWord],
-        matchScores: finalMatchScores,
-        humanHand: remainingHand,
-        deck: updatedDeck,
-        isFirstTurn: false,
-        hasPlayedThisTurn: false,
-        currentTurn: isMatchOver ? "human" : "computer",
-        consecutivePasses: 0,
-        isGameOver: isMatchOver,
-        winner: matchWinner,
-        humanLeftoverHand: isMatchOver ? remainingHand : prev.humanLeftoverHand,
-        computerLeftoverHand: isMatchOver
-          ? prev.computerHand
-          : prev.computerLeftoverHand,
-      }));
+      setGameState((prev) => {
+        const resolvedComputerHand =
+          prev.computerHand && prev.computerHand.length > 0
+            ? prev.computerHand
+            : prev.computerLeftoverHand || [];
+        return {
+          ...prev,
+          wordBoard: [...prev.wordBoard, newPlayedWord],
+          matchScores: finalMatchScores,
+          humanHand: remainingHand,
+          deck: updatedDeck,
+          isFirstTurn: false,
+          hasPlayedThisTurn: false,
+          currentTurn: isMatchOver ? "human" : "computer",
+          consecutivePasses: 0,
+          isGameOver: isMatchOver,
+          winner: matchWinner,
+          humanLeftoverHand: isMatchOver
+            ? remainingHand
+            : prev.humanLeftoverHand,
+          computerLeftoverHand: isMatchOver
+            ? resolvedComputerHand
+            : prev.computerLeftoverHand,
+        };
+      });
     }
 
     setStagedCards([]);
@@ -1956,8 +1955,10 @@ export function App() {
                   return leftover.length > 0 ? (
                     <div className="flex flex-wrap gap-1.5">
                       {leftover.map((c, idx) => {
-                        const cardPoints =
-                          c.points ?? LETTER_VALUES[c.letter] ?? 0;
+                        const isWildCard = c.isWild || c.letter === "WILD";
+                        const cardPoints = isWildCard
+                          ? 30
+                          : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
                         return (
                           <span
                             key={c.id || `${c.letter}-${idx}`}
@@ -1994,12 +1995,14 @@ export function App() {
                 </span>
                 {/* Monica Leftover Penalties */}
                 {(() => {
-                  const leftover = gameState.humanLeftoverHand ?? [];
+                  const leftover = gameState.computerLeftoverHand ?? [];
                   return leftover.length > 0 ? (
                     <div className="flex flex-wrap gap-1.5">
                       {leftover.map((c, idx) => {
-                        const cardPoints =
-                          c.points ?? LETTER_VALUES[c.letter] ?? 0;
+                        const isWildCard = c.isWild || c.letter === "WILD";
+                        const cardPoints = isWildCard
+                          ? 30
+                          : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
                         return (
                           <span
                             key={c.id || `${c.letter}-${idx}`}
@@ -2034,7 +2037,7 @@ export function App() {
               }}
               className="w-full py-3.5 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
             >
-              🏠 Return to Main Menu
+              Return to Main Menu
             </button>
 
             {/* Secondary Actions: Split 50/50 Row */}
@@ -2044,7 +2047,7 @@ export function App() {
                 onClick={() => handleStartNewMatch()}
                 className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
               >
-                🔄 Start New Game
+                Start New Game
               </button>
 
               <button
@@ -2052,7 +2055,7 @@ export function App() {
                 onClick={() => setIsStatsModalOpen(true)}
                 className="py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
               >
-                📊 View Statistics
+                View Statistics
               </button>
             </div>
           </div>
