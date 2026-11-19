@@ -38,8 +38,6 @@ export const WordHistoryModal: React.FC<WordHistoryModalProps> = ({
     })
     .find(Boolean);
 
-  const canSwap = Boolean(swappablePair && onSwapWildCard);
-
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-5 w-full max-w-sm shadow-2xl flex flex-col gap-4 relative">
