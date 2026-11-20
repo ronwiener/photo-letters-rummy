@@ -52,9 +52,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({
           WORD WAR
         </h1>
         <h2 className="text-base sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
-          Colorful and fun word building card game. Create your own word or
-          steal your opponent's word by rearranging or adding on. Highest point
-          total at the end of the game is the winner!
+          Colorful and fun word building card game playing against AI Monica.
+          Create your own word or steal Monica's by rearranging or adding on.
+          Highest point total at the end of the game is the winner! Good Luck
+          because Monica has a huge vocabulary!
         </h2>
       </div>
 
