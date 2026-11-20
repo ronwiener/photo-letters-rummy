@@ -175,7 +175,7 @@ export function App() {
         isGameOver: true,
         winner,
       }));
-    }, 4000);
+    }, 5000);
   };
 
   const matchWordsRef = useRef<
@@ -1601,11 +1601,11 @@ export function App() {
             }));
 
             setIsAiThinking(false);
-          }, 4000);
+          }, 5000);
         },
-        wildSwapOccurred ? 4500 : 3500,
+        wildSwapOccurred ? 5000 : 5000,
       );
-    }, 5000);
+    }, 6000);
 
     // 🛡️ Assign cancellation to `aiTimerRef` so starting a new match instantly kills active timeouts
     aiTimerRef.current = () => {
@@ -1831,41 +1831,50 @@ export function App() {
   return (
     <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe px-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
       {/* Sticky Banner Wrapper */}
+      {/* Sticky Banner Wrapper */}
       <div className="shrink-0 bg-slate-950/90 backdrop-blur-md py-1 border-b border-slate-800/80 shadow-lg">
         <div className="text-center px-2">
           <div
             className={`w-full max-w-xl mx-auto py-1 px-2 rounded-xl text-center transition-all duration-300 shadow-md ${
-              gameState.currentTurn === "computer"
-                ? "bg-white border border-neutral-300 text-red-600 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                : "bg-red-950/80 border border-red-500/50 text-red-100"
+              gameState.isGameOver
+                ? "bg-slate-800/90 border border-amber-500/50 text-amber-200"
+                : gameState.currentTurn === "computer"
+                  ? "bg-white border border-neutral-300 text-red-600 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                  : "bg-red-950/80 border border-red-500/50 text-red-100"
             }`}
           >
             <div className="flex items-center justify-center gap-2">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span
-                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    gameState.currentTurn === "computer"
-                      ? "bg-red-500"
-                      : "bg-red-400"
-                  }`}
-                ></span>
+                {!gameState.isGameOver && (
+                  <span
+                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                      gameState.currentTurn === "computer"
+                        ? "bg-red-500"
+                        : "bg-red-400"
+                    }`}
+                  ></span>
+                )}
                 <span
                   className={`relative inline-flex rounded-full h-2 w-2 ${
-                    gameState.currentTurn === "computer"
-                      ? "bg-red-600"
-                      : "bg-red-500"
+                    gameState.isGameOver
+                      ? "bg-amber-400"
+                      : gameState.currentTurn === "computer"
+                        ? "bg-red-600"
+                        : "bg-red-500"
                   }`}
                 ></span>
               </span>
 
               <h2 className="text-xs font-extrabold tracking-wide leading-tight text-center">
-                {gameState.currentTurn === "computer"
-                  ? isAiThinking
-                    ? aiStatusText
-                    : `${gameState.botName}'s Turn...`
-                  : gameState.isFirstTurn && aiStatusText
-                    ? aiStatusText
-                    : "👉 YOUR TURN!"}
+                {gameState.isGameOver
+                  ? "Game Over"
+                  : gameState.currentTurn === "computer"
+                    ? isAiThinking
+                      ? aiStatusText
+                      : `${gameState.botName}'s Turn...`
+                    : gameState.isFirstTurn && aiStatusText
+                      ? aiStatusText
+                      : "👉 YOUR TURN!"}
               </h2>
             </div>
           </div>
