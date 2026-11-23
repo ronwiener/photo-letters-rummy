@@ -47,10 +47,10 @@ export const ScoringModeModal: React.FC<ScoringModeModalProps> = ({
               {isCutthroat ? (
                 <>
                   When you or Monica steal a word, the thief takes ownership and
-                  gets full points.{" "}
+                  gets full points for the new word.{" "}
                   <strong className="text-red-500">
                     But beware the risk is high, the original owner's score is
-                    reduced by the point value of the stolen word!
+                    reduced by the point value of the original word!
                   </strong>
                 </>
               ) : (

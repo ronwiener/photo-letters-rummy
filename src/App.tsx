@@ -35,6 +35,7 @@ import {
 } from "./utils/statsStorage";
 import { StatsModal } from "./components/StatsModal";
 import { calculateUpdatedStats } from "./utils/statHelper";
+import { MockInterstitialAd } from "./components/MockInterstitialAd";
 
 // 🛡️ CENTRALIZED HELPER: Placed safely outside the component
 const getConstructedWord = (cards: Card[]): string => {
@@ -105,12 +106,15 @@ export function App() {
   const [scoringMode, setScoringMode] = useState<ScoringMode>("accumulator");
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [stats, setStats] = useState<GameStatistics>(getStoredStats);
+  const [isTestAdOpen, setIsTestAdOpen] = useState(false);
 
   useEffect(() => {
     console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
   }, [isStatsModalOpen]);
 
   const aiTimerRef = useRef<(() => void) | null>(null);
+
+  const enableTestAds = import.meta.env.VITE_ENABLE_TEST_ADS !== "false";
 
   const updateStats = (
     newStatsUpdater: (prev: GameStatistics) => GameStatistics,
@@ -1751,6 +1755,21 @@ export function App() {
     setTargetBoardWord(null);
   };
 
+  // 1. Call this from the Game Over overlay's "Start New Game" button
+  const handleStartNewMatchWithAd = () => {
+    if (enableTestAds) {
+      setIsTestAdOpen(true);
+    } else {
+      handleStartNewMatch();
+    }
+  };
+
+  // 2. Pass this to MockInterstitialAd's `onClose` prop so the new match starts after closing the ad
+  const handleCloseTestAd = () => {
+    setIsTestAdOpen(false);
+    handleStartNewMatch();
+  };
+
   // 🧮 Compute exact potential score and true Bingo status for the submit button preview
   let potentialScore = 0;
   let isPreviewBingo = false;
@@ -2053,7 +2072,7 @@ export function App() {
             <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
-                onClick={() => handleStartNewMatch()}
+                onClick={handleStartNewMatchWithAd}
                 className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
               >
                 Start New Game
@@ -2127,6 +2146,12 @@ export function App() {
           setIsStatsModalOpen(false);
           handleStartNewMatch();
         }}
+      />
+
+      <MockInterstitialAd
+        isOpen={isTestAdOpen}
+        onClose={handleCloseTestAd}
+        testUrl="https://example.com"
       />
     </div>
   );

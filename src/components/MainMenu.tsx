@@ -54,8 +54,15 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         <h2 className="text-base sm:text-base text-neutral-300 mt-2.5 max-w-sm leading-relaxed">
           Colorful and fun word building card game playing against AI Monica.
           Create your own word or steal Monica's by rearranging or adding on.
-          Highest point total at the end of the game is the winner! Good Luck
-          because Monica has a huge vocabulary!
+          Pick{" "}
+          <strong className="text-red-500 text-base uppercase">Low Risk</strong>{" "}
+          to keep all your points, or{" "}
+          <strong className="text-red-500 text-base uppercase">
+            High Risk
+          </strong>{" "}
+          for even bigger scores by stealing your opponents points. Highest
+          point total at the end of the game is the winner! Good Luck because
+          Monica has a huge vocabulary!
         </h2>
       </div>
 
