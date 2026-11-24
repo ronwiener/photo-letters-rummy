@@ -107,6 +107,9 @@ export function App() {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [stats, setStats] = useState<GameStatistics>(getStoredStats);
   const [isTestAdOpen, setIsTestAdOpen] = useState(false);
+  const [pendingAdAction, setPendingAdAction] = useState<
+    "start_from_menu" | "start_new_match" | null
+  >(null);
 
   useEffect(() => {
     console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
@@ -1755,19 +1758,39 @@ export function App() {
     setTargetBoardWord(null);
   };
 
-  // 1. Call this from the Game Over overlay's "Start New Game" button
+  // 1. Called by "Play vs Monica" on the Main Menu
+  const handlePlayVsMonicaWithAd = () => {
+    if (enableTestAds) {
+      setPendingAdAction("start_from_menu");
+      setIsTestAdOpen(true);
+    } else {
+      setIsGameActive(true);
+      handleStartNewMatch();
+    }
+  };
+
+  // 2. Called by "Start New Game" on the Game Over overlay
   const handleStartNewMatchWithAd = () => {
     if (enableTestAds) {
+      setPendingAdAction("start_new_match");
       setIsTestAdOpen(true);
     } else {
       handleStartNewMatch();
     }
   };
 
-  // 2. Pass this to MockInterstitialAd's `onClose` prop so the new match starts after closing the ad
+  // 3. Runs when the user skips/closes the ad
   const handleCloseTestAd = () => {
     setIsTestAdOpen(false);
-    handleStartNewMatch();
+
+    if (pendingAdAction === "start_from_menu") {
+      setIsGameActive(true);
+      handleStartNewMatch();
+    } else if (pendingAdAction === "start_new_match") {
+      handleStartNewMatch();
+    }
+
+    setPendingAdAction(null);
   };
 
   // 🧮 Compute exact potential score and true Bingo status for the submit button preview
@@ -1826,10 +1849,7 @@ export function App() {
           onSelectDifficulty={(diff) =>
             setGameState((prev) => ({ ...prev, aiDifficulty: diff }))
           }
-          onStartMatch={() => {
-            handleStartNewMatch();
-            setIsGameActive(true);
-          }}
+          onStartMatch={handlePlayVsMonicaWithAd}
           onOpenRules={() => setIsRulesOpen(true)}
           onOpenStats={() => setIsStatsModalOpen(true)}
         />

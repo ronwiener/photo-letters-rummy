@@ -39,6 +39,7 @@ const ALLOWED_TWO_LETTER_WORDS = new Set<string>([
   "pi",
   "ex",
   "ax",
+  "ye",
   "za",
 ]);
 
