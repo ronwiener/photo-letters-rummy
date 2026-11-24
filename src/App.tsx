@@ -1838,9 +1838,10 @@ export function App() {
   // -------------------------------------------------------------
   // 1. EARLY RETURN FOR MAIN MENU / LANDING VIEW
   // -------------------------------------------------------------
-  if (!isGameActive) {
-    return (
-      <>
+
+  return (
+    <>
+      {!isGameActive ? (
         <MainMenu
           botName={gameState.botName}
           aiDifficulty={gameState.aiDifficulty}
@@ -1853,309 +1854,295 @@ export function App() {
           onOpenRules={() => setIsRulesOpen(true)}
           onOpenStats={() => setIsStatsModalOpen(true)}
         />
+      ) : (
+        <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe px-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
+          {/* Sticky Banner Wrapper */}
+          <div className="shrink-0 bg-slate-950/90 backdrop-blur-md py-1 border-b border-slate-800/80 shadow-lg">
+            <div className="text-center px-2">
+              <div
+                className={`w-full max-w-xl mx-auto py-1 px-2 rounded-xl text-center transition-all duration-300 shadow-md ${
+                  gameState.isGameOver
+                    ? "bg-slate-800/90 border border-amber-500/50 text-amber-200"
+                    : gameState.currentTurn === "computer"
+                      ? "bg-white border border-neutral-300 text-red-600 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+                      : "bg-red-950/80 border border-red-500/50 text-red-100"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    {!gameState.isGameOver && (
+                      <span
+                        className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                          gameState.currentTurn === "computer"
+                            ? "bg-red-500"
+                            : "bg-red-400"
+                        }`}
+                      ></span>
+                    )}
+                    <span
+                      className={`relative inline-flex rounded-full h-2 w-2 ${
+                        gameState.isGameOver
+                          ? "bg-amber-400"
+                          : gameState.currentTurn === "computer"
+                            ? "bg-red-600"
+                            : "bg-red-500"
+                      }`}
+                    ></span>
+                  </span>
 
-        <RulesModal
-          isOpen={isRulesOpen}
-          onClose={() => setIsRulesOpen(false)}
-        />
-        <StatsModal
-          isOpen={isStatsModalOpen}
-          stats={stats}
-          onClose={() => setIsStatsModalOpen(false)}
-        />
-      </>
-    );
-  }
-
-  return (
-    <div className="max-w-md mx-auto h-dvh w-full bg-neutral-950 pt-safe pb-safe px-2 flex flex-col justify-start gap-1.5 relative overflow-hidden box-border">
-      {/* Sticky Banner Wrapper */}
-      {/* Sticky Banner Wrapper */}
-      <div className="shrink-0 bg-slate-950/90 backdrop-blur-md py-1 border-b border-slate-800/80 shadow-lg">
-        <div className="text-center px-2">
-          <div
-            className={`w-full max-w-xl mx-auto py-1 px-2 rounded-xl text-center transition-all duration-300 shadow-md ${
-              gameState.isGameOver
-                ? "bg-slate-800/90 border border-amber-500/50 text-amber-200"
-                : gameState.currentTurn === "computer"
-                  ? "bg-white border border-neutral-300 text-red-600 shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-                  : "bg-red-950/80 border border-red-500/50 text-red-100"
-            }`}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <span className="relative flex h-2 w-2 shrink-0">
-                {!gameState.isGameOver && (
-                  <span
-                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                      gameState.currentTurn === "computer"
-                        ? "bg-red-500"
-                        : "bg-red-400"
-                    }`}
-                  ></span>
-                )}
-                <span
-                  className={`relative inline-flex rounded-full h-2 w-2 ${
-                    gameState.isGameOver
-                      ? "bg-amber-400"
+                  <h2 className="text-xs font-extrabold tracking-wide leading-tight text-center">
+                    {gameState.isGameOver ||
+                    (gameState.consecutivePasses ?? 0) >= 4
+                      ? "Game Over"
                       : gameState.currentTurn === "computer"
-                        ? "bg-red-600"
-                        : "bg-red-500"
-                  }`}
-                ></span>
-              </span>
+                        ? isAiThinking
+                          ? aiStatusText
+                          : `${gameState.botName}'s Turn...`
+                        : gameState.isFirstTurn && aiStatusText
+                          ? aiStatusText
+                          : "👉 YOUR TURN!"}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <h2 className="text-xs font-extrabold tracking-wide leading-tight text-center">
-                {gameState.isGameOver
-                  ? "Game Over"
-                  : gameState.currentTurn === "computer"
-                    ? isAiThinking
-                      ? aiStatusText
-                      : `${gameState.botName}'s Turn...`
-                    : gameState.isFirstTurn && aiStatusText
-                      ? aiStatusText
-                      : "👉 YOUR TURN!"}
+          <DragDropContext onDragEnd={handleDragEnd}>
+            {/* Main Shared Playing Field */}
+            <div className="flex-1 min-h-0 flex flex-col">
+              <GameBoard
+                gameState={gameState}
+                targetBoardWord={targetBoardWord}
+                onOpenRules={() => setIsRulesOpen(true)}
+                onReturnToMenu={() => setIsGameActive(false)}
+                onOpenWordsModal={() => {
+                  console.log("📖 Words List button clicked!");
+                  setIsWordsModalOpen(true);
+                }}
+                onCardClick={(card) => {
+                  const isOnBoardWild = gameState.wordBoard.some((word) =>
+                    word.cards.some((c) => c.id === card.id),
+                  );
+
+                  if (isOnBoardWild && card.isWild && card.assignedLetter) {
+                    const matchingHandCard = gameState.humanHand.find(
+                      (c) => c.letter === card.assignedLetter,
+                    );
+
+                    if (matchingHandCard) {
+                      onHumanAttemptWildSwap(card, matchingHandCard);
+                    }
+                    return;
+                  }
+
+                  handleStageCard(card);
+                }}
+                onSelectWordForModification={handleInspectWord}
+              />
+            </div>
+
+            {/* Workspace Staging Area */}
+            <div className="mt-1 shrink-0">
+              <Workspace
+                stagedCards={stagedCards}
+                onRemoveCard={handleUnstageCard}
+                onClearWorkspace={handleClearWorkspace}
+                onSubmitWord={handleSubmitWord}
+                isPreviewBingo={isPreviewBingo}
+                onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
+                isHumanTurn={gameState.currentTurn === "human"}
+                isAiThinking={isAiThinking}
+                potentialScore={potentialScore}
+              />
+            </div>
+          </DragDropContext>
+
+          {/* 🏁 GAME-OVER OVERLAY BANNER */}
+          {gameState.isGameOver && (
+            <div className="absolute inset-x-4 top-20 z-50 bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-5 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
+              <h2 className="text-3xl font-extrabold tracking-wide mb-1.5">
+                {gameState.winner === "human"
+                  ? "🎉 You Won the Match!"
+                  : gameState.winner === "computer"
+                    ? `🤖 ${gameState.botName} Wins!`
+                    : "🤝 It's a Tie / Stalemate!"}
               </h2>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <DragDropContext onDragEnd={handleDragEnd}>
-        {/* Main Shared Playing Field */}
-        <div className="flex-1 min-h-0 flex flex-col">
-          <GameBoard
-            gameState={gameState}
-            targetBoardWord={targetBoardWord}
-            onOpenRules={() => setIsRulesOpen(true)}
-            onReturnToMenu={() => setIsGameActive(false)}
-            onOpenWordsModal={() => {
-              console.log("📖 Words List button clicked!");
-              setIsWordsModalOpen(true);
-            }}
-            onCardClick={(card) => {
-              const isOnBoardWild = gameState.wordBoard.some((word) =>
-                word.cards.some((c) => c.id === card.id),
-              );
-
-              if (isOnBoardWild && card.isWild && card.assignedLetter) {
-                const matchingHandCard = gameState.humanHand.find(
-                  (c) => c.letter === card.assignedLetter,
-                );
-
-                if (matchingHandCard) {
-                  onHumanAttemptWildSwap(card, matchingHandCard);
-                }
-                return;
-              }
-
-              handleStageCard(card);
-            }}
-            onSelectWordForModification={handleInspectWord}
-          />
-        </div>
-
-        {/* Workspace Staging Area */}
-        <div className="mt-1 shrink-0">
-          <Workspace
-            stagedCards={stagedCards}
-            onRemoveCard={handleUnstageCard}
-            onClearWorkspace={handleClearWorkspace}
-            onSubmitWord={handleSubmitWord}
-            isPreviewBingo={isPreviewBingo}
-            onOpenSwapSkip={() => setIsSwapSkipModalOpen(true)}
-            isHumanTurn={gameState.currentTurn === "human"}
-            isAiThinking={isAiThinking}
-            potentialScore={potentialScore}
-          />
-        </div>
-      </DragDropContext>
-
-      {/* 🏁 GAME-OVER OVERLAY BANNER */}
-      {gameState.isGameOver && (
-        <div className="absolute inset-x-4 top-20 z-50 bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-5 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
-          <h2 className="text-3xl font-extrabold tracking-wide mb-1.5">
-            {gameState.winner === "human"
-              ? "🎉 You Won the Match!"
-              : gameState.winner === "computer"
-                ? `🤖 ${gameState.botName} Wins!`
-                : "🤝 It's a Tie / Stalemate!"}
-          </h2>
-
-          <p className="text-slate-300 text-sm mb-4">
-            Final scores with letter penalties incurred.
-          </p>
-
-          {/* Final Score Breakdown & Leftover Hands */}
-          <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3.5 rounded-xl mb-4 text-left border border-slate-700 text-sm">
-            {/* Human Player */}
-            <div>
-              <p className="font-bold text-amber-400 text-base">You</p>
-              <p className="text-2xl font-black">
-                {gameState.matchScores.human} pts
+              <p className="text-slate-300 text-sm mb-4">
+                Final scores with letter penalties incurred.
               </p>
-              <div className="mt-2">
-                <span className="text-xs font-semibold text-slate-400 block mb-1">
-                  Letter Penalties:
-                </span>
-                {/* Human Player Leftover Penalties */}
-                {(() => {
-                  const leftover = gameState.humanLeftoverHand ?? [];
-                  return leftover.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5">
-                      {leftover.map((c, idx) => {
-                        const isWildCard = c.isWild || c.letter === "WILD";
-                        const cardPoints = isWildCard
-                          ? 30
-                          : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
-                        return (
-                          <span
-                            key={c.id || `${c.letter}-${idx}`}
-                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
-                          >
-                            <span className="text-sm font-black">
-                              {c.letter}
-                            </span>
-                            <span className="text-rose-400 text-xs">
-                              (-{cardPoints})
-                            </span>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-slate-400">None (0 penalty)</p>
-                  );
-                })()}
+
+              {/* Final Score Breakdown & Leftover Hands */}
+              <div className="grid grid-cols-2 gap-3 bg-slate-800/80 p-3.5 rounded-xl mb-4 text-left border border-slate-700 text-sm">
+                {/* Human Player */}
+                <div>
+                  <p className="font-bold text-amber-400 text-base">You</p>
+                  <p className="text-2xl font-black">
+                    {gameState.matchScores.human} pts
+                  </p>
+                  <div className="mt-2">
+                    <span className="text-xs font-semibold text-slate-400 block mb-1">
+                      Letter Penalties:
+                    </span>
+                    {(() => {
+                      const leftover = gameState.humanLeftoverHand ?? [];
+                      return leftover.length > 0 ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {leftover.map((c, idx) => {
+                            const isWildCard = c.isWild || c.letter === "WILD";
+                            const cardPoints = isWildCard
+                              ? 30
+                              : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
+                            return (
+                              <span
+                                key={c.id || `${c.letter}-${idx}`}
+                                className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                              >
+                                <span className="text-sm font-black">
+                                  {c.letter}
+                                </span>
+                                <span className="text-rose-400 text-xs">
+                                  (-{cardPoints})
+                                </span>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-slate-400">
+                          None (0 penalty)
+                        </p>
+                      );
+                    })()}
+                  </div>
+                </div>
+
+                {/* Computer / Bot Player */}
+                <div>
+                  <p className="font-bold text-amber-400 text-base">
+                    {gameState.botName}
+                  </p>
+                  <p className="text-2xl font-black">
+                    {gameState.matchScores.computer} pts
+                  </p>
+                  <div className="mt-2">
+                    <span className="text-xs font-semibold text-slate-400 block mb-1">
+                      Letter Penalties:
+                    </span>
+                    {(() => {
+                      const leftover = gameState.computerLeftoverHand ?? [];
+                      return leftover.length > 0 ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {leftover.map((c, idx) => {
+                            const isWildCard = c.isWild || c.letter === "WILD";
+                            const cardPoints = isWildCard
+                              ? 30
+                              : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
+                            return (
+                              <span
+                                key={c.id || `${c.letter}-${idx}`}
+                                className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                              >
+                                <span className="text-sm font-black">
+                                  {c.letter}
+                                </span>
+                                <span className="text-rose-400 text-xs">
+                                  (-{cardPoints})
+                                </span>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-slate-400">
+                          None (0 penalty)
+                        </p>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons: Featured Top Primary + 50/50 Split Bottom */}
+              <div className="w-full flex flex-col gap-2.5 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGameState((prev) => ({ ...prev, isGameOver: false }));
+                    setIsGameActive(false);
+                  }}
+                  className="w-full py-3.5 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+                >
+                  Return to Main Menu
+                </button>
+
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={handleStartNewMatchWithAd}
+                    className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    Start New Game
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsStatsModalOpen(true)}
+                    className="py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    View Statistics
+                  </button>
+                </div>
               </div>
             </div>
+          )}
 
-            {/* Computer / Bot Player */}
-            <div>
-              <p className="font-bold text-amber-400 text-base">
-                {gameState.botName}
-              </p>
-              <p className="text-2xl font-black">
-                {gameState.matchScores.computer} pts
-              </p>
-              <div className="mt-2">
-                <span className="text-xs font-semibold text-slate-400 block mb-1">
-                  Letter Penalties:
-                </span>
-                {/* Monica Leftover Penalties */}
-                {(() => {
-                  const leftover = gameState.computerLeftoverHand ?? [];
-                  return leftover.length > 0 ? (
-                    <div className="flex flex-wrap gap-1.5">
-                      {leftover.map((c, idx) => {
-                        const isWildCard = c.isWild || c.letter === "WILD";
-                        const cardPoints = isWildCard
-                          ? 30
-                          : (c.points ?? LETTER_VALUES[c.letter] ?? 0);
-                        return (
-                          <span
-                            key={c.id || `${c.letter}-${idx}`}
-                            className="bg-neutral-900 border border-rose-500/30 text-rose-300 px-2 py-1 rounded text-xs font-bold flex items-center gap-1.5 shadow-sm"
-                          >
-                            <span className="text-sm font-black">
-                              {c.letter}
-                            </span>
-                            <span className="text-rose-400 text-xs">
-                              (-{cardPoints})
-                            </span>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-slate-400">None (0 penalty)</p>
-                  );
-                })()}
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons: Featured Top Primary + 50/50 Split Bottom */}
-          <div className="w-full flex flex-col gap-2.5 pt-1">
-            {/* 🏠 Primary Action: Return to Main Menu */}
-            <button
-              type="button"
-              onClick={() => {
-                setGameState((prev) => ({ ...prev, isGameOver: false }));
-                setIsGameActive(false);
-              }}
-              className="w-full py-3.5 bg-linear-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
-            >
-              Return to Main Menu
-            </button>
-
-            {/* Secondary Actions: Split 50/50 Row */}
-            <div className="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                onClick={handleStartNewMatchWithAd}
-                className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
-              >
-                Start New Game
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsStatsModalOpen(true)}
-                className="py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-md shadow-indigo-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
-              >
-                View Statistics
-              </button>
-            </div>
-          </div>
+          {/* Game-Specific Modals */}
+          <WordsPlayedModal
+            isOpen={isWordsModalOpen}
+            onClose={() => setIsWordsModalOpen(false)}
+            wordBoard={gameState.wordBoard}
+          />
+          <TradeModal
+            isOpen={isTradeModalOpen}
+            humanHand={gameState.humanHand}
+            selectedTradeCardIds={selectedTradeCardIds}
+            onToggleCardSelection={handleToggleTradeCardSelection}
+            onConfirmTrade={handleExecuteTradeAction}
+            onClose={() => {
+              setIsTradeModalOpen(false);
+              setSelectedTradeCardIds([]);
+            }}
+          />
+          <WordHistoryModal
+            word={inspectingWord}
+            humanHand={gameState.humanHand}
+            onClose={() => setInspectingWord(null)}
+            onSelectToModify={(word) => {
+              handleSelectWordForModification(word);
+            }}
+            onSwapWildCard={(targetWildCard, handCard) => {
+              onHumanAttemptWildSwap(targetWildCard, handCard);
+            }}
+          />
+          {pendingWildCard && (
+            <WildCardPickerModal
+              isOpen={!!pendingWildCard}
+              onSelectLetter={handleSelectWildLetter}
+              onCancel={handleCancelWildPicker}
+            />
+          )}
+          <SwapSkipModal
+            isOpen={isSwapSkipModalOpen}
+            onClose={() => setIsSwapSkipModalOpen(false)}
+            handCards={gameState.humanHand}
+            onConfirmSwapOrSkip={handleConfirmSwapOrSkip}
+          />
         </div>
       )}
 
-      {/* Modals & Overlays */}
-      <WordsPlayedModal
-        isOpen={isWordsModalOpen}
-        onClose={() => setIsWordsModalOpen(false)}
-        wordBoard={gameState.wordBoard}
-      />
-      <TradeModal
-        isOpen={isTradeModalOpen}
-        humanHand={gameState.humanHand}
-        selectedTradeCardIds={selectedTradeCardIds}
-        onToggleCardSelection={handleToggleTradeCardSelection}
-        onConfirmTrade={handleExecuteTradeAction}
-        onClose={() => {
-          setIsTradeModalOpen(false);
-          setSelectedTradeCardIds([]);
-        }}
-      />
-
-      <WordHistoryModal
-        word={inspectingWord}
-        humanHand={gameState.humanHand}
-        onClose={() => setInspectingWord(null)}
-        onSelectToModify={(word) => {
-          handleSelectWordForModification(word);
-        }}
-        onSwapWildCard={(targetWildCard, handCard) => {
-          onHumanAttemptWildSwap(targetWildCard, handCard);
-        }}
-      />
-
+      {/* Shared Modals & Test Ad (Always Mounted Outside View Switch) */}
       <RulesModal isOpen={isRulesOpen} onClose={() => setIsRulesOpen(false)} />
-
-      {pendingWildCard && (
-        <WildCardPickerModal
-          isOpen={!!pendingWildCard}
-          onSelectLetter={handleSelectWildLetter}
-          onCancel={handleCancelWildPicker}
-        />
-      )}
-
-      <SwapSkipModal
-        isOpen={isSwapSkipModalOpen}
-        onClose={() => setIsSwapSkipModalOpen(false)}
-        handCards={gameState.humanHand}
-        onConfirmSwapOrSkip={handleConfirmSwapOrSkip}
-      />
 
       <StatsModal
         isOpen={isStatsModalOpen}
@@ -2173,7 +2160,7 @@ export function App() {
         onClose={handleCloseTestAd}
         testUrl="https://example.com"
       />
-    </div>
+    </>
   );
 }
 
