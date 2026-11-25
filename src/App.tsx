@@ -110,6 +110,7 @@ export function App() {
   const [pendingAdAction, setPendingAdAction] = useState<
     "start_from_menu" | "start_new_match" | null
   >(null);
+  const [isInspectingBoard, setIsInspectingBoard] = useState(false);
 
   useEffect(() => {
     console.log("🔔 isStatsModalOpen state changed to:", isStatsModalOpen);
@@ -1835,6 +1836,12 @@ export function App() {
     }
   };
 
+  useEffect(() => {
+    if (!gameState.isGameOver) {
+      setIsInspectingBoard(false);
+    }
+  }, [gameState.isGameOver]);
+
   // -------------------------------------------------------------
   // 1. EARLY RETURN FOR MAIN MENU / LANDING VIEW
   // -------------------------------------------------------------
@@ -1958,8 +1965,22 @@ export function App() {
           </DragDropContext>
 
           {/* 🏁 GAME-OVER OVERLAY BANNER */}
-          {gameState.isGameOver && (
-            <div className="absolute inset-x-4 top-20 z-50 bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-5 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
+          {gameState.isGameOver && !isInspectingBoard && (
+            <div className="absolute inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 max-h-[72dvh] overflow-y-auto bg-slate-900/95 border-2 border-amber-500/80 rounded-2xl p-4 text-center shadow-2xl backdrop-blur-md animate-fade-in text-white">
+              <div className="flex items-center justify-between gap-2 mb-1.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300/90">
+                  Match Complete
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => setIsInspectingBoard(true)}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-xs font-bold transition cursor-pointer"
+                >
+                  👁 Inspect Board
+                </button>
+              </div>
+
               <h2 className="text-3xl font-extrabold tracking-wide mb-1.5">
                 {gameState.winner === "human"
                   ? "🎉 You Won the Match!"
@@ -2068,6 +2089,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => {
+                    setIsInspectingBoard(false);
                     setGameState((prev) => ({ ...prev, isGameOver: false }));
                     setIsGameActive(false);
                   }}
@@ -2079,7 +2101,10 @@ export function App() {
                 <div className="grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
-                    onClick={handleStartNewMatchWithAd}
+                    onClick={() => {
+                      setIsInspectingBoard(false);
+                      handleStartNewMatchWithAd();
+                    }}
                     className="py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm rounded-xl shadow-md shadow-cyan-950/50 transition transform active:scale-[0.98] cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     Start New Game
@@ -2094,6 +2119,19 @@ export function App() {
                   </button>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* 🔍 FLOATING PILL TO RESTORE FINAL RESULTS WHILE INSPECTING BOARD */}
+          {gameState.isGameOver && isInspectingBoard && (
+            <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex justify-center pointer-events-none">
+              <button
+                type="button"
+                onClick={() => setIsInspectingBoard(false)}
+                className="pointer-events-auto px-4 py-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider shadow-2xl border border-amber-200/60 transition active:scale-[0.98] cursor-pointer"
+              >
+                🏆 Show Final Results
+              </button>
             </div>
           )}
 
