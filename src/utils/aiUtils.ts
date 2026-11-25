@@ -80,18 +80,21 @@ export function findMonicaPlay(
     return checkWord(cleanWord);
   };
 
-  // Preserved difficulty constants
+  // Difficulty constants
   const maxWordLength =
     difficulty === "easy" ? 4 : difficulty === "medium" ? 6 : 8;
   const maxStealWordLength =
     difficulty === "easy" ? 5 : difficulty === "medium" ? 8 : 8;
 
   const maxSingleTurnScore =
-    difficulty === "easy" ? 18 : difficulty === "medium" ? 36 : 150;
+    difficulty === "easy" ? 12 : difficulty === "medium" ? 36 : 150;
 
-  // 🌟 EASY MODE STEAL CHANCE SET TO 10% (0.1), MEDIUM TO 15% (0.15)
+  // Easy: 8% steal chance (1 card max); Medium: 15%; Pro: 50%
   const stealChance =
-    difficulty === "easy" ? 0.1 : difficulty === "medium" ? 0.15 : 0.5;
+    difficulty === "easy" ? 0.08 : difficulty === "medium" ? 0.15 : 0.5;
+
+  // Easy: only considers using a WILD card 35% of the time so she isn't overly sharp with wilds
+  const allowWildThisTurn = difficulty === "easy" ? Math.random() < 0.35 : true;
 
   const validPlays: AiPlayResult[] = [];
 
@@ -101,7 +104,6 @@ export function findMonicaPlay(
   const humanWords = wordBoard.filter((w) => w.playedBy === "human");
 
   if (humanWords.length > 0 && Math.random() < stealChance) {
-    // Limit Medium mode to 1-card extensions so she doesn't aggressively overhaul board words
     const maxStealCards =
       difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
 
@@ -114,6 +116,13 @@ export function findMonicaPlay(
         const combos = getSubsets(handCards, len);
 
         for (const combo of combos) {
+          if (
+            !allowWildThisTurn &&
+            combo.some((c) => c.isWild || c.letter === "WILD")
+          ) {
+            continue;
+          }
+
           const resolvedCombo = assignWildcardsForSteal(
             combo,
             boardItem.word,
@@ -170,6 +179,13 @@ export function findMonicaPlay(
     const combos = getSubsets(handCards, len);
 
     for (const combo of combos) {
+      if (
+        !allowWildThisTurn &&
+        combo.some((c) => c.isWild || c.letter === "WILD")
+      ) {
+        continue;
+      }
+
       const resolvedCombos = resolveWildcardsForHand(
         combo,
         isAllowedWord,
@@ -205,18 +221,30 @@ export function findMonicaPlay(
     }
   }
 
+  if (validPlays.length === 0) {
+    return null;
+  }
+
   // -------------------------------------------------------------
   // 3. SORT & APPLY DIFFICULTY SELECTION LOGIC
   // -------------------------------------------------------------
-  // Sort highest-scoring moves first
   validPlays.sort((a, b) => b.score - a.score);
 
-  // EASY MODE: Only pass/trade on < 8 pts if cards remain in the draw deck
+  // EASY MODE: Keeps steals & wilds in play, but picks gentler, lower-scoring moves
   if (difficulty === "easy") {
-    if (deckCount > 0 && validPlays[0].score < 8 && Math.random() < 0.3) {
+    // 20% chance to pass/trade on weak (< 6 pt) hands when cards remain in deck
+    if (deckCount > 0 && validPlays[0].score < 6 && Math.random() < 0.2) {
       return null;
     }
-    const easyPool = validPlays.slice(0, Math.min(5, validPlays.length));
+
+    // Prefer plays <= 10 pts when available so she rarely drops big combos
+    const softPlays = validPlays.filter((p) => p.score <= 10);
+    const pool = softPlays.length > 0 ? softPlays : validPlays;
+
+    // Pick from the lower-scoring half of the pool
+    const startIndex = Math.floor(pool.length / 2);
+    const easyPool = pool.slice(startIndex);
+
     return easyPool[Math.floor(Math.random() * easyPool.length)];
   }
 
