@@ -362,6 +362,11 @@ export function App() {
       const removedCard = stagedCards[source.index];
       if (!removedCard) return;
 
+      const isOriginalBoardCard = targetBoardWord?.cards.some(
+        (c) => c.id === removedCard.id,
+      );
+      if (isOriginalBoardCard) return;
+
       // 🌟 BULLETPROOF WILD RESET WHEN DRAGGING BACK TO HAND
       const isWildCard =
         removedCard.isWild ||
@@ -497,7 +502,12 @@ export function App() {
     setStagedCards((prev) => prev.filter((c) => c.id !== card.id));
 
     // 🛡️ Bulletproof wild reset when unstaging back to hand
-    const isWildCard = card.isWild || card.letter === "WILD";
+    const isWildCard =
+      card.isWild === true ||
+      card.letter === "WILD" ||
+      card.id?.toUpperCase().includes("WILD") ||
+      card.photoUrl?.toLowerCase().includes("wild");
+
     const cardToReturn = isWildCard
       ? {
           ...card,
@@ -518,7 +528,6 @@ export function App() {
       };
     });
   };
-
   // -------------------------------------------------------------
   // WILD SWAP MECHANIC (Supports both Human & Computer)
   // -------------------------------------------------------------
@@ -601,9 +610,15 @@ export function App() {
   };
 
   const handleClearWorkspace = () => {
-    // 🛡️ Bulletproof Wild Card reset helper
-    const resetWildCard = (card: Card): Card =>
-      card.isWild || card.letter === "WILD"
+    // 🛡️ Bulletproof Wild Card reset helper (matches handleStageCard / handleDragEnd)
+    const resetWildCard = (card: Card): Card => {
+      const isWildCard =
+        card.isWild === true ||
+        card.letter === "WILD" ||
+        card.id?.toUpperCase().includes("WILD") ||
+        card.photoUrl?.toLowerCase().includes("wild");
+
+      return isWildCard
         ? {
             ...card,
             assignedLetter: undefined,
@@ -611,6 +626,7 @@ export function App() {
             letter: "WILD" as any,
           }
         : card;
+    };
 
     let handCardsToReturn: Card[] = [];
 
@@ -626,18 +642,20 @@ export function App() {
       handCardsToReturn = stagedCards.map(resetWildCard);
     }
 
-    // 🛡️ Safe state update with strict ID deduplication
-    setGameState((prev) => {
-      const returningIds = new Set(handCardsToReturn.map((c) => c.id));
-      const filteredHand = prev.humanHand.filter(
-        (c) => !returningIds.has(c.id),
-      );
+    // 🛡️ Safe state update with strict ID deduplication (only runs if hand cards need returning)
+    if (handCardsToReturn.length > 0) {
+      setGameState((prev) => {
+        const returningIds = new Set(handCardsToReturn.map((c) => c.id));
+        const filteredHand = prev.humanHand.filter(
+          (c) => !returningIds.has(c.id),
+        );
 
-      return {
-        ...prev,
-        humanHand: [...filteredHand, ...handCardsToReturn],
-      };
-    });
+        return {
+          ...prev,
+          humanHand: [...filteredHand, ...handCardsToReturn],
+        };
+      });
+    }
 
     setStagedCards([]);
   };
@@ -646,6 +664,45 @@ export function App() {
   const handleSelectWordForModification = (playedWord: PlayedWord) => {
     // 🛡️ Guard: Must be human's turn
     if (gameState.currentTurn !== "human") return;
+
+    // 1. Find any cards currently in the workspace that came from the player's hand
+    // (i.e., cards not belonging to an already-selected targetBoardWord)
+    const existingBoardCardIds = new Set(
+      targetBoardWord ? targetBoardWord.cards.map((c) => c.id) : [],
+    );
+
+    const handCardsInWorkspace = stagedCards
+      .filter((c) => !existingBoardCardIds.has(c.id))
+      .map((card) => {
+        const isWildCard =
+          card.isWild === true ||
+          card.letter === "WILD" ||
+          card.id?.toUpperCase().includes("WILD") ||
+          card.photoUrl?.toLowerCase().includes("wild");
+
+        return isWildCard
+          ? {
+              ...card,
+              assignedLetter: undefined,
+              isWild: true,
+              letter: "WILD" as any,
+            }
+          : card;
+      });
+
+    // 2. Return those staged hand cards back to humanHand (avoiding duplicate IDs)
+    if (handCardsInWorkspace.length > 0) {
+      setGameState((prev) => {
+        const existingHandIds = new Set(prev.humanHand.map((c) => c.id));
+        const cardsToRestore = handCardsInWorkspace.filter(
+          (c) => !existingHandIds.has(c.id),
+        );
+        return {
+          ...prev,
+          humanHand: [...prev.humanHand, ...cardsToRestore],
+        };
+      });
+    }
 
     // 🔄 Deselect/Toggle Off if clicking the word currently being modified
     if (targetBoardWord && targetBoardWord.id === playedWord.id) {
@@ -1975,9 +2032,9 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setIsInspectingBoard(true)}
-                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 text-xs font-bold transition cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-400/60 text-sm font-extrabold transition transform active:scale-[0.98] cursor-pointer flex items-center gap-1.5 shrink-0 shadow-sm"
                 >
-                  👁 Inspect Board
+                  <span>View Board</span>
                 </button>
               </div>
 
