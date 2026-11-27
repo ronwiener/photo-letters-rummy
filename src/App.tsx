@@ -661,59 +661,31 @@ export function App() {
   };
 
   // Handler when user taps a word on the board:
+  // Handler when user taps a word on the board:
   const handleSelectWordForModification = (playedWord: PlayedWord) => {
     // 🛡️ Guard: Must be human's turn
     if (gameState.currentTurn !== "human") return;
 
-    // 1. Find any cards currently in the workspace that came from the player's hand
-    // (i.e., cards not belonging to an already-selected targetBoardWord)
-    const existingBoardCardIds = new Set(
+    // 1. Keep any hand cards currently sitting in the workspace
+    // (exclude cards belonging to a previously selected targetBoardWord)
+    const previousBoardCardIds = new Set(
       targetBoardWord ? targetBoardWord.cards.map((c) => c.id) : [],
     );
 
-    const handCardsInWorkspace = stagedCards
-      .filter((c) => !existingBoardCardIds.has(c.id))
-      .map((card) => {
-        const isWildCard =
-          card.isWild === true ||
-          card.letter === "WILD" ||
-          card.id?.toUpperCase().includes("WILD") ||
-          card.photoUrl?.toLowerCase().includes("wild");
-
-        return isWildCard
-          ? {
-              ...card,
-              assignedLetter: undefined,
-              isWild: true,
-              letter: "WILD" as any,
-            }
-          : card;
-      });
-
-    // 2. Return those staged hand cards back to humanHand (avoiding duplicate IDs)
-    if (handCardsInWorkspace.length > 0) {
-      setGameState((prev) => {
-        const existingHandIds = new Set(prev.humanHand.map((c) => c.id));
-        const cardsToRestore = handCardsInWorkspace.filter(
-          (c) => !existingHandIds.has(c.id),
-        );
-        return {
-          ...prev,
-          humanHand: [...prev.humanHand, ...cardsToRestore],
-        };
-      });
-    }
+    const stagedHandCards = stagedCards.filter(
+      (c) => !previousBoardCardIds.has(c.id),
+    );
 
     // 🔄 Deselect/Toggle Off if clicking the word currently being modified
     if (targetBoardWord && targetBoardWord.id === playedWord.id) {
       setTargetBoardWord(null);
-      setStagedCards([]);
+      setStagedCards(stagedHandCards);
       return;
     }
 
-    // 🎯 Load target word and populate workspace immediately
+    // 🎯 Load target word AND keep existing staged hand cards in the workspace
     setTargetBoardWord(playedWord);
-    setStagedCards([...playedWord.cards]);
+    setStagedCards([...playedWord.cards, ...stagedHandCards]);
   };
 
   // -------------------------------------------------------------
